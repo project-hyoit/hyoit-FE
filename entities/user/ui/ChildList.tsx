@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     marginLeft: 24,
     flexDirection: "row",
     alignItems: "center",
-    width: 364,
+    width: 340,
     height: 60,
     backgroundColor :"#FFFFFF",
     borderRadius: 12,
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
   },
 
   phone: {
-    marginLeft: 92,
+    marginLeft: 80,
     fontSize: 12,
     fontFamily: "Pretendard",
     fontWeight: "600",
