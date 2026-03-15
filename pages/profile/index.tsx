@@ -1,9 +1,17 @@
-import { Text, View } from "react-native";
+import { ScrollView, Text } from "react-native";
+import ProfileSection from "../../entities/user/ui/ProfileSection";
+import ChildList from "../../entities/user/ui/ChildList";
 
 export default function ProfileScreen() {
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>내정보 화면 입니당</Text>
-    </View>
+    <ScrollView>
+      <ProfileSection />
+
+      <Text style={{ marginTop: 8, fontSize: 16, fontWeight: "700", fontFamily: "Pretendard", marginLeft: 28 }}>
+        연결된 자녀분
+      </Text>
+
+      <ChildList />
+    </ScrollView>
   );
 }
