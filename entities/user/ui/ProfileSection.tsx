@@ -29,7 +29,7 @@ export default function ProfileCard() {
       </View>
 
       <TouchableOpacity style={styles.logout}>
-        <Image source={logout} />
+          <Text style={styles.logouttext}>로그아웃</Text>
       </TouchableOpacity>
     </View>
   );
@@ -102,5 +102,15 @@ const styles = StyleSheet.create({
     marginTop: 8,
     width: 65,
     height: 26,
+    backgroundColor :"#FFFFFF",
+    flexDirection: "row",
+    alignItems: "center",
+    borderRadius: 12,
+    elevation: 2,
   },
+
+  logouttext: {
+    marginLeft: 12,
+    fontSize: 12,
+  }
 });
