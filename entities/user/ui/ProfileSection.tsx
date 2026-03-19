@@ -1,31 +1,37 @@
 import React from "react";
 import { View, Text, Image, ImageBackground, StyleSheet, TouchableOpacity } from "react-native";
-const profileImg = require("../../../assets/profileimg/profile.png");
-const mainprofile = require("../../../assets/profileimg/mainprofile.png");
-const correction = require("../../../assets/profileimg/correction.png");
-const logout = require("../../../assets/profileimg/logout.png")
+import IconProfile from '../../../components/profilecomponets.js';
+import IconMainprofile from '../../../components/mainprofilecomponets.js';
+import Iconcorrection from '../../../components/correctioncomponets.js';
+
+const user = {
+  name: "김유찬",
+  age : "60",
+  phone: "010-4610-3405",
+};
+
 
 export default function ProfileCard() {
   return (
 
     <View style={styles.container}>
       <View style={styles.header}>
-        <Image source={profileImg} style={styles.profileImg} />
+        <IconProfile style={styles.profileImg} />
         <Text style={styles.title}>프로필</Text>
       </View>
       <View style={styles.avatarWrapper}>
-        <Image source={mainprofile} style={styles.avatar} />
+        <IconMainprofile style={styles.avatar} />
 
-        <ImageBackground source={correction} style={styles.editButton}>
-          <TouchableOpacity style={styles.editButton} />
-        </ImageBackground>
+        <Iconcorrection style={styles.editButton}>
+
+        </Iconcorrection>
       </View>
 
-      <Text style={styles.name}>김유찬</Text>
+      <Text style={styles.name}>{user.name}</Text>
 
       <View style={styles.info}>
-        <Text>60세</Text>
-        <Text style={styles.infoText2}>010-4610-3405</Text>
+        <Text>{user.age}세</Text>
+        <Text style={styles.infoText2}>{user.phone}</Text>
       </View>
 
       <TouchableOpacity style={styles.logout}>

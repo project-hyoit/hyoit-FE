@@ -1,23 +1,28 @@
 import React from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
-const child = require("../../../assets/profileimg/child.png")
-const online = require("../../../assets/profileimg/online.png")
+import IconMainprofile from '../../../components/mainprofilecomponets.js';
+
+const user = {
+  name: "김유찬",
+  phone: "010-4610-3405",
+};
 
 export default function ChildCard() {
   return (
     <View style={styles.card}>
-      <Image source={child} style={styles.IMG}/>
-      <Text style={styles.name}>김유찬</Text>
+      <IconMainprofile style={styles.IMG}/>
+      <Text style={styles.name}>{user.name}</Text>
 
-      <Text style={styles.phone}>010-4610-3405</Text>
+      <Text style={styles.phone}>{user.phone}</Text>
 
-      <Image source={online} style={styles.online} />
+      <View style={styles.online} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   card: {
+    marginTop : 8,
     marginLeft: 24,
     flexDirection: "row",
     alignItems: "center",
@@ -38,6 +43,8 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     fontFamily: "Pretendard",
     marginLeft: 16,
+    width : 63,
+    height : 36,
   },
 
   phone: {
@@ -51,5 +58,7 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     width: 12,
     height: 12,
+    backgroundColor : "#50CD5C",
+    borderRadius: 12,
   },
 });
