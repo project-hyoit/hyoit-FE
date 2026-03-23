@@ -7,7 +7,7 @@ const user = {
   phone: "010-4610-3405",
 };
 
-export default function ChildCard() {
+export default function ChildList() {
   return (
     <View style={styles.card}>
       <View style={styles.leftSection}>
