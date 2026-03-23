@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import IconMainprofile from '../../../components/mainprofilecomponets.js';
 
 const user = {
@@ -10,27 +10,40 @@ const user = {
 export default function ChildCard() {
   return (
     <View style={styles.card}>
-      <IconMainprofile style={styles.IMG}/>
-      <Text style={styles.name}>{user.name}</Text>
-
-      <Text style={styles.phone}>{user.phone}</Text>
-
-      <View style={styles.online} />
+      <View style={styles.leftSection}>
+        <IconMainprofile style={styles.IMG} />
+        <Text style={styles.name}>{user.name}</Text>
+      </View>
+      <View style={styles.rightSection}>
+        <Text style={styles.phone}>{user.phone}</Text>
+        <View style={styles.online} />
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   card: {
-    marginTop : 8,
+    marginTop: 8,
     marginLeft: 24,
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "space-between",
     width: 340,
     height: 60,
-    backgroundColor :"#FFFFFF",
+    backgroundColor: "#FFFFFF",
     borderRadius: 12,
-    paddingHorizontal: 24,
+    paddingHorizontal: 16,
+  },
+
+  leftSection: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+
+  rightSection: {
+    flexDirection: "row",
+    alignItems: "center",
   },
 
   IMG: {
@@ -42,23 +55,20 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "600",
     fontFamily: "Pretendard",
-    marginLeft: 16,
-    width : 63,
-    height : 36,
+    marginLeft: 12,
   },
 
   phone: {
-    marginLeft: 80,
     fontSize: 12,
     fontFamily: "Pretendard",
     fontWeight: "600",
+    marginRight: 6,
   },
 
   online: {
-    marginLeft: 8,
     width: 12,
     height: 12,
-    backgroundColor : "#50CD5C",
+    backgroundColor: "#50CD5C",
     borderRadius: 12,
   },
 });
