@@ -4,7 +4,7 @@ import IconMainprofile from '../../../components/mainprofilecomponets.js';
 
 const user = {
   name: "김유찬",
-  phone: "010-4610-3405",
+  phone: "010-4610-3404",
 };
 
 export default function ChildList() {
