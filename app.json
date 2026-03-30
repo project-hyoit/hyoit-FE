@@ -9,6 +9,7 @@
     "newArchEnabled": true,
     "ios": { "supportsTablet": true },
     "android": {
+      "package": "com.hyoit.app",
       "edgeToEdgeEnabled": true
     },
     "web": {
