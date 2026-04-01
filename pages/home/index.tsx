@@ -3,16 +3,15 @@ import React from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import Header from "@/shared/ui/section/header";
 import {
   ActionBarDual,
   AskBanner,
   ChatbotCard,
-  HomeHeader,
   MemoryGameCard,
   MetricCard,
   WeatherCard,
 } from "@/widgets/home";
-
 export default function HomeScreen() {
   return (
     <SafeAreaView style={{ flex: 1 }} edges={["top"]}>
@@ -20,8 +19,7 @@ export default function HomeScreen() {
         contentContainerStyle={s.container}
         showsVerticalScrollIndicator={false}
       >
-        <HomeHeader title="시작" />
-
+        <Header title="홈" icon="house.fill" />
         <AskBanner
           title={"요즘 활동량이 적어졌는데\n어디 편찮으신 건 아니죠?"}
           ctaLabel="쥐돌이에게 물어보기"

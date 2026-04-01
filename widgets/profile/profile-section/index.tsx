@@ -4,7 +4,6 @@ import LogoutModal from "@/features/logout/ui/LogoutModal";
 import { IconSymbol } from "@/shared/ui/IconSymbol";
 import React, { useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-
 interface Props {
   user: UserProfile;
 }
@@ -20,15 +19,6 @@ export default function ProfileSection({ user }: Props) {
   return (
     <View>
       <View style={styles.container}>
-        <View style={styles.header}>
-          <IconSymbol
-            name="person.fill"
-            color="#000"
-            style={styles.profileImg}
-          />
-          <Text style={styles.title}>프로필</Text>
-        </View>
-
         <View style={styles.avatarWrapper}>
           <Image
             source={require("@/assets/profileimg/mainprofile.png")}
