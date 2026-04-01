@@ -1,19 +1,13 @@
 import React from "react";
 import { View } from "react-native";
+import type { ChildUser } from "../model/types";
 import ChildCard from "./ChildCard";
 
-interface Child {
-  id: string;
-  name: string;
-  phone: string;
-  isOnline?: boolean;
-}
-
 interface ChildListProps {
-  items: Child[];
+  items?: ChildUser[];
 }
 
-export default function ChildList({ items }: ChildListProps) {
+export default function ChildList({ items = [] }: ChildListProps) {
   return (
     <View>
       {items.map((child) => (

@@ -1,3 +1,4 @@
+import { UserProfile } from "@/entities/user/model/types";
 import ProfileMenu from "@/features/edit-profile/ui/ProfileMenu";
 import LogoutModal from "@/features/logout/ui/LogoutModal";
 import { IconSymbol } from "@/shared/ui/IconSymbol";
@@ -5,11 +6,7 @@ import React, { useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 interface Props {
-  user: {
-    name: string;
-    age: string;
-    phone: string;
-  };
+  user: UserProfile;
 }
 
 export default function ProfileSection({ user }: Props) {

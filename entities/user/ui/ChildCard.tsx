@@ -1,11 +1,8 @@
 import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
+import type { ChildUser } from "../model/types";
 
-interface ChildCardProps {
-  name: string;
-  phone: string;
-  isOnline?: boolean;
-}
+type ChildCardProps = Omit<ChildUser, "id">;
 
 export default function ChildCard({
   name,
@@ -29,7 +26,6 @@ export default function ChildCard({
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   card: {
     marginTop: 8,
