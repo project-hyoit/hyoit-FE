@@ -1,22 +1,27 @@
 import ChildList from "@/entities/user/ui/ChildList";
-import ProfileSection from "@/entities/user/ui/ProfileSection";
+import ProfileSection from "@/widgets/profile/profile-section";
 import { ScrollView, StyleSheet } from "react-native";
 
-export default function ProfileScreen() {
-  const children = [
+export default function ProfilePage() {
+  const user = {
+    name: "김유찬",
+    age: "60",
+    phone: "010-4610-3405",
+  };
+
+  const childUsers = [
     {
       id: "1",
       name: "김유찬",
       phone: "010-4610-3404",
       isOnline: true,
     },
-    // 나중에 여기 계속 추가됨
   ];
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <ProfileSection />
-      <ChildList>{children}</ChildList>
+      <ProfileSection user={user} />
+      <ChildList items={childUsers} />
     </ScrollView>
   );
 }

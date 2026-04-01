@@ -10,13 +10,13 @@ interface Child {
 }
 
 interface ChildListProps {
-  children: Child[];
+  items: Child[];
 }
 
-export default function ChildList({ children }: ChildListProps) {
+export default function ChildList({ items }: ChildListProps) {
   return (
     <View>
-      {children.map((child) => (
+      {items.map((child) => (
         <ChildCard
           key={child.id}
           name={child.name}
