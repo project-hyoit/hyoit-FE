@@ -1,10 +1,8 @@
-import Iconcorrection from "@/components/correctioncomponets";
-import IconMainprofile from "@/components/mainprofilecomponets";
 import ProfileMenu from "@/features/edit-profile/ui/ProfileMenu";
 import LogoutModal from "@/features/logout/ui/LogoutModal";
 import { IconSymbol } from "@/shared/ui/IconSymbol";
 import React, { useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 interface Props {
   user: {
@@ -35,12 +33,18 @@ export default function ProfileSection({ user }: Props) {
         </View>
 
         <View style={styles.avatarWrapper}>
-          <IconMainprofile style={styles.avatar} />
+          <Image
+            source={require("@/assets/profileimg/mainprofile.png")}
+            style={styles.avatar}
+          />
+
           <TouchableOpacity
             style={styles.editButton}
             onPress={() => setIsMenuOpen(true)}
           >
-            <Iconcorrection style={{ width: 38, height: 38 }} />
+            <View style={styles.editIconCircle}>
+              <IconSymbol name="pencil" size={18} color="#FFFFFF" />
+            </View>
           </TouchableOpacity>
         </View>
 
@@ -117,6 +121,15 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: 5,
     bottom: 5,
+  },
+
+  editIconCircle: {
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    backgroundColor: "#2196F3",
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   name: {

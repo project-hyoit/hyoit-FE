@@ -1,6 +1,5 @@
-import IconMainprofile from "@/components/mainprofilecomponets";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
 
 interface ChildCardProps {
   name: string;
@@ -16,7 +15,10 @@ export default function ChildCard({
   return (
     <View style={styles.card}>
       <View style={styles.leftSection}>
-        <IconMainprofile style={styles.img} />
+        <Image
+          source={require("@/assets/profileimg/mainprofile.png")}
+          style={styles.img}
+        />
         <Text style={styles.name}>{name}</Text>
       </View>
 
