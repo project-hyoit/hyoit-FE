@@ -13,7 +13,7 @@ export default function LoginPage() {
 
   const handleLogin = () => {
     setSignedIn(true);
-    router.replace("/onboarding/user-info");
+    router.replace("/chose");
   };
 
   return (
@@ -22,10 +22,7 @@ export default function LoginPage() {
       <View style={s.container}>
         <View style={s.brand}>
           <View style={s.brandRow}>
-            <Text style={s.logoText} allowFontScaling={false}>
-              효잇
-            </Text>
-            <Image source={require("@/assets/images/Vector.png")} />
+            <Image style={s.logo} source={require("@/assets/login/login_logo.png")} />
           </View>
         </View>
 
@@ -51,13 +48,8 @@ const s = StyleSheet.create({
     justifyContent: "space-between",
   },
   brand: { flex: 1, alignItems: "center", justifyContent: "center" },
-  brandRow: { flexDirection: "row", alignItems: "center", gap: 10 },
-  logoText: {
-    fontSize: 48,
-    fontWeight: "600",
-    color: COLORS.text,
-    lineHeight: 56,
-  },
+  brandRow: { flexDirection: "row", alignItems: "center", gap: 10},
+  logo: {     width: 86,height: 48,resizeMode: 'contain',},
   actions: { width: "100%", alignItems: "center", gap: 12 },
   caption: {
     color: COLORS.subText,
