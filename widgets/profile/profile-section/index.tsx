@@ -72,7 +72,7 @@ export default function ProfileSection({ user }: Props) {
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-    marginTop: 58,
+    marginTop: 30,
   },
 
   header: {
