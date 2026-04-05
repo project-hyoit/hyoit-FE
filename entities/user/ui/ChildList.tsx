@@ -26,10 +26,10 @@ const styles = StyleSheet.create({
   card: {
     marginTop: 8,
     marginLeft: 24,
+    marginRight: 24,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    width: 340,
     height: 60,
     backgroundColor: "#FFFFFF",
     borderRadius: 12,
