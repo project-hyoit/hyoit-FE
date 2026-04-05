@@ -34,6 +34,14 @@ export default function ProfileCard() {
           >
             <Iconcorrection style={{ width: 38, height: 38 }} />
           </TouchableOpacity>
+
+          {isMenuOpen && (
+            <ProfileMenu
+              onClose={() => setIsMenuOpen(false)}
+              onSelectAlbum={() => setIsMenuOpen(false)}
+              onDefault={() => setIsMenuOpen(false)}
+            />
+          )}
         </View>
         <Text style={styles.name}>{user.name}</Text>
         <View style={styles.info}>
@@ -48,16 +56,6 @@ export default function ProfileCard() {
           onConfirm={handleConfirmLogout}
           onCancel={handleCancelLogout}
         />
-        <ProfileMenu
-          visible={isMenuOpen}
-          onClose={() => setIsMenuOpen(false)}
-          onSelectAlbum={() => {
-            setIsMenuOpen(false);
-          }}
-          onDefault={() => {
-            setIsMenuOpen(false);
-          }}
-        />
       </View>
       <Text style={styles.bordertext}>
         연결된 자녀분
@@ -67,9 +65,10 @@ export default function ProfileCard() {
 }
 
 const styles = StyleSheet.create({
-  container: {
+    container: {
     alignItems: "center",
     marginTop: 58,
+    zIndex: 1,
   },
 
   header: {
