@@ -1,5 +1,5 @@
 import AdminPage from "@/pages/onboarding/children";
 
-export default function SuccessRoute() {
+export default function AdminRoute() {
   return <AdminPage />;
 }
