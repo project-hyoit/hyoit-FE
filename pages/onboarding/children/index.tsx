@@ -141,8 +141,9 @@ const s = StyleSheet.create({
   },
 
   nextRow: {
-    marginTop: 158,
+    marginTop: "auto",
     alignItems: "flex-end",
+    marginBottom: 106,
   },
   next: {
     flexDirection: "row",
