@@ -1,15 +1,28 @@
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+
+interface ProfileMenuProps {
+  visible: boolean;
+  onClose: () => void;
+  onSelectAlbum: () => void;
+  onDefault: () => void;
+}
 
 export default function ProfileMenu({
+  visible,
   onClose,
   onSelectAlbum,
   onDefault,
-}) {
+}: ProfileMenuProps) {
+  if (!visible) return null;
 
   return (
     <View style={styles.overlay}>
-      <TouchableOpacity style={styles.background} onPress={onClose} activeOpacity={1}/>
+      <TouchableOpacity
+        style={styles.background}
+        onPress={onClose}
+        activeOpacity={1}
+      />
       <View style={styles.menu}>
         <TouchableOpacity onPress={onSelectAlbum}>
           <Text style={styles.item1}>앨범에서 사진 선택</Text>
@@ -47,11 +60,11 @@ const styles = StyleSheet.create({
 
   item1: {
     fontSize: 14,
-    marginTop:16,
+    marginTop: 16,
   },
 
   item2: {
     fontSize: 14,
-    marginTop:20,
+    marginTop: 20,
   },
 });

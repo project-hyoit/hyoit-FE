@@ -1,20 +1,17 @@
+import { UserProfile } from "@/entities/user/model/types";
+import ProfileMenu from "@/features/edit-profile/ui/ProfileMenu";
+import LogoutModal from "@/features/logout/ui/LogoutModal";
+import { IconSymbol } from "@/shared/ui/IconSymbol";
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { IconSymbol } from "../../../shared/ui/IconSymbol";
-import IconMainprofile from "../../../components/mainprofilecomponets.js";
-import Iconcorrection from "../../../components/correctioncomponets.js";
-import LogoutModal from '../model/LogoutModal';
-import ProfileMenu from '../model/ProfileMenu.jsx';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+interface Props {
+  user: UserProfile;
+}
 
-const user = {
-  name: "김유찬",
-  age: "60",
-  phone: "010-4610-3405",
-};
-
-export default function ProfileCard() {
+export default function ProfileSection({ user }: Props) {
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   const handleLogoutPress = () => setIsLogoutModalOpen(true);
   const handleConfirmLogout = () => setIsLogoutModalOpen(false);
   const handleCancelLogout = () => setIsLogoutModalOpen(false);
@@ -22,44 +19,50 @@ export default function ProfileCard() {
   return (
     <View>
       <View style={styles.container}>
-        <View style={styles.header}>
-          <IconSymbol name="person.fill" color="#000" style={styles.profileImg} />
-          <Text style={styles.title}>프로필</Text>
-        </View>
         <View style={styles.avatarWrapper}>
-          <IconMainprofile style={styles.avatar} />
+          <Image
+            source={require("@/assets/profileimg/mainprofile.png")}
+            style={styles.avatar}
+          />
+
           <TouchableOpacity
             style={styles.editButton}
             onPress={() => setIsMenuOpen(true)}
           >
-            <Iconcorrection style={{ width: 38, height: 38 }} />
+            <View style={styles.editIconCircle}>
+              <IconSymbol name="pencil" size={18} color="#FFFFFF" />
+            </View>
           </TouchableOpacity>
 
           {isMenuOpen && (
             <ProfileMenu
+              visible={isMenuOpen}
               onClose={() => setIsMenuOpen(false)}
               onSelectAlbum={() => setIsMenuOpen(false)}
               onDefault={() => setIsMenuOpen(false)}
             />
           )}
         </View>
+
         <Text style={styles.name}>{user.name}</Text>
+
         <View style={styles.info}>
           <Text style={styles.infoText}>{user.age}세</Text>
           <Text style={styles.infoText}>{user.phone}</Text>
         </View>
+
         <TouchableOpacity style={styles.logout} onPress={handleLogoutPress}>
           <Text style={styles.logouttext}>로그아웃</Text>
         </TouchableOpacity>
+
         <LogoutModal
           visible={isLogoutModalOpen}
           onConfirm={handleConfirmLogout}
           onCancel={handleCancelLogout}
         />
       </View>
-      <Text style={styles.bordertext}>
-        연결된 자녀분
-      </Text>
+
+      <Text style={styles.bordertext}>연결된 자녀분</Text>
     </View>
   );
 }
@@ -67,8 +70,7 @@ export default function ProfileCard() {
 const styles = StyleSheet.create({
     container: {
     alignItems: "center",
-    marginTop: 58,
-    zIndex: 1,
+    marginTop: 30,
   },
 
   header: {
@@ -104,6 +106,15 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: 5,
     bottom: 5,
+  },
+
+  editIconCircle: {
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    backgroundColor: "#2196F3",
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   name: {
@@ -147,5 +158,5 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     fontFamily: "Pretendard",
     marginLeft: 28,
-  }
+  },
 });
