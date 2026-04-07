@@ -1,5 +1,5 @@
 import { router } from "expo-router";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   Platform,
   Pressable,
@@ -16,7 +16,7 @@ export default function VerifyCode() {
   const [childCode, setChildCode] = useState("");
   const canNext = /^\d{6}$/.test(childCode);
   const [showConfirm, setShowConfirm] = useState(false);
-  const [slideAnim] = useState(new Animated.Value(300));
+  const slideAnim = useRef(new Animated.Value(300)).current;
   const openModal = () => {
     setShowConfirm(true);
     Animated.timing(slideAnim, {
