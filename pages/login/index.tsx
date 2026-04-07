@@ -47,10 +47,26 @@ const s = StyleSheet.create({
     paddingHorizontal: 24,
     justifyContent: "space-between",
   },
-  brand: { flex: 1, alignItems: "center", justifyContent: "center" },
-  brandRow: { flexDirection: "row", alignItems: "center", gap: 10},
-  logo: {     width: 86,height: 48,resizeMode: 'contain',},
-  actions: { width: "100%", alignItems: "center", gap: 12 },
+  brand: { 
+    flex: 1, 
+    alignItems: "center", 
+    justifyContent: "center" 
+  },
+  brandRow: { 
+    flexDirection: "row", 
+    alignItems: "center", 
+    gap: 10
+  },
+  logo: {     
+    width: 86,
+    height: 48,
+    resizeMode: 'contain',
+  },
+  actions: { 
+    width: "100%", 
+    alignItems: "center", 
+    gap: 12 
+  },
   caption: {
     color: COLORS.subText,
     fontSize: 14,
