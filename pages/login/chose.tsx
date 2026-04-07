@@ -17,7 +17,7 @@ export default function Chose() {
  };
 
   return (
-    <View style={{ marginLeft: 24, marginRight: 24 }}>
+    <View style={styles.container}>
         <Text style={styles.title}>역할을 선택해주세요</Text>
         <Pressable
             style={[styles.roleButton, selectedRole === "parent" && styles.selectedButton]}
@@ -50,6 +50,10 @@ export default function Chose() {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    marginLeft: 24,
+    marginRight: 24 
+  },
   title: {
     marginTop: 97,
     fontSize: 24,
