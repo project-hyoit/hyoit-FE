@@ -105,10 +105,18 @@ const s = StyleSheet.create({
     fontWeight: "700",
     marginBottom: 8,
   },
-  childLeft: {    flexDirection: "row",alignItems: "center",},
-  avatar: {    width: 36,height: 36,borderRadius: 18, },
-  childName: {    marginLeft: 16,fontSize: 20,fontWeight: "600",},
-  childPhone: {     fontSize: 16, fontWeight: "600", },
+  childLeft: {    
+    flexDirection: "row",alignItems: "center",
+  },
+  avatar: {    
+    width: 36,height: 36,borderRadius: 18,
+  },
+  childName: {   
+    marginLeft: 16,fontSize: 20,fontWeight: "600",
+  },
+  childPhone: {     
+    fontSize: 16, fontWeight: "600", 
+  },
   actions: {
     alignItems: "flex-end",
   },
