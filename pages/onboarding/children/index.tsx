@@ -20,7 +20,7 @@ export default function UserInfo() {
   return (
     <View style={s.wrap}>
       <Text style={s.title} allowFontScaling={false}>
-        자녀분과 연결을 위해 몇 가지{"\n"}정보가 필요해요
+        부모님과 연결을 위해 몇 가지{"\n"}정보가 필요해요
       </Text>
 
       <View style={s.field}>
@@ -141,8 +141,9 @@ const s = StyleSheet.create({
   },
 
   nextRow: {
-    marginTop: 158,
+    marginTop: "auto",
     alignItems: "flex-end",
+    marginBottom: 106,
   },
   next: {
     flexDirection: "row",

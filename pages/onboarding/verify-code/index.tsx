@@ -1,5 +1,5 @@
 import { router } from "expo-router";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   Platform,
   Pressable,
@@ -7,12 +7,31 @@ import {
   Text,
   TextInput,
   View,
+  Animated,
+  Image,
 } from "react-native";
 
 export default function VerifyCode() {
   const myCode = "927582";
   const [childCode, setChildCode] = useState("");
   const canNext = /^\d{6}$/.test(childCode);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const slideAnim = useRef(new Animated.Value(300)).current;
+  const openModal = () => {
+    setShowConfirm(true);
+    Animated.timing(slideAnim, {
+      toValue: 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+  };
+  const closeModal = () => {
+    Animated.timing(slideAnim, {
+      toValue: 300,
+      duration: 250,
+      useNativeDriver: true,
+    }).start(() => setShowConfirm(false));
+  };
 
   return (
     <View style={s.wrap}>
@@ -29,43 +48,49 @@ export default function VerifyCode() {
         </Text>
       </View>
 
-      <View style={s.field}>
-        <Text style={s.label} allowFontScaling={false}>
-          인증번호
-        </Text>
-        <TextInput
-          style={s.input}
-          value={childCode}
-          onChangeText={(v) => setChildCode(v.replace(/[^0-9]/g, ""))}
-          placeholder="자녀분의 인증번호를 입력해주세요"
-          placeholderTextColor="#B6B6B6"
-          keyboardType="number-pad"
-          maxLength={6}
-          returnKeyType="done"
-        />
-      </View>
-
-      <View style={s.nextRow}>
-        <Pressable
-          onPress={() => router.push("/onboarding/success")}
-          disabled={!canNext}
-          hitSlop={8}
-          style={({ pressed }) => [
-            s.next,
-            !canNext && s.nextDisabled,
-            pressed && canNext && { opacity: 0.9 },
-          ]}
-          accessibilityRole="button"
-          accessibilityLabel="다음"
-        >
-          <Text style={s.nextText} allowFontScaling={false}>
-            다음
-          </Text>
-          <Text style={s.nextArrow} allowFontScaling={false}>
-            →
-          </Text>
+      <View style={{ marginTop: 12, alignItems: "flex-end" }}>
+        <Pressable onPress={openModal} style={s.modalButton}>
+          <Text style={s.modalButtonText}>모달 확인</Text>
         </Pressable>
       </View>
+
+      {showConfirm && (
+        <>
+          <Pressable style={s.overlay} onPress={closeModal} />
+
+          <Animated.View
+            style={[
+              s.bottomSheet,
+              { transform: [{ translateY: slideAnim }] },
+            ]}
+          >
+            <Text style={s.sheetTitle}>
+              이 분이 자녀 분이 맞으신가요?
+            </Text>
+
+            <View style={s.userCard}>
+              <View style={s.left}>
+                <Image style={s.img} source={require("@/assets/profileimg/mainprofile.png")} />
+                <Text style={s.name}>김유찬</Text>
+              </View>
+              <Text style={s.phone}>010-4610-3405</Text>
+            </View>
+
+            <View style={s.row}>
+              <Pressable style={s.cancelButton} onPress={closeModal}>
+                <Text style={s.cancel}>←  아니에요</Text>
+              </Pressable>
+
+              <Pressable
+                onPress={() => router.push("/onboarding/success")}
+                style={s.okButton}
+              >
+                <Text style={s.ok}>맞아요 →</Text>
+              </Pressable>
+            </View>
+          </Animated.View>
+        </>
+      )}
     </View>
   );
 }
@@ -87,11 +112,11 @@ const s = StyleSheet.create({
     paddingTop: 120,
   },
   title: {
-    fontSize: 20,
-    lineHeight: 28,
+    fontSize: 24,
+    lineHeight: 36,
     color: COLORS.text,
-    fontWeight: "700",
-    marginBottom: 20,
+    fontWeight: "600",
+    marginBottom: 64,
   },
   myCodeCard: {
     width: "100%",
@@ -110,43 +135,99 @@ const s = StyleSheet.create({
     fontWeight: "800",
     letterSpacing: 2,
   },
-  field: { marginTop: 8, marginBottom: 12 },
-  label: {
-    color: COLORS.label,
-    fontSize: 14,
-    lineHeight: 20,
-    fontWeight: "500",
-    marginBottom: 6,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: COLORS.border,
-    borderRadius: 12,
+  modalButton: {
+    backgroundColor: "#000",
+    paddingVertical: 10,
     paddingHorizontal: 16,
-    paddingVertical: Platform.select({ ios: 14, android: 12 }),
-    fontSize: 16,
-    color: COLORS.text,
+    borderRadius: 10,
   },
-  nextRow: { marginTop: 16, alignItems: "flex-end" },
-  next: {
+  modalButtonText: {
+    color: "#fff",
+    fontWeight: "600",
+  },
+  overlay: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "rgba(0,0,0,0.3)",
+  },
+  bottomSheet: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: "#fff",
+    padding: 28,
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
+    height: 299,
+  },
+  sheetTitle: {
+    fontSize: 24,
+    fontWeight: "600",
+    marginTop: 8,
+    marginBottom: 32,
+    textAlign: "center",
+  },
+  left: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 8,
-    backgroundColor: COLORS.primary,
-    borderRadius: 12,
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    ...Platform.select({
-      ios: {
-        shadowColor: "#000",
-        shadowOpacity: 0.08,
-        shadowRadius: 8,
-        shadowOffset: { width: 0, height: 2 },
-      },
-      android: { elevation: 2 },
-    }),
   },
-  nextDisabled: { opacity: 0.4 },
-  nextText: { color: "#fff", fontSize: 16, fontWeight: "700" },
-  nextArrow: { color: "#fff", fontSize: 16, marginLeft: 2 },
+  userCard: {
+    flexDirection: "row",
+    borderWidth: 1,
+    borderColor: "#E9E9E9",
+    borderRadius: 12,
+    padding: 12,
+    marginBottom: 36,
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  img: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+  },
+  name: {
+    marginLeft: 16,
+    fontSize: 20,
+    fontWeight: "600",
+  },
+  phone: {
+    fontSize: 16,
+    fontWeight: "600",
+  },
+  row: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  cancel: {
+    color: "#1E90FF",
+    fontSize: 16,
+    fontWeight: "700",
+  },
+  cancelButton: {
+    width: 116,
+    height: 48,
+    borderColor: "#1E8FFF",
+    borderWidth: 1,
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  ok: {
+    color: "#FFFFFF",
+    fontSize: 16,
+    fontWeight: "700",
+  },
+  okButton: {
+    width: 102,
+    height: 48,
+    backgroundColor: "#1E90FF",
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+  },
 });

@@ -33,6 +33,15 @@ export default function ProfileSection({ user }: Props) {
               <IconSymbol name="pencil" size={18} color="#FFFFFF" />
             </View>
           </TouchableOpacity>
+
+          {isMenuOpen && (
+            <ProfileMenu
+              visible={isMenuOpen}
+              onClose={() => setIsMenuOpen(false)}
+              onSelectAlbum={() => setIsMenuOpen(false)}
+              onDefault={() => setIsMenuOpen(false)}
+            />
+          )}
         </View>
 
         <Text style={styles.name}>{user.name}</Text>
@@ -51,17 +60,6 @@ export default function ProfileSection({ user }: Props) {
           onConfirm={handleConfirmLogout}
           onCancel={handleCancelLogout}
         />
-
-        <ProfileMenu
-          visible={isMenuOpen}
-          onClose={() => setIsMenuOpen(false)}
-          onSelectAlbum={() => {
-            setIsMenuOpen(false);
-          }}
-          onDefault={() => {
-            setIsMenuOpen(false);
-          }}
-        />
       </View>
 
       <Text style={styles.bordertext}>연결된 자녀분</Text>
@@ -70,7 +68,7 @@ export default function ProfileSection({ user }: Props) {
 }
 
 const styles = StyleSheet.create({
-  container: {
+    container: {
     alignItems: "center",
     marginTop: 30,
   },

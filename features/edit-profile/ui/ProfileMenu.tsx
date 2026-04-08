@@ -38,8 +38,8 @@ export default function ProfileMenu({
 const styles = StyleSheet.create({
   overlay: {
     position: "absolute",
-    top: -40,
-    right: -52,
+    top: 0,
+    right: 0,
   },
 
   background: {
@@ -47,8 +47,9 @@ const styles = StyleSheet.create({
   },
 
   menu: {
-    top: 228,
-    right: 60,
+    position: "absolute",
+    top: 140,
+    right: -100,
     backgroundColor: "#fff",
     borderRadius: 12,
     elevation: 6,

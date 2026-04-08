@@ -23,45 +23,26 @@ export default function Success() {
         자녀 분과 연결이{"\n"}완료되었어요
       </Text>
 
-      <View style={s.card}>
         <Text style={s.cardTitle} allowFontScaling={false}>
           연결된 자녀분
         </Text>
-
-        <View style={s.childRow}>
-          <View style={s.childLeft}>
-            <Image
-              source={require("@/assets/images/Vector.png")}
-              style={s.avatar}
-            />
-            <View style={s.childNameCol}>
-              <Text style={s.childName} allowFontScaling={false}>
-                {child.name}
-              </Text>
-            </View>
-          </View>
+      <View style={s.card}>
+        <View style={s.childLeft}>
+          <Image
+            source={require("@/assets/profileimg/mainprofile.png")}
+            style={s.avatar}
+          />
+          <Text style={s.childName} allowFontScaling={false}>
+            {child.name}
+          </Text>
+        </View>
 
           <Text style={s.childPhone} allowFontScaling={false}>
             {child.phone}
           </Text>
-        </View>
       </View>
 
-      <View style={[s.actions, { marginBottom: bottom + 12 }]}>
-        <Pressable
-          onPress={() => router.back()}
-          hitSlop={8}
-          style={({ pressed }) => [s.outlineBtn, pressed && { opacity: 0.9 }]}
-          accessibilityRole="button"
-          accessibilityLabel="돌아가기"
-        >
-          <Text style={s.leftArrow} allowFontScaling={false}>
-            ←
-          </Text>
-          <Text style={s.outlineText} allowFontScaling={false}>
-            돌아가기
-          </Text>
-        </Pressable>
+      <View style={[s.actions]}>
 
         <Pressable
           onPress={() => {
@@ -102,70 +83,43 @@ const s = StyleSheet.create({
     paddingTop: 120,
   },
   title: {
-    fontSize: 20,
-    lineHeight: 28,
+    fontSize: 24,
+    lineHeight: 36,
     color: COLORS.text,
-    fontWeight: "700",
-    marginBottom: 20,
+    fontWeight: "600",
+    marginBottom: 64,
   },
   card: {
-    backgroundColor: COLORS.cardBg,
+    flexDirection: "row",
+    borderWidth: 1,
+    borderColor: "#E9E9E9",
     borderRadius: 12,
-    paddingTop: 24,
-    paddingBottom: 16,
-    paddingHorizontal: 16,
-    gap: 16,
-    marginTop: 16,
-    marginBottom: 100,
+    padding: 12,
+    marginBottom: 340,
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   cardTitle: {
     fontSize: 16,
     color: COLORS.text,
-    fontWeight: "600",
-    textAlign: "center",
+    fontWeight: "700",
+    marginBottom: 8,
   },
-  childRow: {
-    backgroundColor: "#fff",
-    borderRadius: 12,
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    alignItems: "center",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    ...Platform.select({
-      ios: {
-        shadowColor: "#000",
-        shadowOpacity: 0.06,
-        shadowRadius: 8,
-        shadowOffset: { width: 0, height: 2 },
-      },
-      android: { elevation: 2 },
-    }),
+  childLeft: {    
+    flexDirection: "row",alignItems: "center",
   },
-  childLeft: { flexDirection: "row", alignItems: "center", gap: 16 },
-  avatar: { width: 34, height: 34, borderRadius: 17, resizeMode: "cover" },
-  childNameCol: { justifyContent: "center" },
-  childName: { fontSize: 16, fontWeight: "700", color: COLORS.text },
-  childPhone: { fontSize: 12, color: COLORS.text, textAlign: "right" },
+  avatar: {    
+    width: 36,height: 36,borderRadius: 18,
+  },
+  childName: {   
+    marginLeft: 16,fontSize: 20,fontWeight: "600",
+  },
+  childPhone: {     
+    fontSize: 16, fontWeight: "600", 
+  },
   actions: {
-    marginTop: 24,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    gap: 16,
+    alignItems: "flex-end",
   },
-  outlineBtn: {
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: COLORS.primary,
-    backgroundColor: "transparent",
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-  },
-  outlineText: { color: COLORS.primary, fontSize: 16, fontWeight: "700" },
   leftArrow: {
     color: COLORS.primary,
     fontSize: 16,
