@@ -1,11 +1,9 @@
 import { router } from "expo-router";
 import React, { useState, useRef } from "react";
 import {
-  Platform,
   Pressable,
   StyleSheet,
   Text,
-  TextInput,
   View,
   Animated,
   Image,
