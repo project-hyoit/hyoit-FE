@@ -19,6 +19,7 @@ type Props = {
 
 export default function ChatbotCard({
   title,
+  
   body,
   ctaLabel,
   image = require("@/assets/images/character_02.jpg"),

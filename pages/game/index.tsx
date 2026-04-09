@@ -1,4 +1,4 @@
-import GameHeader from "@/widgets/game/header";
+import Header from "@/shared/ui/section/header";
 import { MemoryGameCard } from "@/widgets/home";
 import { router } from "expo-router";
 import { ScrollView, StyleSheet } from "react-native";
@@ -11,7 +11,7 @@ export default function GameScreen() {
         contentContainerStyle={s.content}
         showsVerticalScrollIndicator={false}
       >
-        <GameHeader title="게임" />
+        <Header title="게임" icon="gamecontroller.fill" />
 
         <MemoryGameCard
           title="카드 맞추기"

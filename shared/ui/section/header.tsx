@@ -2,12 +2,15 @@ import { IconSymbol } from "@/shared/ui/IconSymbol";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-type Props = { title: string };
+type Props = {
+  title: string;
+  icon: React.ComponentProps<typeof IconSymbol>["name"];
+};
 
-export default function HomeHeader({ title }: Props) {
+export default function Header({ title, icon }: Props) {
   return (
     <View style={styles.wrap}>
-      <IconSymbol size={24} name="house.fill" color="#000" />
+      <IconSymbol size={24} name={icon} color="#000" />
       <Text style={styles.title} allowFontScaling={false}>
         {title}
       </Text>
