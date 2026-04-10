@@ -56,7 +56,6 @@ export default function VerifyCode() {
       {showConfirm && (
         <>
           <Pressable style={s.overlay} onPress={closeModal} />
-
           <Animated.View
             style={[
               s.bottomSheet,
@@ -126,7 +125,11 @@ const s = StyleSheet.create({
     marginBottom: 20,
     gap: 20,
   },
-  myCodeLabel: { fontSize: 16, color: COLORS.text, fontWeight: "600" },
+  myCodeLabel: { 
+    fontSize: 16, 
+    color: COLORS.text, 
+    fontWeight: "600" 
+  },
   myCodeText: {
     fontSize: 32,
     lineHeight: 40,
