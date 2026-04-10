@@ -18,11 +18,11 @@ export default function Chose() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>역할을 선택해주세요</Text>
-
       <Pressable
         style={[
           styles.roleButton,
-          selectedRole === "parent" && styles.selectedButton
+          selectedRole === "parent" && styles.selectedButton,
+          selectedRole !== null && selectedRole !== "parent" && styles.unselectedOpacity
         ]}
         onPress={() => setSelectedRole("parent")}
       >
@@ -37,11 +37,11 @@ export default function Chose() {
         <Image style={styles.oldwoman} source={require("@/assets/chose/oldwoman.png")} />
         <Image style={styles.oldman} source={require("@/assets/chose/oldman.png")} />
       </Pressable>
-
       <Pressable
         style={[
           styles.roleButton,
-          selectedRole === "child" && styles.selectedButton
+          selectedRole === "child" && styles.selectedButton,
+          selectedRole !== null && selectedRole !== "child" && styles.unselectedOpacity
         ]}
         onPress={() => setSelectedRole("child")}
       >
@@ -73,8 +73,7 @@ export default function Chose() {
 
 const styles = StyleSheet.create({
   container: {
-    marginLeft: 24,
-    marginRight: 24
+    paddingHorizontal: 24,
   },
   title: {
     marginTop: 97,
@@ -94,6 +93,9 @@ const styles = StyleSheet.create({
   selectedButton: {
     borderColor: '#1E8FFF',
     backgroundColor: '#1E8FFF',
+  },
+  unselectedOpacity: {
+    opacity: 0.5,
   },
   roleText: {
     marginLeft: 42,
@@ -118,28 +120,27 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
-  oldwoman: {
-    width: 76,
-    height: 57,
-    resizeMode: 'contain',
-    marginLeft: 46,
+  oldwoman: { width: 76,
+     height: 57,
+    resizeMode: 'contain', 
+    marginLeft: 46 
   },
-  oldman: {
-    width: 70,
-    height: 57,
-    resizeMode: 'contain',
-    marginLeft: 16,
+  oldman: { 
+    width: 70, 
+    height: 57, 
+    resizeMode: 'contain', 
+    marginLeft: 16 
   },
-  youngwoman: {
-    width: 70,
-    height: 65,
-    resizeMode: 'contain',
-    marginLeft: 69,
+  youngwoman: { 
+    width: 70, 
+    height: 65, 
+    resizeMode: 'contain', 
+    marginLeft: 69 
   },
-  youngman: {
-    width: 70,
-    height: 57,
-    resizeMode: 'contain',
-    marginLeft: 16,
+  youngman: { 
+    width: 70, 
+    height: 57, 
+    resizeMode: 'contain', 
+    marginLeft: 16 
   },
 });
