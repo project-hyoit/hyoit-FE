@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#1E8FFF',
   },
   unselectedOpacity: {
-    opacity: 0.5,
+    opacity: 0.7,
   },
   roleText: {
     marginLeft: 42,

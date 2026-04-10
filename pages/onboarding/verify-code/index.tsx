@@ -36,7 +36,6 @@ export default function VerifyCode() {
       <Text style={s.title} allowFontScaling={false}>
         가족구성원 추가를 위한{"\n"}인증번호가 생성되었어요
       </Text>
-
       <View style={s.myCodeCard}>
         <Text style={s.myCodeLabel} allowFontScaling={false}>
           내 인증 번호
@@ -45,7 +44,9 @@ export default function VerifyCode() {
           {myCode}
         </Text>
       </View>
-
+      <Text style={s.text}>
+        자녀분 핸드폰을 통해 인증번호를 입력해주세요
+      </Text>
       <View style={{ marginTop: 12, alignItems: "flex-end" }}>
         <Pressable onPress={openModal} style={s.modalButton}>
           <Text style={s.modalButtonText}>모달 확인</Text>
@@ -132,6 +133,12 @@ const s = StyleSheet.create({
     color: COLORS.text,
     fontWeight: "800",
     letterSpacing: 2,
+  },
+  text: {
+    fontSize: 12,
+    textAlign: "center",
+    fontWeight: "500",
+    color: "#434343",
   },
   modalButton: {
     backgroundColor: "#000",
