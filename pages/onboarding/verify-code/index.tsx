@@ -1,12 +1,10 @@
 import { router } from "expo-router";
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import {
   Pressable,
   StyleSheet,
   Text,
   View,
-  Animated,
-  Image,
 } from "react-native";
 
 export default function VerifyCode() {
@@ -14,21 +12,12 @@ export default function VerifyCode() {
   const [childCode, setChildCode] = useState("");
   const canNext = /^\d{6}$/.test(childCode);
   const [showConfirm, setShowConfirm] = useState(false);
-  const slideAnim = useRef(new Animated.Value(300)).current;
+
   const openModal = () => {
     setShowConfirm(true);
-    Animated.timing(slideAnim, {
-      toValue: 0,
-      duration: 300,
-      useNativeDriver: true,
-    }).start();
   };
   const closeModal = () => {
-    Animated.timing(slideAnim, {
-      toValue: 300,
-      duration: 250,
-      useNativeDriver: true,
-    }).start(() => setShowConfirm(false));
+    setShowConfirm(false);
   };
 
   return (
@@ -55,38 +44,33 @@ export default function VerifyCode() {
 
       {showConfirm && (
         <>
-          <Pressable style={s.overlay} onPress={closeModal} />
-          <Animated.View
-            style={[
-              s.bottomSheet,
-              { transform: [{ translateY: slideAnim }] },
-            ]}
-          >
-            <Text style={s.sheetTitle}>
-              이 분이 자녀 분이 맞으신가요?
-            </Text>
+          <Pressable style={s.overlay}>
+            <View style={s.bottomSheet}>
+              <Text style={s.sheetTitle}>
+                이 분이 자녀 분이 맞으신가요?
+              </Text>
 
-            <View style={s.userCard}>
-              <View style={s.left}>
-                <Image style={s.img} source={require("@/assets/profileimg/mainprofile.png")} />
-                <Text style={s.name}>김유찬</Text>
+              <View style={s.userCard}>
+                <View style={s.left}>
+                  <Text style={s.name}>김유찬</Text>
+                </View>
+                <Text style={s.phone}>010-4610-3405</Text>
               </View>
-              <Text style={s.phone}>010-4610-3405</Text>
-            </View>
 
-            <View style={s.row}>
-              <Pressable style={s.cancelButton} onPress={closeModal}>
-                <Text style={s.cancel}>←  아니에요</Text>
-              </Pressable>
+              <View style={s.row}>
+                <Pressable style={s.cancelButton} onPress={closeModal}>
+                  <Text style={s.cancel}>← 아니에요</Text>
+                </Pressable>
 
-              <Pressable
-                onPress={() => router.push("/onboarding/success")}
-                style={s.okButton}
-              >
-                <Text style={s.ok}>맞아요 →</Text>
-              </Pressable>
+                <Pressable
+                  onPress={() => router.push("/onboarding/success")}
+                  style={s.okButton}
+                >
+                  <Text style={s.ok}>맞아요 →</Text>
+                </Pressable>
+              </View>
             </View>
-          </Animated.View>
+          </Pressable>
         </>
       )}
     </View>
@@ -160,23 +144,21 @@ const s = StyleSheet.create({
     right: 0,
     bottom: 0,
     backgroundColor: "rgba(0,0,0,0.3)",
+    justifyContent: "center", 
+    alignItems: "center",
   },
   bottomSheet: {
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
     backgroundColor: "#fff",
     padding: 28,
-    borderTopLeftRadius: 12,
-    borderTopRightRadius: 12,
-    height: 299,
+    borderRadius: 12,
+    height: 260,
+    width: 364,
   },
   sheetTitle: {
     fontSize: 24,
     fontWeight: "600",
-    marginTop: 8,
-    marginBottom: 32,
+    marginTop: 16,
+    marginBottom: 20,
     textAlign: "center",
   },
   left: {
@@ -193,19 +175,14 @@ const s = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
   },
-  img: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-  },
   name: {
-    marginLeft: 16,
     fontSize: 20,
     fontWeight: "600",
   },
   phone: {
     fontSize: 16,
     fontWeight: "600",
+    marginRight: 16,
   },
   row: {
     flexDirection: "row",

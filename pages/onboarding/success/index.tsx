@@ -22,12 +22,10 @@ export default function Success() {
       <Text style={s.title} allowFontScaling={false}>
         자녀 분과 연결이{"\n"}완료되었어요
       </Text>
-
         <Text style={s.cardTitle} allowFontScaling={false}>
           연결된 자녀분
         </Text>
       <View style={s.card}>
-        <View style={s.childLeft}>
           <Image
             source={require("@/assets/profileimg/mainprofile.png")}
             style={s.avatar}
@@ -35,15 +33,12 @@ export default function Success() {
           <Text style={s.childName} allowFontScaling={false}>
             {child.name}
           </Text>
-        </View>
-
           <Text style={s.childPhone} allowFontScaling={false}>
             {child.phone}
           </Text>
       </View>
 
       <View style={[s.actions]}>
-
         <Pressable
           onPress={() => {
             setOnboarded(true);
@@ -90,14 +85,13 @@ const s = StyleSheet.create({
     marginBottom: 64,
   },
   card: {
-    flexDirection: "row",
     borderWidth: 1,
     borderColor: "#E9E9E9",
     borderRadius: 12,
-    padding: 12,
-    marginBottom: 340,
+    padding: 26,
+    marginBottom: 140,
     alignItems: "center",
-    justifyContent: "space-between",
+    justifyContent: "center",
   },
   cardTitle: {
     fontSize: 16,
@@ -105,26 +99,23 @@ const s = StyleSheet.create({
     fontWeight: "700",
     marginBottom: 8,
   },
-  childLeft: {    
-    flexDirection: "row",alignItems: "center",
-  },
   avatar: {    
-    width: 36,height: 36,borderRadius: 18,
+    width: 120,
+    height: 120,
+    borderRadius: 18,
   },
   childName: {   
-    marginLeft: 16,fontSize: 20,fontWeight: "600",
+    marginTop: 8,
+    fontSize: 20,
+    fontWeight: "600",
   },
   childPhone: {     
-    fontSize: 16, fontWeight: "600", 
+    marginTop: 20,
+    fontSize: 16, 
+    fontWeight: "600", 
   },
   actions: {
     alignItems: "flex-end",
-  },
-  leftArrow: {
-    color: COLORS.primary,
-    fontSize: 16,
-    fontWeight: "700",
-    marginRight: 2,
   },
   primaryBtn: {
     flexDirection: "row",

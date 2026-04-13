@@ -15,6 +15,7 @@ export default function MessageList({ items }: { items: Message[] }) {
       keyExtractor={(_, i) => String(i)}
       contentContainerStyle={{ gap: 8, paddingBottom: 8, minHeight: 240 }}
       renderItem={({ item }) => (
+        
         <View>
           <Bubble role={item.role}>{item.content}</Bubble>
         </View>
