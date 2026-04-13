@@ -71,26 +71,9 @@ const styles = StyleSheet.create({
     container: {
     alignItems: "center",
     marginTop: 30,
+    marginLeft: -32,
   },
 
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    width: "100%",
-    paddingHorizontal: 24,
-  },
-
-  profileImg: {
-    width: 24,
-    height: 24,
-  },
-
-  title: {
-    marginLeft: 8,
-    fontFamily: "Pretendard",
-    fontSize: 16,
-    fontWeight: "bold",
-  },
 
   avatarWrapper: {
     position: "relative",
@@ -157,6 +140,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "700",
     fontFamily: "Pretendard",
-    marginLeft: 28,
   },
 });

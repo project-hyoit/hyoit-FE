@@ -21,6 +21,7 @@ export default function ProfilePage() {
 
 const styles = StyleSheet.create({
   container: {
+    marginLeft: 32,
     paddingHorizontal: 14,
     paddingTop: 12,
     paddingBottom: 24,
