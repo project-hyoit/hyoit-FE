@@ -1,8 +1,7 @@
+import type { ChooseRoleResult, UserRole } from "@hyoit/types";
 import { useState } from "react";
 import { chooseRole } from "../api/chooseRole";
 import { useAuthStore } from "./authStore";
-import type { ChooseRoleResult, UserRole } from "@hyoit/types";
-
 interface UseChooseRoleActionOptions {
   onSuccess?: (result: ChooseRoleResult) => void;
   onError?: (error: unknown) => void;
