@@ -1,5 +1,4 @@
-import Card from "@/shared/ui/Card";
-import React from "react";
+import Card from "@/src/parent/shared/ui/Card";
 import {
   Image,
   ImageSourcePropType,
@@ -19,7 +18,7 @@ type Props = {
 
 export default function ChatbotCard({
   title,
-  
+
   body,
   ctaLabel,
   image = require("@/assets/images/character_02.jpg"),

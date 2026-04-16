@@ -1,16 +1,16 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { SafeAreaView, StyleSheet, View } from "react-native";
 
 // 위젯
-import ChatDock from "@/widgets/chat/ChatDock";
 import ChatHeader from "@/widgets/chat/ChatHeader";
 import MessageList from "@/widgets/chat/MessageList";
 import QuickStartPanel from "@/widgets/chat/QuickStartPanel";
+import ChatDock from "../../widgets/chat/ChatDock";
 
 // 빠른 질문(칩) 피처
 import { useQuickQuestions } from "@/features/chat/quick-questions";
 
-// ✅ Message 타입을 이 파일 안에서 직접 정의
+// Message 타입을 이 파일 안에서 직접 정의
 type Message = {
   role: "user" | "assistant";
   content: string;

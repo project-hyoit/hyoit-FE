@@ -1,5 +1,5 @@
-import { fruitSrc, type FruitKey } from "@/shared/assets/fruits";
-import React, { useEffect, useRef } from "react";
+import { fruitSrc, type FruitKey } from "@/src/parent/shared/assets/fruits";
+import { useEffect, useRef } from "react";
 import {
   Animated,
   StyleProp,
@@ -17,7 +17,7 @@ type Props = {
 
 export default function BottomTray({ fruits, matched, style }: Props) {
   const animRef = useRef<Map<FruitKey, Animated.Value>>(new Map());
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+
   if (animRef.current.size !== fruits.length) {
     fruits.forEach((k) => {
       if (!animRef.current.has(k))

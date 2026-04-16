@@ -1,7 +1,7 @@
-import { IconSymbol } from "@/shared/ui/IconSymbol";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { Platform, Pressable, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { IconSymbol } from "../../shared/ui/IconSymbol";
 
 const ACTIVE = "#1E90FF";
 const INACTIVE = "#D9D9D9";

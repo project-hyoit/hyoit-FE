@@ -1,5 +1,5 @@
 import { SymbolView } from "expo-symbols";
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import {
   Animated,
   ImageSourcePropType,

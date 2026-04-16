@@ -1,6 +1,5 @@
-import BarSparkline from "@/shared/ui/BarSparkline";
-import Card from "@/shared/ui/Card";
-import React from "react";
+import BarSparkline from "@/src/parent/shared/ui/BarSparkline";
+import Card from "@/src/parent/shared/ui/Card";
 import { StyleSheet, Text, View } from "react-native";
 
 type Props = {

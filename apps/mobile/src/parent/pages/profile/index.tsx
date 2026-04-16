@@ -1,9 +1,12 @@
-import { mockChildUsers, mockUserProfile } from "@/entities/user/model/mock";
-import ChildList from "@/entities/user/ui/ChildList";
-import Header from "@/shared/ui/section/header";
-import ProfileSection from "@/widgets/profile/profile-section";
 import { ScrollView, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import {
+  mockChildUsers,
+  mockUserProfile,
+} from "../../entities/user/model/mock";
+import ChildList from "../../entities/user/ui/ChildList";
+import Header from "../../shared/ui/section/header";
+import ProfileSection from "../../widgets/profile/profile-section";
 export default function ProfileScreen() {
   return (
     <SafeAreaView style={{ flex: 1 }} edges={["top"]}>

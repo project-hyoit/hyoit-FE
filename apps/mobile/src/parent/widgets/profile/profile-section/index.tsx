@@ -1,8 +1,8 @@
-import { UserProfile } from "@/entities/user/model/types";
-import ProfileMenu from "@/features/edit-profile/ui/ProfileMenu";
-import LogoutModal from "@/features/logout/ui/LogoutModal";
-import { IconSymbol } from "@/shared/ui/IconSymbol";
-import React, { useState } from "react";
+import { UserProfile } from "@/src/parent/entities/user/model/types";
+import ProfileMenu from "@/src/parent/features/edit-profile/ui/ProfileMenu";
+import LogoutModal from "@/src/parent/features/logout/ui/LogoutModal";
+import { IconSymbol } from "@/src/parent/shared/ui/IconSymbol";
+import { useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 interface Props {
   user: UserProfile;
@@ -68,7 +68,7 @@ export default function ProfileSection({ user }: Props) {
 }
 
 const styles = StyleSheet.create({
-    container: {
+  container: {
     alignItems: "center",
     marginTop: 30,
   },

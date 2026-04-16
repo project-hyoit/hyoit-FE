@@ -1,5 +1,4 @@
-import Card from "@/shared/ui/Card";
-import React from "react";
+import Card from "@/src/parent/shared/ui/Card";
 import {
   Image,
   ImageSourcePropType,

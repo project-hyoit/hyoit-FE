@@ -1,4 +1,4 @@
-import type { FruitKey } from "@/shared/assets/fruits";
+import { FruitKey } from "@/src/parent/shared/assets/fruits";
 
 export type Card = {
   id: string;

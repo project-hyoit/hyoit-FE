@@ -1,19 +1,17 @@
-import { ChatDockFeature } from "@/features/chat/send-message";
-import { MicButton } from "@/features/chat/transcribe-voice";
-import React from "react";
+import ChatComposer from "@/src/parent/features/chat/send-message/ui/ChatComposer";
+import MicButton from "@/src/parent/features/chat/transcribe-voice/ui/MicButton";
 import { StyleSheet, View } from "react-native";
 
-export default function ChatDock({
-  onSend,
-  onVoice,
-}: {
-  onSend: (t: string) => void;
-  onVoice?: (t: string) => void;
-}) {
+interface ChatDockProps {
+  onSend: (text: string) => void;
+  onVoice?: (text: string) => void;
+}
+
+export default function ChatDock({ onSend, onVoice }: ChatDockProps) {
   return (
     <View style={s.wrap}>
-      <ChatDockFeature onSend={onSend} />
-      {onVoice && <MicButton onText={onVoice} />}
+      <ChatComposer onSend={onSend} />
+      {onVoice ? <MicButton onText={onVoice} /> : null}
     </View>
   );
 }

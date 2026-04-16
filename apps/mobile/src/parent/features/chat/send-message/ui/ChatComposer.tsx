@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Platform,
   Pressable,
@@ -9,7 +8,11 @@ import {
 } from "react-native";
 import { useTranscribe } from "../model/useTranscribe";
 
-export default function ChatDock({ onSend }: { onSend: (t: string) => void }) {
+export default function ChatComposer({
+  onSend,
+}: {
+  onSend: (t: string) => void;
+}) {
   const { value, setValue, clear } = useTranscribe();
 
   const send = () => {

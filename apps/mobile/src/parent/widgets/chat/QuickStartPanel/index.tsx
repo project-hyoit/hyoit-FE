@@ -1,5 +1,4 @@
-import { QuickChips } from "@/features/chat/quick-questions";
-import React from "react";
+import { QuickChips } from "@/src/parent/features/chat/quick-questions";
 import { StyleSheet, View } from "react-native";
 
 export default function QuickStartPanel({

@@ -1,8 +1,6 @@
-import { Bubble } from "@/shared/ui/Bubble";
-import React from "react";
+import { Bubble } from "@/src/parent/shared/ui/Bubble";
 import { FlatList, View } from "react-native";
 
-// ✅ Message 타입을 이 파일 안에서 직접 정의
 type Message = {
   role: "user" | "assistant";
   content: string;
