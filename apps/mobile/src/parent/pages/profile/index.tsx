@@ -4,7 +4,7 @@ import Header from "@/shared/ui/section/header";
 import ProfileSection from "@/widgets/profile/profile-section";
 import { ScrollView, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-export default function ProfilePage() {
+export default function ProfileScreen() {
   return (
     <SafeAreaView style={{ flex: 1 }} edges={["top"]}>
       <ScrollView

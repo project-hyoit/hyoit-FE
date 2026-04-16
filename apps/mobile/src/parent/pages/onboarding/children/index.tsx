@@ -1,6 +1,6 @@
 import { useOnboardingStore } from "@/entities/auth/model/onboarding.store";
 import { router } from "expo-router";
-import React, { useRef } from "react";
+import { useRef } from "react";
 import {
   Platform,
   Pressable,
@@ -10,7 +10,7 @@ import {
   View,
 } from "react-native";
 
-export default function UserInfo() {
+export default function ChildInfoScreen() {
   const { name, age, phone, set } = useOnboardingStore();
   const canNext = Boolean(name.trim() && age.trim() && phone.trim());
 

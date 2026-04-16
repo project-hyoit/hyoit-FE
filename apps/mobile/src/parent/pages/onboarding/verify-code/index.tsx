@@ -1,17 +1,15 @@
 import { router } from "expo-router";
-import React, { useState, useRef } from "react";
+import { useRef, useState } from "react";
 import {
-  Platform,
+  Animated,
+  Image,
   Pressable,
   StyleSheet,
   Text,
-  TextInput,
   View,
-  Animated,
-  Image,
 } from "react-native";
 
-export default function VerifyCode() {
+export default function VerifyCodeScreen() {
   const myCode = "927582";
   const [childCode, setChildCode] = useState("");
   const canNext = /^\d{6}$/.test(childCode);
@@ -59,18 +57,16 @@ export default function VerifyCode() {
           <Pressable style={s.overlay} onPress={closeModal} />
 
           <Animated.View
-            style={[
-              s.bottomSheet,
-              { transform: [{ translateY: slideAnim }] },
-            ]}
+            style={[s.bottomSheet, { transform: [{ translateY: slideAnim }] }]}
           >
-            <Text style={s.sheetTitle}>
-              이 분이 자녀 분이 맞으신가요?
-            </Text>
+            <Text style={s.sheetTitle}>이 분이 자녀 분이 맞으신가요?</Text>
 
             <View style={s.userCard}>
               <View style={s.left}>
-                <Image style={s.img} source={require("@/assets/profileimg/mainprofile.png")} />
+                <Image
+                  style={s.img}
+                  source={require("@/assets/profileimg/mainprofile.png")}
+                />
                 <Text style={s.name}>김유찬</Text>
               </View>
               <Text style={s.phone}>010-4610-3405</Text>
@@ -78,7 +74,7 @@ export default function VerifyCode() {
 
             <View style={s.row}>
               <Pressable style={s.cancelButton} onPress={closeModal}>
-                <Text style={s.cancel}>←  아니에요</Text>
+                <Text style={s.cancel}>← 아니에요</Text>
               </Pressable>
 
               <Pressable

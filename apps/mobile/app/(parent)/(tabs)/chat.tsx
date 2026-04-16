@@ -1,4 +1,4 @@
-import ChatScreen from "apps/src/parent/pages/chat";
+import ChatScreen from "@/src/parent/pages/chat";
 
 export default function ChatRoute() {
   return <ChatScreen />;

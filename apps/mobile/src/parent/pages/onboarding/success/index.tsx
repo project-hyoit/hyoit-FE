@@ -1,6 +1,5 @@
 import { useAuthStore } from "@/entities/auth/model/authStore";
 import { router } from "expo-router";
-import React from "react";
 import {
   Image,
   Platform,
@@ -11,7 +10,7 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-export default function Success() {
+export default function SuccessScreen() {
   const { bottom } = useSafeAreaInsets();
   const setOnboarded = useAuthStore((s) => s.setOnboarded);
 
@@ -23,9 +22,9 @@ export default function Success() {
         자녀 분과 연결이{"\n"}완료되었어요
       </Text>
 
-        <Text style={s.cardTitle} allowFontScaling={false}>
-          연결된 자녀분
-        </Text>
+      <Text style={s.cardTitle} allowFontScaling={false}>
+        연결된 자녀분
+      </Text>
       <View style={s.card}>
         <View style={s.childLeft}>
           <Image
@@ -37,13 +36,12 @@ export default function Success() {
           </Text>
         </View>
 
-          <Text style={s.childPhone} allowFontScaling={false}>
-            {child.phone}
-          </Text>
+        <Text style={s.childPhone} allowFontScaling={false}>
+          {child.phone}
+        </Text>
       </View>
 
       <View style={[s.actions]}>
-
         <Pressable
           onPress={() => {
             setOnboarded(true);
@@ -105,17 +103,23 @@ const s = StyleSheet.create({
     fontWeight: "700",
     marginBottom: 8,
   },
-  childLeft: {    
-    flexDirection: "row",alignItems: "center",
+  childLeft: {
+    flexDirection: "row",
+    alignItems: "center",
   },
-  avatar: {    
-    width: 36,height: 36,borderRadius: 18,
+  avatar: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
   },
-  childName: {   
-    marginLeft: 16,fontSize: 20,fontWeight: "600",
+  childName: {
+    marginLeft: 16,
+    fontSize: 20,
+    fontWeight: "600",
   },
-  childPhone: {     
-    fontSize: 16, fontWeight: "600", 
+  childPhone: {
+    fontSize: 16,
+    fontWeight: "600",
   },
   actions: {
     alignItems: "flex-end",
