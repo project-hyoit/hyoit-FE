@@ -1,8 +1,21 @@
-import { useAuthStore } from "@/entities/auth/model/authStore";
+import { resolveEntryTarget, useAuthStore } from "@hyoit/auth";
 import { Redirect } from "expo-router";
+
 export default function Index() {
-  const { isSignedIn, hasOnboarded } = useAuthStore();
-  if (!isSignedIn) return <Redirect href="/login" />;
-  if (!hasOnboarded) return <Redirect href="/onboarding/user-info" />;
-  return <Redirect href="/(tabs)" />;
+  const { isSignedIn } = useAuthStore();
+
+  const target = resolveEntryTarget({
+    authenticated: isSignedIn,
+    role: null,
+  });
+
+  if (target === "login") {
+    return <Redirect href="/login" />;
+  }
+
+  if (target === "choose") {
+    return <Redirect href="/choose" />;
+  }
+
+  return null;
 }
