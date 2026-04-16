@@ -136,15 +136,15 @@ importers:
         specifier: workspace:*
         version: link:../types
       react:
-        specifier: '>=19'
+        specifier: 19.1.0
         version: 19.1.0
       zustand:
         specifier: ^5.0.3
-        version: 5.0.12(@types/react@19.2.14)(react@19.1.0)(use-sync-external-store@1.6.0(react@19.1.0))
+        version: 5.0.12(@types/react@19.1.17)(react@19.1.0)(use-sync-external-store@1.6.0(react@19.1.0))
     devDependencies:
       '@types/react':
-        specifier: ^19.2.0
-        version: 19.2.14
+        specifier: ~19.1.10
+        version: 19.1.17
 
   packages/storage:
     dependencies:
@@ -8204,6 +8204,7 @@ snapshots:
   '@types/react@19.2.14':
     dependencies:
       csstype: 3.2.3
+    optional: true
 
   '@types/stack-utils@2.0.3': {}
 
@@ -13263,11 +13264,5 @@ snapshots:
   zustand@5.0.12(@types/react@19.1.17)(react@19.1.0)(use-sync-external-store@1.6.0(react@19.1.0)):
     optionalDependencies:
       '@types/react': 19.1.17
-      react: 19.1.0
-      use-sync-external-store: 1.6.0(react@19.1.0)
-
-  zustand@5.0.12(@types/react@19.2.14)(react@19.1.0)(use-sync-external-store@1.6.0(react@19.1.0)):
-    optionalDependencies:
-      '@types/react': 19.2.14
       react: 19.1.0
       use-sync-external-store: 1.6.0(react@19.1.0)
