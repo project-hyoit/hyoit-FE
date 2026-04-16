@@ -1,4 +1,4 @@
-import { useOnboardingStore } from "@/entities/auth/model/onboarding.store";
+import { useOnboardingStore } from "@/src/parent/entities/auth/model/onboarding.store";
 import { router } from "expo-router";
 import { useRef } from "react";
 import {

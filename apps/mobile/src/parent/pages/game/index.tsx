@@ -1,8 +1,8 @@
-import Header from "@/shared/ui/section/header";
-import { MemoryGameCard } from "@/widgets/home";
 import { router } from "expo-router";
 import { ScrollView, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import Header from "../../shared/ui/section/header";
+import { MemoryGameCard } from "../../widgets/home";
 
 export default function GameScreen() {
   return (

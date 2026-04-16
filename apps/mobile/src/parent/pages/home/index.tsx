@@ -1,9 +1,8 @@
 import { router } from "expo-router";
-import React from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import Header from "@/shared/ui/section/header";
+import Header from "../../shared/ui/section/header";
 import {
   ActionBarDual,
   AskBanner,
@@ -11,7 +10,8 @@ import {
   MemoryGameCard,
   MetricCard,
   WeatherCard,
-} from "@/widgets/home";
+} from "../../widgets/home";
+
 export default function HomeScreen() {
   return (
     <SafeAreaView style={{ flex: 1 }} edges={["top"]}>
@@ -20,22 +20,23 @@ export default function HomeScreen() {
         showsVerticalScrollIndicator={false}
       >
         <Header title="홈" icon="house.fill" />
+
         <AskBanner
           title={"요즘 활동량이 적어졌는데\n어디 편찮으신 건 아니죠?"}
           ctaLabel="쥐돌이에게 물어보기"
-          onPress={() => router.push("/(tabs)/chat")}
+          onPress={() => router.push("/(parent)/(tabs)/chat")}
         />
 
         <ActionBarDual
           left={{
             label: "쥐돌이와 대화",
             icon: "text.bubble.fill",
-            onPress: () => router.push("/chat"),
+            onPress: () => router.push("/(parent)/(tabs)/chat"),
           }}
           right={{
             label: "게임하기",
             icon: "gamecontroller.fill",
-            onPress: () => router.push("/game"),
+            onPress: () => router.push("/(parent)/(tabs)/game"),
           }}
         />
 
@@ -70,7 +71,7 @@ export default function HomeScreen() {
                 "쥐돌이에게\n궁금한 것을\n간단히 설명해주면\n무엇이든 대답해 줄 수 있어요"
               }
               ctaLabel="쥐돌이에게 질문하기"
-              onPress={() => router.push("/(tabs)/chat")}
+              onPress={() => router.push("/(parent)/(tabs)/chat")}
             />
           </View>
         </View>
@@ -79,7 +80,7 @@ export default function HomeScreen() {
           title="카드 맞추기"
           body={"같은 카드를\n기억해서 뒤집으세요"}
           ctaLabel="카드 맞추기 게임하기 ▶"
-          onPress={() => router.push("/(tabs)/game")}
+          onPress={() => router.push("/(parent)/(tabs)/chat")}
         />
       </ScrollView>
     </SafeAreaView>

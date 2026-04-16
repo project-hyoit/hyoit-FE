@@ -1,6 +1,6 @@
-import DifficultyCard from "@/widgets/game/memory/DifficultyCard";
+import DifficultyCard from "@/src/parent/widgets/game/memory/DifficultyCard";
 import { router } from "expo-router";
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Image,
   Pressable,

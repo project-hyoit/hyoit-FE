@@ -1,4 +1,4 @@
-import { useAuthStore } from "@/entities/auth/model/authStore";
+import { useAuthStore } from "@hyoit/auth";
 import { router } from "expo-router";
 import {
   Image,
@@ -45,7 +45,7 @@ export default function SuccessScreen() {
         <Pressable
           onPress={() => {
             setOnboarded(true);
-            router.replace("/(tabs)");
+            router.replace("/(parent)");
           }}
           hitSlop={8}
           style={({ pressed }) => [s.primaryBtn, pressed && { opacity: 0.9 }]}
