@@ -1,5 +1,5 @@
-import type { Deck } from "@/entities/memory-game/model/types";
-import type { FruitKey } from "@/shared/assets/fruits";
+import type { FruitKey } from "@/src/parent/shared/assets/fruits";
+import type { Deck } from "../model/types";
 
 export function createDeck(base: readonly FruitKey[], seed: number): Deck {
   const pairs = [...base, ...base];

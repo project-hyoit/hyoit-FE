@@ -1,4 +1,4 @@
-import { useCardFlip } from "@/shared/lib/animations/useCardFlip";
+import { useCardFlip } from "@/src/parent/shared/lib/animations/useCardFlip";
 import React, { useEffect } from "react";
 import { Animated } from "react-native";
 
