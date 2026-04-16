@@ -1,6 +1,6 @@
-import { IconSymbol } from "@/shared/ui/IconSymbol";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
+import { IconSymbol } from "../IconSymbol";
 
 type Props = {
   title: string;

@@ -1,4 +1,3 @@
-import React from "react";
 import { Platform, StyleSheet, View, ViewProps } from "react-native";
 
 export default function Card({ style, ...rest }: ViewProps) {
