@@ -1,9 +1,9 @@
-import { BG } from "@/shared/config/theme";
-import BottomTray from "@/widgets/game/memory/BottomTray";
-import MemoryBoard from "@/widgets/game/memory/MemoryBoard";
-import PlayHeader from "@/widgets/game/memory/PlayHeader";
-import ResultOverlay from "@/widgets/game/memory/ResultOverlay";
-import React, { useState } from "react";
+import { BG } from "@/src/parent/shared/config/theme";
+import BottomTray from "@/src/parent/widgets/game/memory/BottomTray";
+import MemoryBoard from "@/src/parent/widgets/game/memory/MemoryBoard";
+import PlayHeader from "@/src/parent/widgets/game/memory/PlayHeader";
+import ResultOverlay from "@/src/parent/widgets/game/memory/ResultOverlay";
+import { useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useMemoryPlaySession } from "../hooks/useMemoryPlaySession";

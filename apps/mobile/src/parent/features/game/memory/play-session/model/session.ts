@@ -1,6 +1,6 @@
 // 카드 수, HP, 카운트 다운 등 난이도별 설정과 상태 타입
-import type { Deck } from "@/entities/memory-game/model/types";
-import type { FruitKey } from "@/shared/assets/fruits";
+import type { Deck } from "@/src/parent/entities/memory-game/model/types";
+import type { FruitKey } from "@/src/parent/shared/assets/fruits";
 
 export type Phase = "countdown" | "playing" | "done";
 export type DoneType = null | "success" | "fail";
