@@ -1,7 +1,7 @@
 import { useLoginWithKakao } from "@hyoit/auth";
 import { KakaoLoginButton } from "@hyoit/ui";
-import { Image, StyleSheet, Text, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
+import { Image, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { BG, SUBTEXT } from "../../shared/config/theme";
 import { navigateToTarget } from "../../shared/lib/router";
@@ -30,6 +30,7 @@ export default function LoginPage() {
           <KakaoLoginButton
             onPress={login}
             accessibilityLabel="카카오 계정으로 간편 로그인"
+            iconSource={require("@/assets/images/kakao_icon.png")}
           />
 
           <Text style={styles.caption} allowFontScaling={false}>

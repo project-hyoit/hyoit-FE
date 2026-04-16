@@ -1,4 +1,6 @@
 export const ENTRY_ROUTES = {
-  login: "/login",
-  choose: "/choose",
+  login: "/(entry)/login",
+  choose: "/(entry)/choose",
+  parent: "/(parent)",
+  child: "/(child)",
 } as const;
