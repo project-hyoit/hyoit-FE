@@ -3,7 +3,16 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+
+      "@hyoit/auth": ["../../packages/auth/index.ts"],
+      "@hyoit/auth/*": ["../../packages/auth/*"],
+      "@hyoit/storage": ["../../packages/storage/index.ts"],
+      "@hyoit/storage/*": ["../../packages/storage/*"],
+      "@hyoit/types": ["../../packages/types/index.ts"],
+      "@hyoit/types/*": ["../../packages/types/*"],
+      "@hyoit/ui": ["../../packages/ui/index.ts"],
+      "@hyoit/ui/*": ["../../packages/ui/*"]
     },
     "lib": ["ESNext"],
     "types": ["react", "react-native"],
