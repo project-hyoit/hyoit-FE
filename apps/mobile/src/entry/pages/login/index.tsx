@@ -3,6 +3,9 @@ import { KakaoLoginButton } from "@hyoit/ui";
 import { StatusBar } from "expo-status-bar";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+
+import kakaoIcon from "@/src/entry/assets/images/kakao_icon.png";
+import loginLogo from "@/src/entry/assets/images/login/login_logo.png";
 import { BG, SUBTEXT } from "../../shared/config/theme";
 import { navigateToTarget } from "../../shared/lib/router";
 
@@ -20,17 +23,14 @@ export default function LoginPage() {
       <StatusBar style="dark" translucent backgroundColor="transparent" />
       <View style={styles.container}>
         <View style={styles.brand}>
-          <Image
-            style={styles.logo}
-            source={require("@/assets/images/login/login_logo.png")}
-          />
+          <Image style={styles.logo} source={loginLogo} />
         </View>
 
         <View style={[styles.actions, { paddingBottom: bottom + 40 }]}>
           <KakaoLoginButton
             onPress={login}
             accessibilityLabel="카카오 계정으로 간편 로그인"
-            iconSource={require("@/assets/images/kakao_icon.png")}
+            iconSource={kakaoIcon}
           />
 
           <Text style={styles.caption} allowFontScaling={false}>
