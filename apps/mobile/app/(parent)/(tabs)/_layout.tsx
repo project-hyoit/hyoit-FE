@@ -1,12 +1,73 @@
-// 게임 탭 전용 stack(라우팅 전용)
-import { Stack } from "expo-router";
+import { IconSymbol } from "@/src/parent/shared/ui/IconSymbol";
+import BottomTabBar from "@/src/parent/widgets/BottomTabBar/BottomTabBar";
+import { Tabs } from "expo-router";
 
-export default function GameStackLayout() {
+const ACTIVE = "#1E90FF";
+const INACTIVE = "#D9D9D9";
+
+export default function ParentTabsLayout() {
   return (
-    <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="index" />
-      <Stack.Screen name="memory/index" />
-      <Stack.Screen name="memory/play" />
-    </Stack>
+    <Tabs
+      tabBar={(props) => <BottomTabBar {...props} />}
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      <Tabs.Screen
+        name="index"
+        options={{
+          title: "홈",
+          tabBarIcon: ({ focused, size }) => (
+            <IconSymbol
+              name="house.fill"
+              size={size}
+              color={focused ? ACTIVE : INACTIVE}
+            />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="chat"
+        options={{
+          title: "채팅",
+          tabBarIcon: ({ focused, size }) => (
+            <IconSymbol
+              name="message.fill"
+              size={size}
+              color={focused ? ACTIVE : INACTIVE}
+            />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="game"
+        options={{
+          title: "게임",
+          tabBarIcon: ({ focused, size }) => (
+            <IconSymbol
+              name="gamecontroller.fill"
+              size={size}
+              color={focused ? ACTIVE : INACTIVE}
+            />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: "프로필",
+          tabBarIcon: ({ focused, size }) => (
+            <IconSymbol
+              name="person.fill"
+              size={size}
+              color={focused ? ACTIVE : INACTIVE}
+            />
+          ),
+        }}
+      />
+    </Tabs>
   );
 }
