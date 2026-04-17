@@ -1,4 +1,13 @@
-import { ImageSourcePropType } from "react-native";
+import type { ImageSourcePropType } from "react-native";
+
+import appleImg from "@/assets/fruits/apple.jpg";
+import bananaImg from "@/assets/fruits/banana.jpg";
+import cherryImg from "@/assets/fruits/cherry.jpg";
+import grapeImg from "@/assets/fruits/grape.jpg";
+import lemonImg from "@/assets/fruits/lemon.jpg";
+import orangeImg from "@/assets/fruits/orange.jpg";
+import peachImg from "@/assets/fruits/peach.jpg";
+import persimmonImg from "@/assets/fruits/persimmon.jpg";
 
 export const FRUITS = [
   "banana",
@@ -14,12 +23,12 @@ export const FRUITS = [
 export type FruitKey = (typeof FRUITS)[number];
 
 export const fruitSrc: Record<FruitKey, ImageSourcePropType> = {
-  banana: require("@/assets/fruits/banana.jpg"),
-  apple: require("@/assets/fruits/apple.jpg"),
-  grape: require("@/assets/fruits/grape.jpg"),
-  lemon: require("@/assets/fruits/lemon.jpg"),
-  peach: require("@/assets/fruits/peach.jpg"),
-  cherry: require("@/assets/fruits/cherry.jpg"),
-  persimmon: require("@/assets/fruits/persimmon.jpg"),
-  orange: require("@/assets/fruits/orange.jpg"),
+  banana: bananaImg,
+  apple: appleImg,
+  grape: grapeImg,
+  lemon: lemonImg,
+  peach: peachImg,
+  cherry: cherryImg,
+  persimmon: persimmonImg,
+  orange: orangeImg,
 };

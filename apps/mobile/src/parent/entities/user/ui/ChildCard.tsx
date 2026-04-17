@@ -1,4 +1,7 @@
 import { Image, StyleSheet, Text, View } from "react-native";
+
+import mainProfileImg from "@/assets/profileimg/mainprofile.png";
+
 import type { ChildUser } from "../model/types";
 
 type ChildCardProps = Omit<ChildUser, "id">;
@@ -11,10 +14,7 @@ export default function ChildCard({
   return (
     <View style={styles.card}>
       <View style={styles.leftSection}>
-        <Image
-          source={require("@/assets/profileimg/mainprofile.png")}
-          style={styles.img}
-        />
+        <Image source={mainProfileImg} style={styles.img} />
         <Text style={styles.name}>{name}</Text>
       </View>
 
@@ -25,6 +25,7 @@ export default function ChildCard({
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   card: {
     marginTop: 8,

@@ -1,3 +1,4 @@
+import characterImg from "@/assets/images/character.jpg";
 import Card from "@/src/parent/shared/ui/Card";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 
@@ -20,10 +21,7 @@ export default function AskBanner({ title, ctaLabel, onPress }: Props) {
         </Pressable>
       </View>
 
-      <Image
-        source={require("@/assets/images/character.jpg")}
-        style={styles.img}
-      />
+      <Image source={characterImg} style={styles.img} />
     </Card>
   );
 }

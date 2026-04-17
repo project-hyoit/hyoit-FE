@@ -2,12 +2,15 @@ import { SymbolView } from "expo-symbols";
 import { useEffect, useRef } from "react";
 import {
   Animated,
-  ImageSourcePropType,
   Pressable,
   StyleSheet,
   Text,
   View,
+  type ImageSourcePropType,
 } from "react-native";
+
+import failImg from "@/assets/images/fail-sticker.png";
+import successImg from "@/assets/images/success-sticker.png";
 
 type Props = {
   visible: boolean;
@@ -17,8 +20,8 @@ type Props = {
 };
 
 const ART: Record<"success" | "fail", ImageSourcePropType> = {
-  success: require("@/assets/images/success-sticker.png"),
-  fail: require("@/assets/images/fail-sticker.png"),
+  success: successImg,
+  fail: failImg,
 };
 
 export default function ResultOverlay({
@@ -34,7 +37,6 @@ export default function ResultOverlay({
 
   useEffect(() => {
     if (!visible) {
-      // 닫힐 때
       Animated.parallel([
         Animated.timing(opacity, {
           toValue: 0,
@@ -57,6 +59,7 @@ export default function ResultOverlay({
           useNativeDriver: true,
         }),
       ]).start();
+
       return;
     }
 
@@ -202,7 +205,9 @@ const s = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  btnPressed: { opacity: 0.9 },
+  btnPressed: {
+    opacity: 0.9,
+  },
   btnInner: {
     alignItems: "center",
     justifyContent: "center",

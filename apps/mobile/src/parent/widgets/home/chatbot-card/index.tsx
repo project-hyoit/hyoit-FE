@@ -1,3 +1,4 @@
+import character02Img from "@/assets/images/character_02.jpg";
 import Card from "@/src/parent/shared/ui/Card";
 import {
   Image,
@@ -18,10 +19,9 @@ type Props = {
 
 export default function ChatbotCard({
   title,
-
   body,
   ctaLabel,
-  image = require("@/assets/images/character_02.jpg"),
+  image = character02Img,
   onPress,
 }: Props) {
   return (

@@ -1,3 +1,4 @@
+import bananaCardsImg from "@/assets/images/banana-cards_02.png";
 import DifficultyCard from "@/src/parent/widgets/game/memory/DifficultyCard";
 import { router } from "expo-router";
 import { useState } from "react";
@@ -33,10 +34,7 @@ export default function IntroScreen() {
           { paddingBottom: 24 + (selected ? 72 : 0) },
         ]}
       >
-        <Image
-          source={require("@/assets/images/banana-cards_02.png")}
-          style={s.hero}
-        />
+        <Image source={bananaCardsImg} style={s.hero} />
         <Text style={s.title}>카드 맞추기</Text>
         <Text style={s.desc}>
           같은 모양의 카드끼리의 위치를 기억해서{"\n"}알맞은 카드끼리

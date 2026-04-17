@@ -1,3 +1,4 @@
+import mainProfileImg from "@/assets/profileimg/mainprofile.png";
 import { router } from "expo-router";
 import { useRef, useState } from "react";
 import {
@@ -15,6 +16,7 @@ export default function VerifyCodeScreen() {
   const canNext = /^\d{6}$/.test(childCode);
   const [showConfirm, setShowConfirm] = useState(false);
   const slideAnim = useRef(new Animated.Value(300)).current;
+
   const openModal = () => {
     setShowConfirm(true);
     Animated.timing(slideAnim, {
@@ -23,6 +25,7 @@ export default function VerifyCodeScreen() {
       useNativeDriver: true,
     }).start();
   };
+
   const closeModal = () => {
     Animated.timing(slideAnim, {
       toValue: 300,
@@ -63,10 +66,7 @@ export default function VerifyCodeScreen() {
 
             <View style={s.userCard}>
               <View style={s.left}>
-                <Image
-                  style={s.img}
-                  source={require("@/assets/profileimg/mainprofile.png")}
-                />
+                <Image style={s.img} source={mainProfileImg} />
                 <Text style={s.name}>김유찬</Text>
               </View>
               <Text style={s.phone}>010-4610-3405</Text>

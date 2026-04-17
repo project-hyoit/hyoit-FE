@@ -1,9 +1,11 @@
+import mainProfileImg from "@/assets/profileimg/mainprofile.png";
 import { UserProfile } from "@/src/parent/entities/user/model/types";
 import ProfileMenu from "@/src/parent/features/edit-profile/ui/ProfileMenu";
 import LogoutModal from "@/src/parent/features/logout/ui/LogoutModal";
 import { IconSymbol } from "@/src/parent/shared/ui/IconSymbol";
 import { useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+
 interface Props {
   user: UserProfile;
 }
@@ -20,10 +22,7 @@ export default function ProfileSection({ user }: Props) {
     <View>
       <View style={styles.container}>
         <View style={styles.avatarWrapper}>
-          <Image
-            source={require("@/assets/profileimg/mainprofile.png")}
-            style={styles.avatar}
-          />
+          <Image source={mainProfileImg} style={styles.avatar} />
 
           <TouchableOpacity
             style={styles.editButton}

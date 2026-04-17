@@ -1,3 +1,4 @@
+import mainProfileImg from "@/assets/profileimg/mainprofile.png";
 import { useAuthStore } from "@hyoit/auth";
 import { router } from "expo-router";
 import {
@@ -27,10 +28,7 @@ export default function SuccessScreen() {
       </Text>
       <View style={s.card}>
         <View style={s.childLeft}>
-          <Image
-            source={require("@/assets/profileimg/mainprofile.png")}
-            style={s.avatar}
-          />
+          <Image source={mainProfileImg} style={s.avatar} />
           <Text style={s.childName} allowFontScaling={false}>
             {child.name}
           </Text>

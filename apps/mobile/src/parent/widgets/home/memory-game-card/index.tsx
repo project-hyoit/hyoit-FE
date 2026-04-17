@@ -1,3 +1,4 @@
+import bananaCardsImg from "@/assets/images/banana-cards_02.png";
 import Card from "@/src/parent/shared/ui/Card";
 import {
   Image,
@@ -20,7 +21,7 @@ export default function MemoryGameCard({
   title,
   body,
   ctaLabel,
-  image = require("@/assets/images/banana-cards_02.png"),
+  image = bananaCardsImg,
   onPress,
 }: Props) {
   const inner = (

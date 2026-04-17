@@ -1,6 +1,12 @@
 import { useChooseRoleAction } from "@hyoit/auth";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+
+import oldManImg from "@/src/entry/assets/images/choose/oldman.png";
+import oldWomanImg from "@/src/entry/assets/images/choose/oldwoman.png";
+import youngManImg from "@/src/entry/assets/images/choose/youngman.png";
+import youngWomanImg from "@/src/entry/assets/images/choose/youngwoman.png";
+
 import { BG, PRIMARY, TEXT } from "../../shared/config/theme";
 import { navigateToTarget } from "../../shared/lib/router";
 
@@ -45,14 +51,8 @@ export default function ChoosePage() {
           부모님
         </Text>
 
-        <Image
-          style={styles.oldwoman}
-          source={require("@/assets/images/choose/oldwoman.png")}
-        />
-        <Image
-          style={styles.oldman}
-          source={require("@/assets/images/choose/oldman.png")}
-        />
+        <Image style={styles.oldwoman} source={oldWomanImg} />
+        <Image style={styles.oldman} source={oldManImg} />
       </Pressable>
 
       <Pressable
@@ -71,14 +71,8 @@ export default function ChoosePage() {
           자녀
         </Text>
 
-        <Image
-          style={styles.youngwoman}
-          source={require("@/assets/images/choose/youngwoman.png")}
-        />
-        <Image
-          style={styles.youngman}
-          source={require("@/assets/images/choose/youngman.png")}
-        />
+        <Image style={styles.youngwoman} source={youngWomanImg} />
+        <Image style={styles.youngman} source={youngManImg} />
       </Pressable>
 
       <Pressable

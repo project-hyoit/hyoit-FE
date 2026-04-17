@@ -1,3 +1,4 @@
+import weatherImg from "@/assets/images/weather-sun-cloud.jpg";
 import Card from "@/src/parent/shared/ui/Card";
 import { Image, StyleSheet, Text } from "react-native";
 
@@ -8,10 +9,7 @@ export default function WeatherCard({ temp }: Props) {
     <Card style={s.card}>
       <Text style={s.title}>오늘의 날씨</Text>
       <Text style={s.temp}>{temp}°C</Text>
-      <Image
-        source={require("@/assets/images/weather-sun-cloud.jpg")}
-        style={s.icon}
-      />
+      <Image source={weatherImg} style={s.icon} />
     </Card>
   );
 }
