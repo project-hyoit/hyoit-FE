@@ -43,7 +43,7 @@ export default function SuccessScreen() {
         <Pressable
           onPress={() => {
             setOnboarded(true);
-            router.replace("/(parent)");
+            router.replace("/(child)");
           }}
           hitSlop={8}
           style={({ pressed }) => [s.primaryBtn, pressed && { opacity: 0.9 }]}
