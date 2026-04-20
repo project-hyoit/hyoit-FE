@@ -78,7 +78,7 @@ export default function VerifyCodeScreen() {
               </Pressable>
 
               <Pressable
-                onPress={() => router.push("/onboarding/success")}
+                onPress={() => router.push("/(parent)/onboarding/success")}
                 style={s.okButton}
               >
                 <Text style={s.ok}>맞아요 →</Text>
