@@ -12,6 +12,10 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.2",
+    "@hyoit/auth": "workspace:*",
+    "@hyoit/storage": "workspace:*",
+    "@hyoit/types": "workspace:*",
+    "@hyoit/ui": "workspace:*",
     "@react-native-async-storage/async-storage": "2.2.0",
     "@react-navigation/bottom-tabs": "^7.3.10",
     "@react-navigation/elements": "^2.3.8",
