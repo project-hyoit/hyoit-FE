@@ -15,7 +15,8 @@ export default function SuccessScreen() {
   const { bottom } = useSafeAreaInsets();
   const setOnboarded = useAuthStore((s) => s.setOnboarded);
 
-  const child = { name: "김유찬", phone: "010-4610-3405" };
+  // TODO: 실제 연결된 부모 정보를 API 또는 스토어에서 가져오도록 수정
+  const child = { name: "", phone: "" };
 
   return (
     <View style={s.wrap}>
