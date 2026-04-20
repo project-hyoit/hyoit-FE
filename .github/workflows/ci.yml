@@ -1,0 +1,36 @@
+name: React Native CI (pnpm)
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 코드 가져오기
+        uses: actions/checkout@v3
+
+      - name: Node 설치
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'pnpm'
+
+      - name: pnpm 설치
+        run: npm install -g pnpm
+
+      - name: 의존성 설치
+        run: pnpm install --frozen-lockfile
+
+      # lint 스크립트 있으면 사용
+      - name: Lint 검사
+        run: pnpm lint
+        continue-on-error: true
+
+      # 테스트 있으면 실행
+      - name: 테스트
+        run: pnpm test
+        continue-on-error: true
