@@ -20,13 +20,19 @@ export default function QuickChips({
 }
 
 const s = StyleSheet.create({
-  wrap: { flexDirection: "row", flexWrap: "wrap" },
+  wrap: { 
+    flexDirection: "row", 
+    flexWrap: "wrap" 
+  },
   chip: {
-    backgroundColor: "#E7F0FF",
+    backgroundColor: "#1E90FF",
     borderRadius: 999,
     paddingHorizontal: 12,
     paddingVertical: 8,
     margin: 4,
   },
-  text: { color: "#224455", fontSize: 14 },
+  text: { 
+    color: "#FFFFFF", 
+    fontSize: 14,
+  },
 });

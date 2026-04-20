@@ -4,11 +4,11 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 
 export default function ChatDock({
-  onSend,
   onVoice,
+  onSend,
 }: {
-  onSend: (t: string) => void;
   onVoice?: (t: string) => void;
+  onSend: (t: string) => void;
 }) {
   return (
     <View style={s.wrap}>

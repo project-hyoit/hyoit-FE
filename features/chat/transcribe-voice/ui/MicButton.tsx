@@ -1,5 +1,5 @@
 import React from "react";
-import { Pressable, StyleSheet, Text } from "react-native";
+import { Pressable, StyleSheet, Text, Image } from "react-native";
 import { useTranscribe } from "../model/useTranscribe";
 
 export default function MicButton({ onText }: { onText: (t: string) => void }) {
@@ -14,7 +14,7 @@ export default function MicButton({ onText }: { onText: (t: string) => void }) {
       style={[s.btn, recording && s.rec]}
       onPress={recording ? stop : start}
     >
-      <Text style={s.txt}>{recording ? "녹음중..." : "음성"}</Text>
+      <Text style={s.txt}>{recording ? "녹음중..." : <Image source={require("../../../../assets/chat/recording.png")} style={s.img} />}</Text>
     </Pressable>
   );
 }
@@ -22,13 +22,18 @@ export default function MicButton({ onText }: { onText: (t: string) => void }) {
 const s = StyleSheet.create({
   btn: {
     height: 40,
-    paddingHorizontal: 12,
-    borderRadius: 10,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#E9ECEF",
-    marginLeft: 6,
+    marginRight: 6,
   },
-  rec: { backgroundColor: "#FFE3E3" },
-  txt: { fontWeight: "600" },
+  rec: { 
+    backgroundColor: "#FFE3E3" 
+  },
+  txt: { 
+    fontWeight: "600" 
+  },
+  img: {
+    width: 22,
+    height: 22,
+  },
 });

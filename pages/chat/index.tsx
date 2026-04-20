@@ -3,7 +3,6 @@ import { SafeAreaView, StyleSheet, View } from "react-native";
 
 // 위젯
 import ChatDock from "@/widgets/chat/ChatDock";
-import ChatHeader from "@/widgets/chat/ChatHeader";
 import MessageList from "@/widgets/chat/MessageList";
 import QuickStartPanel from "@/widgets/chat/QuickStartPanel";
 
@@ -43,10 +42,10 @@ export default function ChatScreen() {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#F6F7F9" }}>
       <View style={s.wrap}>
-        <ChatHeader />
-        <QuickStartPanel items={quick} onPick={send} />
         <View style={{ flex: 1 }}>
-          <MessageList items={messages} />
+          <MessageList items={messages}>
+            <QuickStartPanel items={quick} onPick={send} />
+          </MessageList>
         </View>
         <ChatDock onSend={send} onVoice={(t) => send(t)} />
       </View>
@@ -55,5 +54,8 @@ export default function ChatScreen() {
 }
 
 const s = StyleSheet.create({
-  wrap: { flex: 1, gap: 12, padding: 16 },
+  wrap: { 
+    flex: 1, 
+    gap: 12, 
+    padding: 16 },
 });
