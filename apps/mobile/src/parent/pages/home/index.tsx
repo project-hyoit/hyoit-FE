@@ -80,7 +80,7 @@ export default function HomeScreen() {
           title="카드 맞추기"
           body={"같은 카드를\n기억해서 뒤집으세요"}
           ctaLabel="카드 맞추기 게임하기 ▶"
-          onPress={() => router.push("/(parent)/(tabs)/chat")}
+          onPress={() => router.push("/(parent)/(tabs)/game")}
         />
       </ScrollView>
     </SafeAreaView>
