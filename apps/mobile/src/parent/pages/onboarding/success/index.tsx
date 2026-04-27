@@ -135,5 +135,5 @@ const s = StyleSheet.create({
       android: { elevation: 2 },
     }),
   },
-  primaryText: { color: "#fff", fontSize: 16, fontWeight: "700" },
+  primaryText: { color: "#fff", fontSize: 20, fontWeight: "700"},
 });
