@@ -143,7 +143,7 @@ const s = StyleSheet.create({
   nextRow: {
     marginTop: "auto",
     alignItems: "flex-end",
-    marginBottom: 106,
+    marginBottom: 64,
   },
   next: {
     flexDirection: "row",
