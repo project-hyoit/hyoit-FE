@@ -124,7 +124,7 @@ const s = StyleSheet.create({
   },
   explanation: {
     fontSize: 14,
-    fontWeight: 600,
+    fontWeight: "600",
   },
   modalButton: {
     backgroundColor: "#000",
