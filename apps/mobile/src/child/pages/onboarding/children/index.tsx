@@ -143,7 +143,7 @@ const s = StyleSheet.create({
   nextRow: {
     marginTop: "auto",
     alignItems: "flex-end",
-    marginBottom: 106,
+    marginBottom: 64,
   },
   next: {
     flexDirection: "row",
@@ -164,7 +164,7 @@ const s = StyleSheet.create({
     }),
   },
   nextDisabled: {
-    opacity: 0.4,
+    backgroundColor: "#D9D9D9"
   },
   nextText: {
     color: "#fff",

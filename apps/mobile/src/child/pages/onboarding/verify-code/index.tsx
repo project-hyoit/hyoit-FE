@@ -1,103 +1,80 @@
-import mainProfileImg from "@/assets/profileimg/mainprofile.png";
 import { router } from "expo-router";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import {
-  Animated,
-  Image,
+  Platform,
   Pressable,
   StyleSheet,
   Text,
+  TextInput,
   View,
 } from "react-native";
 
 export default function VerifyCodeScreen() {
   const myCode = "927582";
   const [childCode, setChildCode] = useState("");
+  const [error, setError] = useState(false);
   const canNext = /^\d{6}$/.test(childCode);
-  const [showConfirm, setShowConfirm] = useState(false);
-  const slideAnim = useRef(new Animated.Value(300)).current;
-
-  const openModal = () => {
-    setShowConfirm(true);
-    Animated.timing(slideAnim, {
-      toValue: 0,
-      duration: 300,
-      useNativeDriver: true,
-    }).start();
-  };
-
-  const closeModal = () => {
-    Animated.timing(slideAnim, {
-      toValue: 300,
-      duration: 250,
-      useNativeDriver: true,
-    }).start(() => setShowConfirm(false));
+  const handleNext = () => {
+    if (childCode === myCode) {
+      setError(false);
+      router.push("/(child)/onboarding/success");
+    } else {
+      setError(true);
+    }
   };
 
   return (
     <View style={s.wrap}>
       <Text style={s.title} allowFontScaling={false}>
-        가족구성원 추가를 위한{"\n"}인증번호가 생성되었어요
+        가족구성원 추가를 위한{"\n"}인증번호를 입력해주세요
       </Text>
+      <View style={s.field}>
+        <Text style={s.label}>인증번호</Text>
 
-      <View style={s.myCodeCard}>
-        <Text style={s.myCodeLabel} allowFontScaling={false}>
-          내 인증 번호
-        </Text>
-        <Text style={s.myCodeText} allowFontScaling={false}>
-          {myCode}
-        </Text>
+        <TextInput
+          placeholder="부모님의 인증번호를 입력해주세요"
+          placeholderTextColor="#B6B6B6"
+          keyboardType="number-pad"
+          maxLength={6}
+          value={childCode}
+          onChangeText={(v) => {
+            setChildCode(v);
+            setError(false);
+          }}
+          style={[
+            s.input,
+          ]}
+        />
+        {error && (
+          <Text style={s.errorText}>
+            인증번호가 다른 것 같아요 다시 입력해주세요
+          </Text>
+        )}
       </View>
-
-      <View style={{ marginTop: 12, alignItems: "flex-end" }}>
-        <Pressable onPress={openModal} style={s.modalButton}>
-          <Text style={s.modalButtonText}>모달 확인</Text>
+      <View style={s.nextRow}>
+        <Pressable
+          style={({ pressed }) => [
+            s.next,
+            !canNext && s.nextDisabled,
+            pressed && canNext && { opacity: 0.9 },
+          ]}
+          disabled={!canNext}
+          onPress={handleNext}
+        >
+          <Text style={s.nextText}>다음</Text>
+          <Text style={s.nextArrow}>→</Text>
         </Pressable>
       </View>
-
-      {showConfirm && (
-        <>
-          <Pressable style={s.overlay} onPress={closeModal} />
-
-          <Animated.View
-            style={[s.bottomSheet, { transform: [{ translateY: slideAnim }] }]}
-          >
-            <Text style={s.sheetTitle}>이 분이 부모 분이 맞으신가요?</Text>
-
-            <View style={s.userCard}>
-              <View style={s.left}>
-                <Image style={s.img} source={mainProfileImg} />
-                <Text style={s.name}>김유찬</Text>
-              </View>
-              <Text style={s.phone}>010-4610-3405</Text>
-            </View>
-
-            <View style={s.row}>
-              <Pressable style={s.cancelButton} onPress={closeModal}>
-                <Text style={s.cancel}>← 아니에요</Text>
-              </Pressable>
-
-              <Pressable
-                onPress={() => router.push("/(child)/onboarding/success")}
-                style={s.okButton}
-              >
-                <Text style={s.ok}>맞아요 →</Text>
-              </Pressable>
-            </View>
-          </Animated.View>
-        </>
-      )}
     </View>
   );
 }
 
 const COLORS = {
-  bg: "#FFFFFF",
-  text: "#000000",
-  label: "#454545",
   border: "#B6B6B6",
-  card: "#F5F5F5",
+  label: "#454545",
+  text: "#000000",
   primary: "#1E90FF",
+  bg: "#FFFFFF",
 };
 
 const s = StyleSheet.create({
@@ -107,6 +84,7 @@ const s = StyleSheet.create({
     paddingHorizontal: 24,
     paddingTop: 120,
   },
+
   title: {
     fontSize: 24,
     lineHeight: 36,
@@ -114,116 +92,72 @@ const s = StyleSheet.create({
     fontWeight: "600",
     marginBottom: 64,
   },
-  myCodeCard: {
-    width: "100%",
-    backgroundColor: COLORS.card,
+
+  field: {
+    marginBottom: 16,
+  },
+
+  label: {
+    color: COLORS.label,
+    fontSize: 16,
+    marginBottom: 4,
+    fontWeight: "600",
+  },
+
+  input: {
+    borderWidth: 1,
+    borderColor: COLORS.border,
     borderRadius: 12,
-    alignItems: "center",
-    paddingVertical: 32,
-    marginBottom: 20,
-    gap: 20,
-  },
-  myCodeLabel: { fontSize: 16, color: COLORS.text, fontWeight: "600" },
-  myCodeText: {
-    fontSize: 32,
-    lineHeight: 40,
-    color: COLORS.text,
-    fontWeight: "800",
-    letterSpacing: 2,
-  },
-  modalButton: {
-    backgroundColor: "#000",
-    paddingVertical: 10,
     paddingHorizontal: 16,
-    borderRadius: 10,
+    paddingVertical: Platform.select({ ios: 14, android: 12 }),
+    fontSize: 16,
+    color: COLORS.text,
   },
-  modalButtonText: {
-    color: "#fff",
-    fontWeight: "600",
-  },
-  overlay: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: "rgba(0,0,0,0.3)",
-  },
-  bottomSheet: {
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: "#fff",
-    padding: 28,
-    borderTopLeftRadius: 12,
-    borderTopRightRadius: 12,
-    height: 299,
-  },
-  sheetTitle: {
-    fontSize: 24,
-    fontWeight: "600",
+
+  errorText: {
     marginTop: 8,
-    marginBottom: 32,
-    textAlign: "center",
+    color: "#FF4757",
+    fontSize: 12,
   },
-  left: {
+
+  nextRow: {
+    marginTop: "auto",
+    alignItems: "flex-end",
+    marginBottom: 64,
+  },
+
+  next: {
     flexDirection: "row",
     alignItems: "center",
-  },
-  userCard: {
-    flexDirection: "row",
-    borderWidth: 1,
-    borderColor: "#E9E9E9",
+    gap: 8,
+    backgroundColor: COLORS.primary,
     borderRadius: 12,
-    padding: 12,
-    marginBottom: 36,
-    alignItems: "center",
-    justifyContent: "space-between",
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    ...Platform.select({
+      ios: {
+        shadowColor: "#000",
+        shadowOpacity: 0.08,
+        shadowRadius: 8,
+        shadowOffset: { width: 0, height: 2 },
+      },
+      android: { elevation: 2 },
+    }),
   },
-  img: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
+
+  nextDisabled: {
+    backgroundColor: "#D9D9D9",
   },
-  name: {
-    marginLeft: 16,
-    fontSize: 20,
-    fontWeight: "600",
-  },
-  phone: {
-    fontSize: 16,
-    fontWeight: "600",
-  },
-  row: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  cancel: {
-    color: "#1E90FF",
+
+  nextText: {
+    color: "#fff",
     fontSize: 16,
     fontWeight: "700",
   },
-  cancelButton: {
-    width: 116,
-    height: 48,
-    borderColor: "#1E8FFF",
-    borderWidth: 1,
-    borderRadius: 12,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  ok: {
-    color: "#FFFFFF",
+
+  nextArrow: {
+    color: "#fff",
     fontSize: 16,
-    fontWeight: "700",
-  },
-  okButton: {
-    width: 102,
-    height: 48,
-    backgroundColor: "#1E90FF",
-    borderRadius: 12,
-    alignItems: "center",
-    justifyContent: "center",
+    marginLeft: 2,
   },
 });

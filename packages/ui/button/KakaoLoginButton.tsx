@@ -49,15 +49,13 @@ export function KakaoLoginButton({
 const s = StyleSheet.create({
   btn: {
     alignSelf: "stretch",
-    backgroundColor: COLORS.card,
-    borderRadius: 16,
-    minHeight: 56,
-    paddingHorizontal: 20,
-    paddingVertical: 14,
+    backgroundColor: "#FDE500",
+    borderRadius: 24,
+    minHeight: 48,
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
-    gap: 12,
+    justifyContent: "flex-start",
+    gap: 26,
     ...Platform.select({
       ios: {
         shadowColor: "#000",
@@ -68,6 +66,6 @@ const s = StyleSheet.create({
     }),
   },
   pressed: { opacity: 0.9 },
-  icon: { width: 24, height: 24, resizeMode: "contain" },
+  icon: { width: 28, height: 28, resizeMode: "contain", marginLeft: 16},
   label: { fontSize: 18, color: COLORS.text },
 });
