@@ -51,7 +51,7 @@ export default function VerifyCodeScreen() {
       {showConfirm && (
         <>
           <Pressable style={s.overlay} onPress={closeModal}>
-            <Animated.View
+            <View
               style={[s.bottomSheet]}
             >
               <Text style={s.sheetTitle}>자녀분이 맞으신가요?</Text>
@@ -77,7 +77,7 @@ export default function VerifyCodeScreen() {
                   <Text style={s.ok}>맞아요</Text>
                 </Pressable>
               </View>
-            </Animated.View>
+            </View>
           </Pressable>
         </>
       )}
