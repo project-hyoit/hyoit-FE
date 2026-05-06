@@ -15,36 +15,31 @@ export default function SuccessScreen() {
   const { bottom } = useSafeAreaInsets();
   const setOnboarded = useAuthStore((s) => s.setOnboarded);
 
-  // TODO: 실제 연결된 부모 정보를 API 또는 스토어에서 가져오도록 수정
-  const child = { name: "", phone: "" };
+  const child = { name: "김유찬", phone: "010-4610-3405" };
 
   return (
     <View style={s.wrap}>
       <Text style={s.title} allowFontScaling={false}>
-        부모 분과 연결이{"\n"}완료되었어요
+        부모님과 연결이{"\n"}완료되었어요
       </Text>
 
       <Text style={s.cardTitle} allowFontScaling={false}>
-        연결된 부모분
+        연결된 부모님
       </Text>
       <View style={s.card}>
-        <View style={s.childLeft}>
           <Image source={mainProfileImg} style={s.avatar} />
           <Text style={s.childName} allowFontScaling={false}>
             {child.name}
           </Text>
-        </View>
-
         <Text style={s.childPhone} allowFontScaling={false}>
           {child.phone}
         </Text>
       </View>
 
-      <View style={[s.actions]}>
         <Pressable
           onPress={() => {
             setOnboarded(true);
-            router.replace("/(child)");
+            router.replace("/(parent)");
           }}
           hitSlop={8}
           style={({ pressed }) => [s.primaryBtn, pressed && { opacity: 0.9 }]}
@@ -54,11 +49,8 @@ export default function SuccessScreen() {
           <Text style={s.primaryText} allowFontScaling={false}>
             시작하기
           </Text>
-          <Text style={s.arrow} allowFontScaling={false}>
-            →
-          </Text>
         </Pressable>
-      </View>
+      
     </View>
   );
 }
@@ -84,44 +76,37 @@ const s = StyleSheet.create({
     lineHeight: 36,
     color: COLORS.text,
     fontWeight: "600",
-    marginBottom: 64,
+    marginBottom: 44,
   },
   card: {
-    flexDirection: "row",
-    borderWidth: 1,
-    borderColor: "#E9E9E9",
-    borderRadius: 12,
-    padding: 12,
-    marginBottom: 340,
-    alignItems: "center",
     justifyContent: "space-between",
+    alignItems: "center",
   },
   cardTitle: {
     fontSize: 16,
     color: COLORS.text,
-    fontWeight: "700",
-    marginBottom: 8,
-  },
-  childLeft: {
-    flexDirection: "row",
-    alignItems: "center",
+    fontWeight: "600",
+    marginBottom: 30,
   },
   avatar: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
+    width: 180,
+    height: 180,
+    borderRadius: 90,
+    borderWidth: 12,
+    borderColor: "#BCE1FF",
   },
   childName: {
-    marginLeft: 16,
-    fontSize: 20,
+    marginTop: 4,
+    marginBottom: 12,
+    fontSize: 24,
     fontWeight: "600",
   },
   childPhone: {
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: "500",
   },
   actions: {
-    alignItems: "flex-end",
+    alignItems: "center",
   },
   leftArrow: {
     color: COLORS.primary,
@@ -130,11 +115,14 @@ const s = StyleSheet.create({
     marginRight: 2,
   },
   primaryBtn: {
+    marginBottom: 58,
+    marginTop: "auto",
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "center",
     gap: 8,
-    paddingVertical: 12,
-    paddingHorizontal: 16,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
     borderRadius: 12,
     backgroundColor: COLORS.primary,
     ...Platform.select({
@@ -147,6 +135,5 @@ const s = StyleSheet.create({
       android: { elevation: 2 },
     }),
   },
-  primaryText: { color: "#fff", fontSize: 16, fontWeight: "700" },
-  arrow: { color: "#fff", fontSize: 16, marginLeft: 2 },
+  primaryText: { color: "#fff", fontSize: 20, fontWeight: "700"},
 });

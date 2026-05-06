@@ -17,7 +17,7 @@ export default function VerifyCodeScreen() {
   const handleNext = () => {
     if (childCode === myCode) {
       setError(false);
-      router.push("/(parent)/onboarding/success");
+      router.push("/(child)/onboarding/success");
     } else {
       setError(true);
     }

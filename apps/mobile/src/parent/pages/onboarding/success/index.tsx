@@ -85,7 +85,7 @@ const s = StyleSheet.create({
   cardTitle: {
     fontSize: 16,
     color: COLORS.text,
-    fontWeight: "500",
+    fontWeight: "600",
     marginBottom: 30,
   },
   avatar: {
