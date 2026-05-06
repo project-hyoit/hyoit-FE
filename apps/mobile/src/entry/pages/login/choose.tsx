@@ -9,7 +9,6 @@ import youngWomanImg from "@/src/entry/assets/images/choose/youngwoman.png";
 
 import { BG, PRIMARY, TEXT } from "../../shared/config/theme";
 import { navigateToTarget } from "../../shared/lib/router";
-import Index from "@/app";
 
 type SelectedRole = "parent" | "child" | null;
 
