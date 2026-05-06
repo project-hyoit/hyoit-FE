@@ -1,7 +1,6 @@
 import { router } from "expo-router";
 import { useRef, useState } from "react";
 import {
-  Animated,
   Pressable,
   StyleSheet,
   Text,
@@ -49,37 +48,34 @@ export default function VerifyCodeScreen() {
       </View>
 
       {showConfirm && (
-        <>
-          <Pressable style={s.overlay} onPress={closeModal}>
-            <View
-              style={[s.bottomSheet]}
-            >
-              <Text style={s.sheetTitle}>자녀분이 맞으신가요?</Text>
-
-              <View style={s.userCard}>
-                <View style={s.textarray}>
-                  <Text style={s.name}>김유찬</Text>
-                  <Text style={s.specialsymbol}>|</Text>
-                  <Text style={s.age}>23세</Text>
-                </View>
-                <Text style={s.phone}>010-4610-3405</Text>
+        <View style={s.overlay}>
+          <Pressable 
+            style={StyleSheet.absoluteFill} 
+            onPress={closeModal} 
+          />
+          <View style={s.bottomSheet}>
+            <Text style={s.sheetTitle}>자녀분이 맞으신가요?</Text>
+            <View style={s.userCard}>
+              <View style={s.textarray}>
+                <Text style={s.name}>김유찬</Text>
+                <Text style={s.specialsymbol}>|</Text>
+                <Text style={s.age}>23세</Text>
               </View>
-
-              <View style={s.row}>
-                <Pressable style={s.cancelButton} onPress={closeModal}>
-                  <Text style={s.cancel}>아니요</Text>
-                </Pressable>
-
-                <Pressable
-                  onPress={() => router.push("/(parent)/onboarding/success")}
-                  style={s.okButton}
-                >
-                  <Text style={s.ok}>맞아요</Text>
-                </Pressable>
-              </View>
+              <Text style={s.phone}>010-4610-3405</Text>
             </View>
-          </Pressable>
-        </>
+            <View style={s.row}>
+              <Pressable style={s.cancelButton} onPress={closeModal}>
+                <Text style={s.cancel}>아니요</Text>
+              </Pressable>
+              <Pressable
+                onPress={() => router.push("/(parent)/onboarding/success")}
+                style={s.okButton}
+              >
+                <Text style={s.ok}>맞아요</Text>
+              </Pressable>
+            </View>
+          </View>
+        </View>
       )}
     </View>
   );
