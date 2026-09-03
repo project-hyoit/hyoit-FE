@@ -1,4 +1,5 @@
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
 import type { CheckInItem } from "@/src/shared/entities/check-in";
 
@@ -6,17 +7,27 @@ import ParentCheckInHistoryCard from "./ParentCheckInHistoryCard";
 
 interface ParentCheckInHistorySectionProps {
   items: CheckInItem[];
+  onPressHistory: () => void;
 }
 
 export default function ParentCheckInHistorySection({
   items,
+  onPressHistory,
 }: ParentCheckInHistorySectionProps) {
   return (
     <View style={s.section}>
       <View style={s.headerRow}>
         <Text style={s.sectionTitle}>주고받은 안부 보기</Text>
+        <Pressable
+          style={s.historyButton}
+          onPress={onPressHistory}
+          hitSlop={10}
+          accessibilityRole="button"
+          accessibilityLabel="안부 기록 보기"
+        >
+          <Ionicons name="chevron-forward" size={22} color="#777777" />
+        </Pressable>
       </View>
-
       <View style={s.listBox}>
         {items.length === 0 ? (
           <View style={s.emptyBox}>
@@ -48,24 +59,26 @@ export default function ParentCheckInHistorySection({
     </View>
   );
 }
-
 const s = StyleSheet.create({
   section: {
     gap: 10,
   },
-
   headerRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
   },
-
   sectionTitle: {
     fontSize: 15,
     fontWeight: "900",
     color: "#111111",
   },
-
+  historyButton: {
+    width: 32,
+    height: 32,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   listBox: {
     height: 330,
     borderRadius: 12,
@@ -75,12 +88,10 @@ const s = StyleSheet.create({
     padding: 12,
     overflow: "hidden",
   },
-
   listContent: {
     gap: 10,
     paddingBottom: 2,
   },
-
   emptyBox: {
     flex: 1,
     minHeight: 190,
@@ -89,18 +100,15 @@ const s = StyleSheet.create({
     flexDirection: "row",
     gap: 6,
   },
-
   emptyIcon: {
     fontSize: 18,
     opacity: 0.35,
   },
-
   emptyText: {
     fontSize: 14,
     fontWeight: "700",
     color: "#A0A0A0",
   },
-
   noticeBox: {
     minHeight: 58,
     borderRadius: 10,
@@ -111,12 +119,10 @@ const s = StyleSheet.create({
     alignItems: "center",
     gap: 10,
   },
-
   noticeIcon: {
     fontSize: 20,
     color: "#8A8A8A",
   },
-
   noticeText: {
     flex: 1,
     fontSize: 12,

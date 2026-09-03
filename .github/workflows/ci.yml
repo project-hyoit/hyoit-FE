@@ -10,30 +10,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. 코드 가져오기
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 2. Node.js 설치
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 22
 
-      # 3. pnpm 설치
       - name: Install pnpm
         run: npm install -g pnpm
 
-      # 4. 의존성 설치
       - name: Install dependencies
         run: pnpm install
 
-      # 5. Lint 검사 (없어도 안 터지게)
-      - name: Run lint
-        run: pnpm lint
-        continue-on-error: true
+      - name: Run mobile lint
+        run: pnpm --filter hyoit-rn lint
 
-      # 6. 테스트 실행 (없어도 안 터지게)
-      - name: Run tests
-        run: pnpm test
-        continue-on-error: true
+      - name: Run check-in tests
+        run: pnpm --filter hyoit-rn test:check-in

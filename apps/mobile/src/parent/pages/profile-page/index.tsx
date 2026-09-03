@@ -6,6 +6,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import ProfileMenu from "@/src/parent/features/edit-profile/ui/ProfileMenu";
 import LogoutModal from "@/src/parent/features/logout/ui/LogoutModal";
+import { useCheckInStore } from "@/src/shared/entities/check-in";
 import { IconSymbol } from "@/src/shared/ui/IconSymbol";
 import { ChildList, mockChildUsers, ProfileSection, useUserProfileStore } from "../../entities/user";
 import ProfileSettings from "./ui/ProfileSettings";
@@ -14,13 +15,18 @@ export default function ProfilePage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const resetAuth = useAuthStore((state) => state.resetAuth);
+  const clearCheckIns = useCheckInStore((state) => state.clearCheckIns);
   const profile = useUserProfileStore((state) => state.profile);
 
   const handleLogout = async () => {
-    await logout();
-    resetAuth();
-    setIsLogoutModalOpen(false);
-    router.replace("/(entry)/login");
+    try {
+      await logout();
+    } finally {
+      await clearCheckIns();
+      resetAuth();
+      setIsLogoutModalOpen(false);
+      router.replace("/(entry)/login");
+    }
   };
 
   return (

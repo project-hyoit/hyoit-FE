@@ -9,9 +9,9 @@ import { useOnboardingStore } from "@/src/parent/entities/auth/model/onboarding.
 import HyoitLogo from "@/src/parent/assets/login/hyoit_logo_home.png";
 import {
   formatCheckInTime,
-  sentConfirmedCheckInMock,
-  sentWaitingCheckInMock,
-  type CheckInRawItem,
+  getCheckInOverview,
+  getLatestSentCheckIn,
+  useCheckInStore,
 } from "@/src/shared/entities/check-in";
 import { IconSymbol } from "@/src/shared/ui/IconSymbol";
 
@@ -48,41 +48,29 @@ const getDday = (date: string) => {
   return `D+${Math.abs(diff)}`;
 };
 
-const getLatestSentCheckIn = (items: CheckInRawItem[]) => {
-  return [...items]
-    .filter((item) => item.senderRole === "child")
-    .sort(
-      (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-    )[0];
-};
-
 export default function ChildHomePage() {
   const childName = useOnboardingStore((state) => state.name.trim() || "효잇");
   const ddayItems = useDdayStore((state) => state.items);
+  const rawCheckIns = useCheckInStore((state) => state.items);
+  const hasHydrated = useCheckInStore((state) => state.hasHydrated);
 
   const nextDday = useMemo(() => {
     return [...ddayItems].sort((a, b) => a.date.localeCompare(b.date))[0];
   }, [ddayItems]);
 
-  const latestSentCheckIn = useMemo(
-    () => getLatestSentCheckIn(sentWaitingCheckInMock),
-    [],
+  const checkInOverview = useMemo(
+    () => getCheckInOverview(rawCheckIns, "child"),
+    [rawCheckIns],
   );
-
-  const newReceivedCheckInCount = useMemo(() => {
-    return sentConfirmedCheckInMock.filter(
-      (item) => item.receiverRole === "child" && !item.checkedAt,
-    ).length;
-  }, []);
-
+  const latestSentCheckIn = getLatestSentCheckIn(checkInOverview.items);
+  const newReceivedCheckInCount = checkInOverview.pendingCount;
   const recordCountLabel =
     newReceivedCheckInCount > 0
       ? `새 기록 ${newReceivedCheckInCount}개`
       : "새 기록 없음";
 
   const checkInStatusTitle = latestSentCheckIn
-    ? latestSentCheckIn.checkedAt
+    ? latestSentCheckIn.status === "CONFIRMED"
       ? "부모님이 확인했어요"
       : "부모님이 아직 확인하지 않았어요"
     : "최근에 보낸 안부가 없어요";
@@ -98,6 +86,10 @@ export default function ChildHomePage() {
   const checkInActionLabel = latestSentCheckIn
     ? "안부 다시 보내기"
     : "안부 보내기";
+
+  if (!hasHydrated) {
+    return <SafeAreaView style={styles.safeArea} edges={["top"]} />;
+  }
 
   const moveToCheckIn = () => {
     router.push("/(child)/(tabs)/check-in");
@@ -121,9 +113,13 @@ export default function ChildHomePage() {
 
             <Pressable style={styles.notificationButton} onPress={moveToCheckIn}>
               <IconSymbol name="bell" size={25} color="#111111" />
-              <View style={styles.notificationBadge}>
-                <Text style={styles.notificationBadgeText}>2</Text>
-              </View>
+              {newReceivedCheckInCount > 0 ? (
+                <View style={styles.notificationBadge}>
+                  <Text style={styles.notificationBadgeText}>
+                    {newReceivedCheckInCount}
+                  </Text>
+                </View>
+              ) : null}
             </Pressable>
           </View>
 

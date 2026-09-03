@@ -16,6 +16,7 @@ import { useOnboardingStore } from "@/src/parent/entities/auth/model/onboarding.
 import ProfileMenu from "@/src/parent/features/edit-profile/ui/ProfileMenu";
 import LogoutModal from "@/src/parent/features/logout/ui/LogoutModal";
 import ProfileSettings from "@/src/parent/pages/profile-page/ui/ProfileSettings";
+import { useCheckInStore } from "@/src/shared/entities/check-in";
 import { IconSymbol } from "@/src/shared/ui/IconSymbol";
 
 const childProfile = {
@@ -32,14 +33,19 @@ export default function ChildProfilePage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const resetAuth = useAuthStore((state) => state.resetAuth);
+  const clearCheckIns = useCheckInStore((state) => state.clearCheckIns);
   const onboardingName = useOnboardingStore((state) => state.name);
   const displayName = onboardingName.trim() || childProfile.name;
 
   const handleLogout = async () => {
-    await logout();
-    resetAuth();
-    setIsLogoutModalOpen(false);
-    router.replace("/(entry)/login");
+    try {
+      await logout();
+    } finally {
+      await clearCheckIns();
+      resetAuth();
+      setIsLogoutModalOpen(false);
+      router.replace("/(entry)/login");
+    }
   };
 
   return (

@@ -2,6 +2,7 @@ import { StyleSheet, Text, View } from "react-native";
 
 import {
   formatCheckInTime,
+  resolveCheckInBannerState,
   type CheckInItem,
 } from "@/src/shared/entities/check-in";
 import { ConfirmCheckInButton } from "@/src/shared/features/check-in/confirm-check-in";
@@ -12,34 +13,14 @@ interface ParentCheckInStatusBannerProps {
   onConfirm: (item: CheckInItem) => void;
 }
 
-const isMultipleNewReceived = (item: CheckInItem, pendingCount: number) => {
-  return (
-    item.direction === "RECEIVED" && item.status === "NEW" && pendingCount >= 2
-  );
-};
-
-const isNewReceived = (item: CheckInItem) => {
-  return item.direction === "RECEIVED" && item.status === "NEW";
-};
-
-const isCheckedReceived = (item: CheckInItem) => {
-  return item.direction === "RECEIVED" && item.status === "CHECKED";
-};
-
-const isSentWaiting = (item: CheckInItem) => {
-  return item.direction === "SENT" && item.status === "WAITING_CONFIRM";
-};
-
-const isSentConfirmed = (item: CheckInItem) => {
-  return item.direction === "SENT" && item.status === "CONFIRMED";
-};
-
 export default function ParentCheckInStatusBanner({
   latestItem,
   pendingCount,
   onConfirm,
 }: ParentCheckInStatusBannerProps) {
-  if (!latestItem) {
+  const bannerState = resolveCheckInBannerState(latestItem, pendingCount);
+
+  if (bannerState.type === "EMPTY") {
     return (
       <View style={s.emptyContainer}>
         <View style={s.emptyTextArea}>
@@ -59,23 +40,25 @@ export default function ParentCheckInStatusBanner({
     );
   }
 
-  if (isMultipleNewReceived(latestItem, pendingCount)) {
+  const item = bannerState.item;
+
+  if (bannerState.type === "MULTIPLE_NEW") {
     return (
       <View style={s.multipleNewContainer}>
         <View style={s.textArea}>
-          <Text style={s.multipleNewStatusLabel}>새 안부 {pendingCount}개</Text>
+          <Text style={s.multipleNewStatusLabel}>새 안부 {bannerState.count}개</Text>
 
-          <Text style={s.multipleNewTitle}>“{latestItem.message}”</Text>
+          <Text style={s.multipleNewTitle}>“{item.message}”</Text>
 
           <Text style={s.multipleNewDescription}>
             가장 최근 안부예요.{"\n"}
-            확인하지 않은 안부가 {pendingCount - 1}개 더 있어요.
+            확인하지 않은 안부가 {bannerState.count - 1}개 더 있어요.
           </Text>
 
           <View style={s.multipleConfirmButtonArea}>
             <ConfirmCheckInButton
               backgroundColor="#7658D6"
-              onPress={() => onConfirm(latestItem)}
+              onPress={() => onConfirm(item)}
             />
           </View>
         </View>
@@ -87,7 +70,7 @@ export default function ParentCheckInStatusBanner({
     );
   }
 
-  if (isNewReceived(latestItem)) {
+  if (bannerState.type === "NEW") {
     return (
       <View style={s.newContainer}>
         <View style={s.newBadge}>
@@ -97,12 +80,12 @@ export default function ParentCheckInStatusBanner({
         <View style={s.textArea}>
           <Text style={s.newStatusLabel}>새 안부 도착!</Text>
 
-          <Text style={s.title}>“{latestItem.message}”</Text>
+          <Text style={s.title}>“{item.message}”</Text>
 
-          <Text style={s.time}>{formatCheckInTime(latestItem.createdAt)}</Text>
+          <Text style={s.time}>{formatCheckInTime(item.createdAt)}</Text>
 
           <View style={s.confirmButtonArea}>
-            <ConfirmCheckInButton onPress={() => onConfirm(latestItem)} />
+            <ConfirmCheckInButton onPress={() => onConfirm(item)} />
           </View>
         </View>
 
@@ -113,15 +96,15 @@ export default function ParentCheckInStatusBanner({
     );
   }
 
-  if (isCheckedReceived(latestItem)) {
+  if (bannerState.type === "CHECKED") {
     return (
       <View style={s.checkedContainer}>
         <View style={s.textArea}>
           <Text style={s.checkedStatusLabel}>안부를 확인했어요</Text>
 
-          <Text style={s.title}>“{latestItem.message}”</Text>
+          <Text style={s.title}>“{item.message}”</Text>
 
-          <Text style={s.time}>{formatCheckInTime(latestItem.createdAt)}</Text>
+          <Text style={s.time}>{formatCheckInTime(item.createdAt)}</Text>
 
           <View style={s.divider} />
 
@@ -137,7 +120,7 @@ export default function ParentCheckInStatusBanner({
     );
   }
 
-  if (isSentWaiting(latestItem)) {
+  if (bannerState.type === "SENT_WAITING") {
     return (
       <View style={s.sentContainer}>
         <View style={s.waitingDotRow}>
@@ -149,9 +132,9 @@ export default function ParentCheckInStatusBanner({
         <View style={s.textArea}>
           <Text style={s.sentStatusLabel}>안부를 보냈어요</Text>
 
-          <Text style={s.title}>“{latestItem.message}”</Text>
+          <Text style={s.title}>“{item.message}”</Text>
 
-          <Text style={s.time}>{formatCheckInTime(latestItem.createdAt)}</Text>
+          <Text style={s.time}>{formatCheckInTime(item.createdAt)}</Text>
 
           <Text style={s.sentDescription}>자녀가 아직 확인하지 않았어요!</Text>
         </View>
@@ -163,7 +146,7 @@ export default function ParentCheckInStatusBanner({
     );
   }
 
-  if (isSentConfirmed(latestItem)) {
+  if (bannerState.type === "SENT_CONFIRMED") {
     return (
       <View style={s.sentContainer}>
         <View style={s.confirmedBadge}>
@@ -173,9 +156,9 @@ export default function ParentCheckInStatusBanner({
         <View style={s.textArea}>
           <Text style={s.sentStatusLabel}>안부를 보냈어요</Text>
 
-          <Text style={s.title}>“{latestItem.message}”</Text>
+          <Text style={s.title}>“{item.message}”</Text>
 
-          <Text style={s.time}>{formatCheckInTime(latestItem.createdAt)}</Text>
+          <Text style={s.time}>{formatCheckInTime(item.createdAt)}</Text>
 
           <Text style={s.sentDescription}>자녀가 확인을 완료했어요!</Text>
         </View>

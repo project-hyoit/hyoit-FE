@@ -1,18 +1,21 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
-import { HOME_STATUS_CONTENT } from "../constants/homeStatus";
+import { HOME_STATUS_CONTENT, resolveHomeStatusLabel } from "../constants/homeStatus";
 import type { HomeStatus } from "../types/home";
 
 type HomeStatusBannerProps = {
   status: HomeStatus;
+  pendingReceivedCount: number;
   onPress: () => void;
 };
 
 export default function HomeStatusBanner({
   status,
+  pendingReceivedCount,
   onPress,
 }: HomeStatusBannerProps) {
   const content = HOME_STATUS_CONTENT[status];
+  const label = resolveHomeStatusLabel(status, pendingReceivedCount);
 
   return (
     <Pressable
@@ -32,9 +35,9 @@ export default function HomeStatusBanner({
       )}
 
       <View style={s.textArea}>
-        {content.label && (
+        {label && (
           <Text style={[s.label, { color: content.ctaColor }]}>
-            {content.label}
+            {label}
           </Text>
         )}
 
