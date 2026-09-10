@@ -293,7 +293,7 @@ const styles = StyleSheet.create({
   },
   titleRow: {
     minHeight: 150,
-    marginTop: 4,
+    marginTop: 0,
     flexDirection: "row",
     alignItems: "flex-end",
   },
