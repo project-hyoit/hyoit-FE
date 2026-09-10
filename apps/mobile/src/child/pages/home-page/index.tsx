@@ -87,23 +87,19 @@ export default function ChildHomePage() {
       ? "부모님이 아직 확인하지 않으셨어요"
       : "아직 보낸 안부가 없어요";
 
-  const checkInStatusMessage = visibleStatus === "confirmed"
-    ? "보낸 안부를 부모님이 확인했어요"
-    : visibleStatus === "waiting"
-      ? latestSentCheckIn
-        ? `“${latestSentCheckIn.message}”`
-        : "보낸 안부를 부모님이 확인할 수 있어요"
-      : "부모님께 안부를 보내보세요";
-
-  const checkInStatusMeta = visibleStatus === "empty"
-    ? "아래 버튼으로 바로 보낼 수 있어요"
+  const checkInStatusMessage = visibleStatus === "empty"
+    ? "부모님께 가볍게 안부를 보내볼까요?"
     : latestSentCheckIn
-      ? `${formatCheckInTime(latestSentCheckIn.createdAt)}에 보냈어요`
-      : "보낸 안부가 있어요";
+      ? `“${latestSentCheckIn.message}”`
+      : "";
 
-  const checkInActionLabel = visibleStatus === "empty"
-    ? "안부 보내기"
-    : "안부 다시 보내기";
+  const checkInStatusMeta = latestSentCheckIn
+    ? visibleStatus === "confirmed" && latestSentCheckIn.checkedAt
+      ? `${formatCheckInTime(latestSentCheckIn.checkedAt)}에 확인했어요`
+      : visibleStatus === "waiting"
+        ? `${formatCheckInTime(latestSentCheckIn.createdAt)}에 보냈어요`
+        : ""
+    : "";
   const childStatusImage = {
     waiting: avatar02,
     confirmed: avatar03,
@@ -196,9 +192,6 @@ export default function ChildHomePage() {
             />
           </View>
 
-          <View style={styles.statusButton}>
-            <Text style={styles.statusButtonText}>{checkInActionLabel}</Text>
-          </View>
         </Pressable>
 
         <Pressable style={styles.primaryAction} onPress={moveToCheckIn}>
@@ -468,22 +461,6 @@ const styles = StyleSheet.create({
   statusVisualImage: {
     width: 110,
     height: 110,
-  },
-  statusButton: {
-    position: "absolute",
-    left: 22,
-    right: 22,
-    bottom: 20,
-    height: 59,
-    borderRadius: 11,
-    backgroundColor: "#4D79F6",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  statusButtonText: {
-    fontSize: 19,
-    fontWeight: "900",
-    color: "#FFFFFF",
   },
   primaryAction: {
     height: 64,
