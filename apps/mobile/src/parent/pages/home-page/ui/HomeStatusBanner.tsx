@@ -1,4 +1,8 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import avatar01 from "@/src/parent/entities/user/assets/profile-avatars/profile-avatar-01.png";
+import avatar02 from "@/src/parent/entities/user/assets/profile-avatars/profile-avatar-02.png";
+import avatar03 from "@/src/parent/entities/user/assets/profile-avatars/profile-avatar-03.png";
+import avatar04 from "@/src/parent/entities/user/assets/profile-avatars/profile-avatar-04.png";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 
 import { HOME_STATUS_CONTENT, resolveHomeStatusLabel } from "../constants/homeStatus";
 import type { HomeStatus } from "../types/home";
@@ -16,6 +20,13 @@ export default function HomeStatusBanner({
 }: HomeStatusBannerProps) {
   const content = HOME_STATUS_CONTENT[status];
   const label = resolveHomeStatusLabel(status, pendingReceivedCount);
+  const characterImage = {
+    received: avatar01,
+    empty: avatar02,
+    sent: avatar03,
+    checked: avatar04,
+    multiple: avatar01,
+  }[status];
 
   return (
     <Pressable
@@ -55,12 +66,12 @@ export default function HomeStatusBanner({
       </View>
 
       <View style={s.characterArea}>
-        <View style={s.bubble}>
-          <Text style={s.bubbleText}>💙</Text>
-        </View>
-
-        <View style={s.characterPlaceholder}>
-          <Text style={s.characterText}>효잇</Text>
+        <View style={[s.characterPlaceholder, status === "received" && s.characterPlaceholderLarge]}>
+          <Image
+            source={characterImage}
+            style={[s.characterImage, status === "received" && s.characterImageLarge]}
+            resizeMode="contain"
+          />
         </View>
       </View>
     </Pressable>
@@ -124,41 +135,28 @@ const s = StyleSheet.create({
     justifyContent: "flex-end",
   },
 
-  bubble: {
-    position: "absolute",
-    top: 24,
-    left: 28,
-    zIndex: 2,
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    backgroundColor: "#FFFFFF",
-    alignItems: "center",
-    justifyContent: "center",
-    shadowColor: "#000000",
-    shadowOpacity: 0.08,
-    shadowRadius: 8,
-    shadowOffset: { width: 0, height: 4 },
-    elevation: 2,
-  },
-
-  bubbleText: {
-    fontSize: 24,
-  },
-
   characterPlaceholder: {
     width: 142,
     height: 142,
     borderRadius: 71,
-    backgroundColor: "rgba(255, 255, 255, 0.72)",
     alignItems: "center",
     justifyContent: "center",
   },
 
-  characterText: {
-    fontSize: 25,
-    fontWeight: "900",
-    color: "#6AA9FF",
+  characterPlaceholderLarge: {
+    width: 180,
+    height: 180,
+    borderRadius: 90,
+  },
+
+  characterImage: {
+    width: "100%",
+    height: "100%",
+  },
+
+  characterImageLarge: {
+    width: "100%",
+    height: "100%",
   },
 
   badge: {
