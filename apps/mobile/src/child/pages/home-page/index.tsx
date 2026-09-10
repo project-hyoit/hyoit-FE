@@ -1,6 +1,6 @@
 import { router } from "expo-router";
 import type { ReactNode } from "react";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -51,7 +51,10 @@ const getDday = (date: string) => {
   return `D+${Math.abs(diff)}`;
 };
 
+type ChildStatus = "waiting" | "confirmed" | "empty";
+
 export default function ChildHomePage() {
+  const [previewStatus, setPreviewStatus] = useState<ChildStatus | null>(null);
   const childName = useOnboardingStore((state) => state.name.trim() || "효잇");
   const ddayItems = useDdayStore((state) => state.items);
   const rawCheckIns = useCheckInStore((state) => state.items);
@@ -72,23 +75,35 @@ export default function ChildHomePage() {
       ? `새 기록 ${newReceivedCheckInCount}개`
       : "새 기록 없음";
 
-  const checkInStatusTitle = latestSentCheckIn
+  const actualStatus: ChildStatus = latestSentCheckIn
     ? latestSentCheckIn.status === "CONFIRMED"
-      ? "부모님이 확인했어요"
-      : "부모님이 아직 확인하지 않았어요"
-    : "최근에 보낸 안부가 없어요";
+      ? "confirmed"
+      : "waiting"
+    : "empty";
+  const visibleStatus = previewStatus ?? actualStatus;
+  const checkInStatusTitle = visibleStatus === "confirmed"
+    ? "부모님이 안부를 확인했어요"
+    : visibleStatus === "waiting"
+      ? "부모님이 아직 확인하지 않으셨어요"
+      : "아직 보낸 안부가 없어요";
 
-  const checkInStatusMessage = latestSentCheckIn
-    ? `“${latestSentCheckIn.message}”`
-    : "부모님께 안부를 보내보세요";
+  const checkInStatusMessage = visibleStatus === "confirmed"
+    ? "보낸 안부를 부모님이 확인했어요"
+    : visibleStatus === "waiting"
+      ? latestSentCheckIn
+        ? `“${latestSentCheckIn.message}”`
+        : "보낸 안부를 부모님이 확인할 수 있어요"
+      : "부모님께 안부를 보내보세요";
 
-  const checkInStatusMeta = latestSentCheckIn
-    ? `${formatCheckInTime(latestSentCheckIn.createdAt)}에 보냈어요`
-    : "아래 버튼으로 바로 보낼 수 있어요";
+  const checkInStatusMeta = visibleStatus === "empty"
+    ? "아래 버튼으로 바로 보낼 수 있어요"
+    : latestSentCheckIn
+      ? `${formatCheckInTime(latestSentCheckIn.createdAt)}에 보냈어요`
+      : "보낸 안부가 있어요";
 
-  const checkInActionLabel = latestSentCheckIn
-    ? "안부 다시 보내기"
-    : "안부 보내기";
+  const checkInActionLabel = visibleStatus === "empty"
+    ? "안부 보내기"
+    : "안부 다시 보내기";
   const childStatusImage = latestSentCheckIn
     ? latestSentCheckIn.status === "CONFIRMED"
       ? avatar03
@@ -137,6 +152,24 @@ export default function ChildHomePage() {
               <Text style={styles.heroTitle}>부모님의 안부를 함께 챙겨볼까요?</Text>
             </View>
           </View>
+        </View>
+
+        <View style={styles.statusPreviewRow}>
+          {([
+            ["waiting", "부모님 미확인"],
+            ["confirmed", "부모님 확인"],
+            ["empty", "보낸 안부 없음"],
+          ] as const).map(([status, label]) => (
+            <Pressable
+              key={status}
+              style={[styles.statusPreviewButton, visibleStatus === status && styles.statusPreviewButtonActive]}
+              onPress={() => setPreviewStatus(status)}
+            >
+              <Text style={[styles.statusPreviewText, visibleStatus === status && styles.statusPreviewTextActive]}>
+                {label}
+              </Text>
+            </Pressable>
+          ))}
         </View>
 
         <Pressable style={styles.statusCard} onPress={moveToCheckIn}>
@@ -270,6 +303,28 @@ const styles = StyleSheet.create({
     paddingTop: 22,
     paddingBottom: 132,
     gap: 14,
+  },
+  statusPreviewRow: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 8,
+  },
+  statusPreviewButton: {
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 8,
+    backgroundColor: "#E5E7EB",
+  },
+  statusPreviewButtonActive: {
+    backgroundColor: "#4D79F6",
+  },
+  statusPreviewText: {
+    fontSize: 12,
+    fontWeight: "700",
+    color: "#4B5563",
+  },
+  statusPreviewTextActive: {
+    color: "#FFFFFF",
   },
   header: {
     paddingTop: 0,
