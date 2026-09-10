@@ -6,7 +6,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import { useDdayStore } from "@/src/child/entities/dday";
 import { useOnboardingStore } from "@/src/parent/entities/auth/model/onboarding.store";
-import HyoitLogo from "@/src/parent/assets/login/hyoit_logo_home.png";
+import HyoitLogo from "@/src/shared/assets/hyoit_logo_home.png";
 import {
   formatCheckInTime,
   getCheckInOverview,
