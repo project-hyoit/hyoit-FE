@@ -1,8 +1,4 @@
 import { StyleSheet, View } from "react-native";
-import avatar01 from "@/src/parent/entities/user/assets/profile-avatars/profile-avatar-01.png";
-import avatar02 from "@/src/parent/entities/user/assets/profile-avatars/profile-avatar-02.png";
-import avatar03 from "@/src/parent/entities/user/assets/profile-avatars/profile-avatar-03.png";
-import avatar04 from "@/src/parent/entities/user/assets/profile-avatars/profile-avatar-04.png";
 
 import HomeFeatureCard from "./HomeFeatureCard";
 
@@ -30,7 +26,7 @@ export default function HomeCardGrid({
             ctaLabel="확인하기"
             backgroundColor="#FFF7DC"
             ctaColor="#7A5A00"
-            image={avatar01}
+            visual="🌤️"
             onPress={onPressWeather}
           />
         </View>
@@ -43,7 +39,7 @@ export default function HomeCardGrid({
             ctaLabel="확인하기"
             backgroundColor="#F3EEFF"
             ctaColor="#6D45C7"
-            image={avatar02}
+            visual="💌"
             badgeCount={2}
             onPress={onPressRecentGreeting}
           />
@@ -59,7 +55,7 @@ export default function HomeCardGrid({
             ctaLabel="시작하기"
             backgroundColor="#EFFFF4"
             ctaColor="#25874E"
-            image={avatar03}
+            visual="🎴"
             onPress={onPressGame}
           />
         </View>
@@ -72,7 +68,7 @@ export default function HomeCardGrid({
             ctaLabel="바로가기"
             backgroundColor="#FFF0E8"
             ctaColor="#EF6A2E"
-            image={avatar04}
+            visual="🎧"
             onPress={onPressHelp}
           />
         </View>
