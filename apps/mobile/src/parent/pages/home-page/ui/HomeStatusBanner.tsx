@@ -91,7 +91,7 @@ const s = StyleSheet.create({
   },
 
   textArea: {
-    width: "56%",
+    width: "70%",
     zIndex: 2,
   },
 
