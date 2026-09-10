@@ -170,7 +170,9 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   face: {
-    ...StyleSheet.absoluteFillObject,
+    position: "absolute",
+    top: 0,
+    left: 0,
     alignItems: "center",
     justifyContent: "center",
     backfaceVisibility: "hidden",
