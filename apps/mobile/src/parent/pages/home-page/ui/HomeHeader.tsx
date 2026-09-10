@@ -2,7 +2,7 @@ import { Image, StyleSheet, Text, View } from "react-native";
 
 import { NotificationButton, SettingButton } from "@/src/shared/ui";
 
-import HyoitLogo from "../../../assets/login/hyoit_logo_home.png";
+import HyoitLogo from "@/src/shared/assets/hyoit_logo_home.png";
 
 type HomeHeaderProps = {
   name: string;
