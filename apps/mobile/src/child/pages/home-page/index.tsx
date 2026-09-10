@@ -172,7 +172,15 @@ export default function ChildHomePage() {
           ))}
         </View>
 
-        <Pressable style={styles.statusCard} onPress={moveToCheckIn}>
+        <Pressable
+          style={[
+            styles.statusCard,
+            visibleStatus === "waiting" && styles.statusCardWaiting,
+            visibleStatus === "confirmed" && styles.statusCardConfirmed,
+            visibleStatus === "empty" && styles.statusCardEmpty,
+          ]}
+          onPress={moveToCheckIn}
+        >
           <View style={styles.statusTextArea}>
             <Text style={styles.statusLabel}>부모님 안부 상태</Text>
             <Text style={styles.statusTitle}>{checkInStatusTitle}</Text>
@@ -404,6 +412,18 @@ const styles = StyleSheet.create({
     paddingLeft: 24,
     paddingRight: 18,
     overflow: "hidden",
+  },
+  statusCardWaiting: {
+    backgroundColor: "#EEF5FF",
+    borderColor: "#DCE7FF",
+  },
+  statusCardConfirmed: {
+    backgroundColor: "#EEFAF3",
+    borderColor: "#D1F0DE",
+  },
+  statusCardEmpty: {
+    backgroundColor: "#FFF7EA",
+    borderColor: "#F5E2BD",
   },
   statusTextArea: {
     width: "61%",
