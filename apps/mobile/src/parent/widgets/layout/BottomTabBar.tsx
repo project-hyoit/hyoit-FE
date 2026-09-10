@@ -7,7 +7,7 @@ import { IconSymbol } from "@/src/shared/ui";
 const ACTIVE = "#1E90FF";
 const INACTIVE = "#D9D9D9";
 const BG = "#FFFFFF";
-const TAB_HEIGHT = 48;
+const TAB_HEIGHT = 72;
 
 export default function BottomTabBar({
   state,
@@ -17,7 +17,15 @@ export default function BottomTabBar({
   const { bottom } = useSafeAreaInsets();
 
   return (
-    <View style={[styles.frame, { paddingBottom: Math.max(bottom, 6) }]}>
+    <View
+      style={[
+        styles.frame,
+        {
+          height: TAB_HEIGHT + Math.max(bottom, 6),
+          paddingBottom: Math.max(bottom, 6),
+        },
+      ]}
+    >
       {state.routes.map((route, index) => {
         const isFocused = state.index === index;
         const { options } = descriptors[route.key];
