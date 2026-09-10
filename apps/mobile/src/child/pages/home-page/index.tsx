@@ -14,6 +14,9 @@ import {
   useCheckInStore,
 } from "@/src/shared/entities/check-in";
 import { IconSymbol } from "@/src/shared/ui/IconSymbol";
+import avatar01 from "@/src/parent/entities/user/assets/profile-avatars/profile-avatar-01.png";
+import avatar02 from "@/src/parent/entities/user/assets/profile-avatars/profile-avatar-02.png";
+import avatar03 from "@/src/parent/entities/user/assets/profile-avatars/profile-avatar-03.png";
 
 const DATE_FORMATTER = new Intl.DateTimeFormat("ko-KR", {
   month: "long",
@@ -86,6 +89,11 @@ export default function ChildHomePage() {
   const checkInActionLabel = latestSentCheckIn
     ? "안부 다시 보내기"
     : "안부 보내기";
+  const childStatusImage = latestSentCheckIn
+    ? latestSentCheckIn.status === "CONFIRMED"
+      ? avatar03
+      : avatar02
+    : avatar01;
 
   if (!hasHydrated) {
     return <SafeAreaView style={styles.safeArea} edges={["top"]} />;
@@ -146,7 +154,11 @@ export default function ChildHomePage() {
           </View>
 
           <View style={styles.statusVisual}>
-            <Text style={styles.statusVisualText}>♡</Text>
+            <Image
+              source={childStatusImage}
+              style={styles.statusVisualImage}
+              resizeMode="contain"
+            />
           </View>
 
           <View style={styles.statusButton}>
@@ -389,23 +401,16 @@ const styles = StyleSheet.create({
   },
   statusVisual: {
     position: "absolute",
-    right: 28,
-    top: 110,
-    width: 86,
-    height: 64,
-    borderRadius: 22,
-    backgroundColor: "#D8E8FF",
-    borderWidth: 2,
-    borderColor: "#9BBEFF",
+    right: 8,
+    top: 88,
+    width: 140,
+    height: 160,
     alignItems: "center",
     justifyContent: "center",
-    transform: [{ rotate: "8deg" }],
   },
-  statusVisualText: {
-    fontSize: 41,
-    lineHeight: 45,
-    fontWeight: "900",
-    color: "#FFFFFF",
+  statusVisualImage: {
+    width: 110,
+    height: 110,
   },
   statusButton: {
     position: "absolute",
