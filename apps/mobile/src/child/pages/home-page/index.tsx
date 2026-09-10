@@ -194,7 +194,12 @@ export default function ChildHomePage() {
             ) : null}
           </View>
 
-          <View style={styles.statusVisual}>
+          <View
+            style={[
+              styles.statusVisual,
+              visibleStatus === "empty" && styles.statusVisualEmpty,
+            ]}
+          >
             <Image
               source={childStatusImage}
               style={styles.statusVisualImage}
@@ -433,7 +438,7 @@ const styles = StyleSheet.create({
     zIndex: 2,
   },
   statusTextAreaEmpty: {
-    paddingTop: 34,
+    paddingTop: 0,
   },
   statusLabel: {
     fontSize: 15,
@@ -484,6 +489,9 @@ const styles = StyleSheet.create({
     height: 160,
     alignItems: "center",
     justifyContent: "center",
+  },
+  statusVisualEmpty: {
+    top: 142,
   },
   statusVisualImage: {
     width: 110,
