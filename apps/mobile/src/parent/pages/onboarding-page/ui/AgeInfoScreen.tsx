@@ -162,7 +162,10 @@ const s = StyleSheet.create({
     justifyContent: "center",
   },
   pickerContent: {
-    ...StyleSheet.absoluteFillObject,
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
     alignItems: "center",
   },
   pickerOverlay: {
