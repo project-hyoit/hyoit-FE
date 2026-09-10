@@ -111,6 +111,8 @@ export default function MemoryBoard({
                   style={[
                     styles.face,
                     {
+                      width: tileSize,
+                      height: tileSize,
                       opacity: transforms.backOpacity,
                       transform: [
                         { perspective: 800 },
@@ -133,6 +135,8 @@ export default function MemoryBoard({
                   style={[
                     styles.face,
                     {
+                      width: tileSize,
+                      height: tileSize,
                       opacity: transforms.frontOpacity,
                       transform: [
                         { perspective: 800 },
