@@ -133,14 +133,8 @@ export default function ChildHomePage() {
 
           <View style={styles.titleRow}>
             <View style={styles.titleArea}>
-              <Text style={styles.greeting}>{childName}님, 안녕하세요!</Text>
-              <Text style={styles.heroTitle}>
-                오늘도 부모님의 안부를{"\n"}챙겨보세요 😊
-              </Text>
-            </View>
-
-            <View style={styles.personCircle}>
-              <Text style={styles.personCircleText}>🙂</Text>
+              <Text style={styles.greeting}>오늘도 반가워요, {childName}님 😊</Text>
+              <Text style={styles.heroTitle}>부모님의 안부를 함께 챙겨볼까요?</Text>
             </View>
           </View>
         </View>
@@ -308,19 +302,19 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   greeting: {
+    fontSize: 31,
+    lineHeight: 40,
+    fontWeight: "900",
+    color: "#050505",
+    letterSpacing: -0.9,
+  },
+  heroTitle: {
+    marginTop: 10,
     fontSize: 18,
     lineHeight: 25,
     fontWeight: "800",
     color: "#8A8A8A",
     letterSpacing: -0.2,
-  },
-  heroTitle: {
-    marginTop: 10,
-    fontSize: 22,
-    lineHeight: 40,
-    fontWeight: "900",
-    color: "#111111",
-    letterSpacing: -0.7,
   },
   notificationButton: {
     width: 44,
@@ -344,18 +338,6 @@ const styles = StyleSheet.create({
     lineHeight: 14,
     fontWeight: "900",
     color: "#FFFFFF",
-  },
-  personCircle: {
-    width: 132,
-    height: 132,
-    borderRadius: 66,
-    backgroundColor: "#D9EAFF",
-    alignItems: "center",
-    justifyContent: "center",
-    marginLeft: 8,
-  },
-  personCircleText: {
-    fontSize: 45,
   },
   statusCard: {
     height: 316,
