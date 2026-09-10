@@ -22,11 +22,5 @@ const s = StyleSheet.create({
     justifyContent: "center",
     overflow: "hidden",
   },
-  img: {
-    position: "absolute",
-    left: "14%",
-    top: "14%",
-    width: "72%",
-    height: "72%",
-  },
+  img: { width: "72%", height: "72%" },
 });
