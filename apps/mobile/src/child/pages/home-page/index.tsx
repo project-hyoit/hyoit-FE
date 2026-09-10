@@ -272,7 +272,7 @@ const styles = StyleSheet.create({
     gap: 14,
   },
   header: {
-    paddingTop: 14,
+    paddingTop: 0,
     marginBottom: 2,
   },
   headerTopRow: {
