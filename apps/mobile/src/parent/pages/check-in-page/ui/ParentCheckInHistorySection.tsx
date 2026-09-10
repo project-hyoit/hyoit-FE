@@ -16,18 +16,17 @@ export default function ParentCheckInHistorySection({
 }: ParentCheckInHistorySectionProps) {
   return (
     <View style={s.section}>
-      <View style={s.headerRow}>
+      <Pressable
+        style={s.headerRow}
+        onPress={onPressHistory}
+        accessibilityRole="button"
+        accessibilityLabel="안부 기록 보기"
+      >
         <Text style={s.sectionTitle}>주고받은 안부 보기</Text>
-        <Pressable
-          style={s.historyButton}
-          onPress={onPressHistory}
-          hitSlop={10}
-          accessibilityRole="button"
-          accessibilityLabel="안부 기록 보기"
-        >
+        <View style={s.historyButton}>
           <Ionicons name="chevron-forward" size={22} color="#777777" />
-        </Pressable>
-      </View>
+        </View>
+      </Pressable>
       <View style={s.listBox}>
         {items.length === 0 ? (
           <View style={s.emptyBox}>
