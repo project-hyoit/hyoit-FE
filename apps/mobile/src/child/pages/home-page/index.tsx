@@ -182,6 +182,11 @@ export default function ChildHomePage() {
             <Text style={styles.statusTitle}>{checkInStatusTitle}</Text>
             <Text style={styles.statusMessage}>{checkInStatusMessage}</Text>
             <Text style={styles.statusMeta}>{checkInStatusMeta}</Text>
+            {visibleStatus !== "empty" && latestSentCheckIn ? (
+              <Pressable style={styles.detailButton} onPress={moveToCheckIn}>
+                <Text style={styles.detailButtonText}>상세 보기</Text>
+              </Pressable>
+            ) : null}
           </View>
 
           <View style={styles.statusVisual}>
@@ -448,6 +453,20 @@ const styles = StyleSheet.create({
     lineHeight: 21,
     fontWeight: "800",
     color: "#728096",
+  },
+  detailButton: {
+    alignSelf: "flex-start",
+    marginTop: 12,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 7,
+    backgroundColor: "rgba(77, 121, 246, 0.14)",
+  },
+  detailButtonText: {
+    fontSize: 12,
+    lineHeight: 16,
+    fontWeight: "800",
+    color: "#4D79F6",
   },
   statusVisual: {
     position: "absolute",
