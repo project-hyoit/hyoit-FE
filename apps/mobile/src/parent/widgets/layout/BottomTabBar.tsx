@@ -7,7 +7,7 @@ import { IconSymbol } from "@/src/shared/ui";
 const ACTIVE = "#1E90FF";
 const INACTIVE = "#D9D9D9";
 const BG = "#FFFFFF";
-const TAB_HEIGHT = 64;
+const TAB_HEIGHT = 48;
 
 export default function BottomTabBar({
   state,
@@ -51,7 +51,6 @@ export default function BottomTabBar({
             onPress={onPress}
             style={styles.item}
             android_ripple={{ color: "rgba(0,0,0,0.06)" }}
-            hitSlop={8}
             accessibilityRole="button"
             accessibilityState={isFocused ? { selected: true } : undefined}
           >
