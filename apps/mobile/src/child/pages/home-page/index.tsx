@@ -1,6 +1,6 @@
 import { router } from "expo-router";
 import type { ReactNode } from "react";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -54,7 +54,6 @@ const getDday = (date: string) => {
 type ChildStatus = "waiting" | "confirmed" | "empty";
 
 export default function ChildHomePage() {
-  const [previewStatus, setPreviewStatus] = useState<ChildStatus | null>(null);
   const childName = useOnboardingStore((state) => state.name.trim() || "효잇");
   const ddayItems = useDdayStore((state) => state.items);
   const rawCheckIns = useCheckInStore((state) => state.items);
@@ -80,7 +79,7 @@ export default function ChildHomePage() {
       ? "confirmed"
       : "waiting"
     : "empty";
-  const visibleStatus = previewStatus ?? actualStatus;
+  const visibleStatus = actualStatus;
   const checkInStatusTitle = visibleStatus === "confirmed"
     ? "부모님이 안부를 확인했어요"
     : visibleStatus === "waiting"
@@ -148,24 +147,6 @@ export default function ChildHomePage() {
               <Text style={styles.heroTitle}>부모님의 안부를 함께 챙겨볼까요?</Text>
             </View>
           </View>
-        </View>
-
-        <View style={styles.statusPreviewRow}>
-          {([
-            ["waiting", "부모님 미확인"],
-            ["confirmed", "부모님 확인"],
-            ["empty", "보낸 안부 없음"],
-          ] as const).map(([status, label]) => (
-            <Pressable
-              key={status}
-              style={[styles.statusPreviewButton, visibleStatus === status && styles.statusPreviewButtonActive]}
-              onPress={() => setPreviewStatus(status)}
-            >
-              <Text style={[styles.statusPreviewText, visibleStatus === status && styles.statusPreviewTextActive]}>
-                {label}
-              </Text>
-            </Pressable>
-          ))}
         </View>
 
         <Pressable
@@ -319,28 +300,6 @@ const styles = StyleSheet.create({
     paddingTop: 22,
     paddingBottom: 132,
     gap: 14,
-  },
-  statusPreviewRow: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 8,
-  },
-  statusPreviewButton: {
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-    borderRadius: 8,
-    backgroundColor: "#E5E7EB",
-  },
-  statusPreviewButtonActive: {
-    backgroundColor: "#4D79F6",
-  },
-  statusPreviewText: {
-    fontSize: 12,
-    fontWeight: "700",
-    color: "#4B5563",
-  },
-  statusPreviewTextActive: {
-    color: "#FFFFFF",
   },
   header: {
     paddingTop: 0,
