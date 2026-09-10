@@ -81,6 +81,13 @@ export default function ChildHomePage() {
       : "waiting"
     : "empty";
   const visibleStatus = previewStatus ?? actualStatus;
+  const previewCheckIn = latestSentCheckIn ?? (previewStatus && previewStatus !== "empty"
+    ? {
+        message: "오늘도 건강하게 잘 지내고 있어요",
+        createdAt: "2026-09-10T09:30:00.000Z",
+        checkedAt: "2026-09-10T10:15:00.000Z",
+      }
+    : null);
   const checkInStatusTitle = visibleStatus === "confirmed"
     ? "부모님이 안부를 확인했어요"
     : visibleStatus === "waiting"
@@ -89,15 +96,15 @@ export default function ChildHomePage() {
 
   const checkInStatusMessage = visibleStatus === "empty"
     ? "부모님께 가볍게 안부를 보내볼까요?"
-    : latestSentCheckIn
-      ? `“${latestSentCheckIn.message}”`
+    : previewCheckIn
+      ? `“${previewCheckIn.message}”`
       : "";
 
-  const checkInStatusMeta = latestSentCheckIn
-    ? visibleStatus === "confirmed" && latestSentCheckIn.checkedAt
-      ? `${formatCheckInTime(latestSentCheckIn.checkedAt)}에 확인했어요`
+  const checkInStatusMeta = previewCheckIn
+    ? visibleStatus === "confirmed" && previewCheckIn.checkedAt
+      ? `${formatCheckInTime(previewCheckIn.checkedAt)}에 확인했어요`
       : visibleStatus === "waiting"
-        ? `${formatCheckInTime(latestSentCheckIn.createdAt)}에 보냈어요`
+        ? `${formatCheckInTime(previewCheckIn.createdAt)}에 보냈어요`
         : ""
     : "";
   const childStatusImage = {
@@ -182,7 +189,7 @@ export default function ChildHomePage() {
             <Text style={styles.statusTitle}>{checkInStatusTitle}</Text>
             <Text style={styles.statusMessage}>{checkInStatusMessage}</Text>
             <Text style={styles.statusMeta}>{checkInStatusMeta}</Text>
-            {visibleStatus !== "empty" && latestSentCheckIn ? (
+            {visibleStatus !== "empty" && previewCheckIn ? (
               <Pressable style={styles.detailButton} onPress={moveToCheckIn}>
                 <Text style={styles.detailButtonText}>상세 보기</Text>
               </Pressable>
