@@ -14,9 +14,9 @@ import {
   useCheckInStore,
 } from "@/src/shared/entities/check-in";
 import { IconSymbol } from "@/src/shared/ui/IconSymbol";
-import avatar01 from "@/src/parent/entities/user/assets/profile-avatars/profile-avatar-01.png";
-import avatar02 from "@/src/parent/entities/user/assets/profile-avatars/profile-avatar-02.png";
-import avatar03 from "@/src/parent/entities/user/assets/profile-avatars/profile-avatar-03.png";
+import avatar01 from "@/src/shared/assets/profile-avatars/profile-avatar-01.png";
+import avatar02 from "@/src/shared/assets/profile-avatars/profile-avatar-02.png";
+import avatar03 from "@/src/shared/assets/profile-avatars/profile-avatar-03.png";
 
 const DATE_FORMATTER = new Intl.DateTimeFormat("ko-KR", {
   month: "long",

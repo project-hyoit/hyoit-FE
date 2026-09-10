@@ -1,7 +1,7 @@
-import avatar01 from "@/src/parent/entities/user/assets/profile-avatars/profile-avatar-01.png";
-import avatar02 from "@/src/parent/entities/user/assets/profile-avatars/profile-avatar-02.png";
-import avatar03 from "@/src/parent/entities/user/assets/profile-avatars/profile-avatar-03.png";
-import avatar04 from "@/src/parent/entities/user/assets/profile-avatars/profile-avatar-04.png";
+import avatar01 from "@/src/shared/assets/profile-avatars/profile-avatar-01.png";
+import avatar02 from "@/src/shared/assets/profile-avatars/profile-avatar-02.png";
+import avatar03 from "@/src/shared/assets/profile-avatars/profile-avatar-03.png";
+import avatar04 from "@/src/shared/assets/profile-avatars/profile-avatar-04.png";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 
 import { HOME_STATUS_CONTENT, resolveHomeStatusLabel } from "../constants/homeStatus";
