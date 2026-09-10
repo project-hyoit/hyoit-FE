@@ -7,7 +7,7 @@ import { IconSymbol } from "@/src/shared/ui";
 const ACTIVE = "#1E90FF";
 const INACTIVE = "#D9D9D9";
 const BG = "#FFFFFF";
-const TAB_HEIGHT = 100;
+const TAB_HEIGHT = 64;
 
 export default function BottomTabBar({
   state,
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
 
   item: {
     flex: 1,
-    height: 48,
+    height: TAB_HEIGHT,
     alignItems: "center",
     justifyContent: "center",
     paddingHorizontal: 0,
