@@ -105,7 +105,6 @@ const s = StyleSheet.create({
   container: {
     paddingHorizontal: 24,
     paddingTop: 22,
-    paddingBottom: 132,
     gap: 14,
   },
   previewRow: {
