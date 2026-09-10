@@ -104,11 +104,11 @@ export default function ChildHomePage() {
   const checkInActionLabel = visibleStatus === "empty"
     ? "안부 보내기"
     : "안부 다시 보내기";
-  const childStatusImage = latestSentCheckIn
-    ? latestSentCheckIn.status === "CONFIRMED"
-      ? avatar03
-      : avatar02
-    : avatar01;
+  const childStatusImage = {
+    waiting: avatar02,
+    confirmed: avatar03,
+    empty: avatar01,
+  }[visibleStatus];
 
   if (!hasHydrated) {
     return <SafeAreaView style={styles.safeArea} edges={["top"]} />;
