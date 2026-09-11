@@ -6,7 +6,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import { useDdayStore } from "@/src/child/entities/dday";
 import { useOnboardingStore } from "@/src/parent/entities/auth/model/onboarding.store";
-import HyoitLogo from "@/src/parent/assets/login/hyoit_logo_home.png";
+import HyoitLogo from "@/src/shared/assets/hyoit_logo_home.png";
 import {
   formatCheckInTime,
   getCheckInOverview,
@@ -14,6 +14,9 @@ import {
   useCheckInStore,
 } from "@/src/shared/entities/check-in";
 import { IconSymbol } from "@/src/shared/ui/IconSymbol";
+import avatar01 from "@/src/shared/assets/profile-avatars/profile-avatar-01.png";
+import avatar02 from "@/src/shared/assets/profile-avatars/profile-avatar-02.png";
+import avatar03 from "@/src/shared/assets/profile-avatars/profile-avatar-03.png";
 
 const DATE_FORMATTER = new Intl.DateTimeFormat("ko-KR", {
   month: "long",
@@ -48,6 +51,8 @@ const getDday = (date: string) => {
   return `D+${Math.abs(diff)}`;
 };
 
+type ChildStatus = "waiting" | "confirmed" | "empty";
+
 export default function ChildHomePage() {
   const childName = useOnboardingStore((state) => state.name.trim() || "효잇");
   const ddayItems = useDdayStore((state) => state.items);
@@ -69,23 +74,36 @@ export default function ChildHomePage() {
       ? `새 기록 ${newReceivedCheckInCount}개`
       : "새 기록 없음";
 
-  const checkInStatusTitle = latestSentCheckIn
+  const actualStatus: ChildStatus = latestSentCheckIn
     ? latestSentCheckIn.status === "CONFIRMED"
-      ? "부모님이 확인했어요"
-      : "부모님이 아직 확인하지 않았어요"
-    : "최근에 보낸 안부가 없어요";
+      ? "confirmed"
+      : "waiting"
+    : "empty";
+  const visibleStatus = actualStatus;
+  const checkInStatusTitle = visibleStatus === "confirmed"
+    ? "부모님이 안부를 확인했어요"
+    : visibleStatus === "waiting"
+      ? "부모님이 아직 확인하지 않으셨어요"
+      : "아직 보낸 안부가 없어요";
 
-  const checkInStatusMessage = latestSentCheckIn
-    ? `“${latestSentCheckIn.message}”`
-    : "부모님께 안부를 보내보세요";
+  const checkInStatusMessage = visibleStatus === "empty"
+    ? "부모님께 가볍게 안부를 보내볼까요?"
+    : latestSentCheckIn
+      ? `“${latestSentCheckIn.message}”`
+      : "";
 
   const checkInStatusMeta = latestSentCheckIn
-    ? `${formatCheckInTime(latestSentCheckIn.createdAt)}에 보냈어요`
-    : "아래 버튼으로 바로 보낼 수 있어요";
-
-  const checkInActionLabel = latestSentCheckIn
-    ? "안부 다시 보내기"
-    : "안부 보내기";
+    ? visibleStatus === "confirmed" && latestSentCheckIn.checkedAt
+      ? `${formatCheckInTime(latestSentCheckIn.checkedAt)}에 확인했어요`
+      : visibleStatus === "waiting"
+        ? `${formatCheckInTime(latestSentCheckIn.createdAt)}에 보냈어요`
+        : ""
+    : "";
+  const childStatusImage = {
+    waiting: avatar02,
+    confirmed: avatar03,
+    empty: avatar01,
+  }[visibleStatus];
 
   if (!hasHydrated) {
     return <SafeAreaView style={styles.safeArea} edges={["top"]} />;
@@ -125,33 +143,51 @@ export default function ChildHomePage() {
 
           <View style={styles.titleRow}>
             <View style={styles.titleArea}>
-              <Text style={styles.greeting}>{childName}님, 안녕하세요!</Text>
-              <Text style={styles.heroTitle}>
-                오늘도 부모님의 안부를{"\n"}챙겨보세요 😊
-              </Text>
-            </View>
-
-            <View style={styles.personCircle}>
-              <Text style={styles.personCircleText}>🙂</Text>
+              <Text style={styles.greeting}>오늘도 반가워요, {childName}님 😊</Text>
+              <Text style={styles.heroTitle}>부모님의 안부를 함께 챙겨볼까요?</Text>
             </View>
           </View>
         </View>
 
-        <Pressable style={styles.statusCard} onPress={moveToCheckIn}>
-          <View style={styles.statusTextArea}>
+        <Pressable
+          style={[
+            styles.statusCard,
+            visibleStatus === "waiting" && styles.statusCardWaiting,
+            visibleStatus === "confirmed" && styles.statusCardConfirmed,
+            visibleStatus === "empty" && styles.statusCardEmpty,
+          ]}
+          onPress={moveToCheckIn}
+        >
+          <View
+            style={[
+              styles.statusTextArea,
+              visibleStatus === "empty" && styles.statusTextAreaEmpty,
+            ]}
+          >
             <Text style={styles.statusLabel}>부모님 안부 상태</Text>
             <Text style={styles.statusTitle}>{checkInStatusTitle}</Text>
             <Text style={styles.statusMessage}>{checkInStatusMessage}</Text>
             <Text style={styles.statusMeta}>{checkInStatusMeta}</Text>
+            {visibleStatus !== "empty" && latestSentCheckIn ? (
+              <Pressable style={styles.detailButton} onPress={moveToCheckIn}>
+                <Text style={styles.detailButtonText}>상세 보기</Text>
+              </Pressable>
+            ) : null}
           </View>
 
-          <View style={styles.statusVisual}>
-            <Text style={styles.statusVisualText}>♡</Text>
+          <View
+            style={[
+              styles.statusVisual,
+              visibleStatus === "empty" && styles.statusVisualEmpty,
+            ]}
+          >
+            <Image
+              source={childStatusImage}
+              style={styles.statusVisualImage}
+              resizeMode="contain"
+            />
           </View>
 
-          <View style={styles.statusButton}>
-            <Text style={styles.statusButtonText}>{checkInActionLabel}</Text>
-          </View>
         </Pressable>
 
         <Pressable style={styles.primaryAction} onPress={moveToCheckIn}>
@@ -266,11 +302,11 @@ const styles = StyleSheet.create({
     gap: 14,
   },
   header: {
-    paddingTop: 14,
+    paddingTop: 0,
     marginBottom: 2,
   },
   headerTopRow: {
-    height: 60,
+    height: 44,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
@@ -287,7 +323,7 @@ const styles = StyleSheet.create({
   },
   titleRow: {
     minHeight: 150,
-    marginTop: 18,
+    marginTop: 0,
     flexDirection: "row",
     alignItems: "flex-end",
   },
@@ -296,19 +332,19 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   greeting: {
+    fontSize: 31,
+    lineHeight: 40,
+    fontWeight: "900",
+    color: "#050505",
+    letterSpacing: -0.9,
+  },
+  heroTitle: {
+    marginTop: 10,
     fontSize: 18,
     lineHeight: 25,
     fontWeight: "800",
     color: "#8A8A8A",
     letterSpacing: -0.2,
-  },
-  heroTitle: {
-    marginTop: 10,
-    fontSize: 22,
-    lineHeight: 40,
-    fontWeight: "900",
-    color: "#111111",
-    letterSpacing: -0.7,
   },
   notificationButton: {
     width: 44,
@@ -333,18 +369,6 @@ const styles = StyleSheet.create({
     fontWeight: "900",
     color: "#FFFFFF",
   },
-  personCircle: {
-    width: 132,
-    height: 132,
-    borderRadius: 66,
-    backgroundColor: "#D9EAFF",
-    alignItems: "center",
-    justifyContent: "center",
-    marginLeft: 8,
-  },
-  personCircleText: {
-    fontSize: 45,
-  },
   statusCard: {
     height: 316,
     borderRadius: 14,
@@ -356,9 +380,24 @@ const styles = StyleSheet.create({
     paddingRight: 18,
     overflow: "hidden",
   },
+  statusCardWaiting: {
+    backgroundColor: "#EEF5FF",
+    borderColor: "#DCE7FF",
+  },
+  statusCardConfirmed: {
+    backgroundColor: "#EEFAF3",
+    borderColor: "#D1F0DE",
+  },
+  statusCardEmpty: {
+    backgroundColor: "#FFF7EA",
+    borderColor: "#F5E2BD",
+  },
   statusTextArea: {
     width: "61%",
     zIndex: 2,
+  },
+  statusTextAreaEmpty: {
+    paddingTop: 0,
   },
   statusLabel: {
     fontSize: 15,
@@ -387,41 +426,35 @@ const styles = StyleSheet.create({
     fontWeight: "800",
     color: "#728096",
   },
+  detailButton: {
+    alignSelf: "flex-start",
+    marginTop: 12,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 7,
+    backgroundColor: "rgba(77, 121, 246, 0.14)",
+  },
+  detailButtonText: {
+    fontSize: 12,
+    lineHeight: 16,
+    fontWeight: "800",
+    color: "#4D79F6",
+  },
   statusVisual: {
     position: "absolute",
-    right: 28,
-    top: 110,
-    width: 86,
-    height: 64,
-    borderRadius: 22,
-    backgroundColor: "#D8E8FF",
-    borderWidth: 2,
-    borderColor: "#9BBEFF",
-    alignItems: "center",
-    justifyContent: "center",
-    transform: [{ rotate: "8deg" }],
-  },
-  statusVisualText: {
-    fontSize: 41,
-    lineHeight: 45,
-    fontWeight: "900",
-    color: "#FFFFFF",
-  },
-  statusButton: {
-    position: "absolute",
-    left: 22,
-    right: 22,
-    bottom: 20,
-    height: 59,
-    borderRadius: 11,
-    backgroundColor: "#4D79F6",
+    right: 8,
+    top: 88,
+    width: 140,
+    height: 160,
     alignItems: "center",
     justifyContent: "center",
   },
-  statusButtonText: {
-    fontSize: 19,
-    fontWeight: "900",
-    color: "#FFFFFF",
+  statusVisualEmpty: {
+    top: 142,
+  },
+  statusVisualImage: {
+    width: 110,
+    height: 110,
   },
   primaryAction: {
     height: 64,

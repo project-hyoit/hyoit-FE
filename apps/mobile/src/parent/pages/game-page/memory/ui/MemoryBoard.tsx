@@ -111,6 +111,8 @@ export default function MemoryBoard({
                   style={[
                     styles.face,
                     {
+                      width: tileSize,
+                      height: tileSize,
                       opacity: transforms.backOpacity,
                       transform: [
                         { perspective: 800 },
@@ -133,6 +135,8 @@ export default function MemoryBoard({
                   style={[
                     styles.face,
                     {
+                      width: tileSize,
+                      height: tileSize,
                       opacity: transforms.frontOpacity,
                       transform: [
                         { perspective: 800 },
@@ -166,7 +170,9 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   face: {
-    ...StyleSheet.absoluteFillObject,
+    position: "absolute",
+    top: 0,
+    left: 0,
     alignItems: "center",
     justifyContent: "center",
     backfaceVisibility: "hidden",

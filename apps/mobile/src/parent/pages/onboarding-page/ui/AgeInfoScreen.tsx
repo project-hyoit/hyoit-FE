@@ -162,12 +162,15 @@ const s = StyleSheet.create({
     justifyContent: "center",
   },
   pickerContent: {
-    ...StyleSheet.absoluteFillObject,
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
     alignItems: "center",
-    justifyContent: "center",
   },
   pickerOverlay: {
     position: "absolute",
+    top: ITEM_HEIGHT,
     width: "40%",
     height: ITEM_HEIGHT,
     borderRadius: 18,

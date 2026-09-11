@@ -8,6 +8,7 @@ import {
   getLatestSentCheckIn,
   useCheckInStore,
 } from "@/src/shared/entities/check-in";
+import { useUserProfileStore } from "@/src/parent/entities/user";
 import { resolveHomeStatus } from "./resolveHomeStatus";
 import {
   HomeCardGrid,
@@ -17,6 +18,7 @@ import {
 } from "./ui";
 
 export default function HomePage() {
+  const profileName = useUserProfileStore((state) => state.profile.name);
   const rawItems = useCheckInStore((state) => state.items);
   const hasHydrated = useCheckInStore((state) => state.hasHydrated);
   const overview = useMemo(
@@ -46,7 +48,7 @@ export default function HomePage() {
         showsVerticalScrollIndicator={false}
       >
         <HomeHeader
-          name="00"
+          name={profileName}
           hasNotification={pendingReceivedCount > 0}
           onPressNotification={moveToCheckIn}
           onPressSetting={() => {}}
@@ -81,7 +83,6 @@ const s = StyleSheet.create({
   container: {
     paddingHorizontal: 24,
     paddingTop: 22,
-    paddingBottom: 132,
     gap: 14,
   },
 });

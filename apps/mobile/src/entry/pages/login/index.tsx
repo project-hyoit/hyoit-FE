@@ -19,7 +19,7 @@ export default function LoginPage() {
 
   return (
     <View style={styles.safe}>
-      <StatusBar style="dark" translucent backgroundColor="transparent" />
+      <StatusBar style="dark" />
       <View style={styles.container}>
         <View style={styles.brand}>
           <Text style={styles.welcometext}>안녕하세요 👋{"\n"}효잇에 온걸 환영해요</Text>

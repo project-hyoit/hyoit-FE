@@ -17,7 +17,7 @@ type HomeStatusContent = {
 export const HOME_STATUS_CONTENT: Record<HomeStatus, HomeStatusContent> = {
   received: {
     label: null,
-    title: "자녀가\n안부를 보냈어요!",
+    title: "자녀가 안부를\n보냈어요!",
     description: "지금 확인하고\n간단히 답장해볼까요?",
     ctaLabel: "바로 확인하러 가기 >",
     badgeText: "N",

@@ -29,7 +29,6 @@ export default function VerifyLoadingScreen({ codeInput }: VerifyLoadingScreenPr
   }, [codeInput]);
 
   const rotate = useRef(new Animated.Value(0)).current;
-  const pulse = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     Animated.loop(
@@ -41,16 +40,9 @@ export default function VerifyLoadingScreen({ codeInput }: VerifyLoadingScreenPr
       })
     ).start();
 
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(pulse, { toValue: 1, duration: 700, useNativeDriver: true }),
-        Animated.timing(pulse, { toValue: 0, duration: 700, useNativeDriver: true }),
-      ])
-    ).start();
-  }, [rotate, pulse]);
+  }, [rotate]);
 
   const spin = rotate.interpolate({ inputRange: [0, 1], outputRange: ["0deg", "360deg"] });
-  const scale = pulse.interpolate({ inputRange: [0, 1], outputRange: [1, 1.18] });
 
   return (
     <View style={s.wrap}>
