@@ -1,4 +1,5 @@
-import type { BottomTabBarProps } from "@react-navigation/bottom-tabs";
+import { Tabs } from "expo-router";
+import type { ComponentProps } from "react";
 import { Platform, Pressable, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -8,6 +9,10 @@ const ACTIVE = "#1E90FF";
 const INACTIVE = "#D9D9D9";
 const BG = "#FFFFFF";
 const TAB_HEIGHT = 72;
+
+type BottomTabBarProps = Parameters<
+  NonNullable<ComponentProps<typeof Tabs>["tabBar"]>
+>[0];
 
 export default function BottomTabBar({
   state,

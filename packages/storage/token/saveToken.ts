@@ -1,4 +1,4 @@
-import * as SecureStore from "expo-secure-store";
+import { getKeyValueStorage } from "../storage";
 
 const ACCESS_TOKEN_KEY = "accessToken";
 const REFRESH_TOKEN_KEY = "refreshToken";
@@ -7,8 +7,9 @@ export async function saveToken(params: {
   accessToken: string;
   refreshToken: string;
 }) {
+  const storage = getKeyValueStorage();
   await Promise.all([
-    SecureStore.setItemAsync(ACCESS_TOKEN_KEY, params.accessToken),
-    SecureStore.setItemAsync(REFRESH_TOKEN_KEY, params.refreshToken),
+    storage.setItem(ACCESS_TOKEN_KEY, params.accessToken),
+    storage.setItem(REFRESH_TOKEN_KEY, params.refreshToken),
   ]);
 }
