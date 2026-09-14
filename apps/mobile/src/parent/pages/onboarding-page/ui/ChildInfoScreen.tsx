@@ -2,6 +2,7 @@ import { useOnboardingStore } from "@/src/parent/entities/auth/model/onboarding.
 import { router } from "expo-router";
 import { useState, useEffect } from "react";
 import {
+  KeyboardAvoidingView,
   Platform,
   Pressable,
   StyleSheet,
@@ -21,7 +22,12 @@ export default function ChildInfoScreen() {
 
 
   return (
-    <View style={s.wrap}>
+    <KeyboardAvoidingView
+      style={s.keyboardAvoidingView}
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 8 : 0}
+    >
+      <View style={s.wrap}>
       <ProgressBar current={2} total={4} />
       <Text style={s.title} allowFontScaling={false}>
         안녕하세요!{"\n"}성함을 알려주세요
@@ -67,7 +73,8 @@ export default function ChildInfoScreen() {
           </Text>
         </Pressable>
       </View>
-    </View>
+      </View>
+    </KeyboardAvoidingView>
 
   );
 }
@@ -82,6 +89,9 @@ const COLORS = {
 };
 
 const s = StyleSheet.create({
+  keyboardAvoidingView: {
+    flex: 1,
+  },
   wrap: {
     flex: 1,
     backgroundColor: COLORS.bg,
