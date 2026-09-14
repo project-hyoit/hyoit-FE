@@ -2,6 +2,7 @@ import { useOnboardingStore } from "@/src/parent/entities/auth/model/onboarding.
 import { router } from "expo-router";
 import { useState, useEffect } from "react";
 import {
+  Keyboard,
   KeyboardAvoidingView,
   Platform,
   Pressable,
@@ -15,9 +16,25 @@ import ProgressBar from "@/src/ui/ProgressBar";
 
 export default function ChildInfoScreen() {
   const { name, set } = useOnboardingStore();
+  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
+
   useEffect(() => {
     set({ step: 2 });
   }, [set]);
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
+      setIsKeyboardVisible(true);
+    });
+    const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+      setIsKeyboardVisible(false);
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
   const canNext = Boolean(name.trim());
   const [isFocused, setIsFocused] = useState(false);
 
@@ -60,7 +77,7 @@ export default function ChildInfoScreen() {
         />
       </View>
 
-      <View style={s.nextRow}>
+      <View style={[s.nextRow, isKeyboardVisible && s.nextRowWithKeyboard]}>
         <Pressable
           style={({ pressed }) => [
             s.next,
@@ -146,6 +163,10 @@ inputFocused: {
     marginTop: "auto",
     alignItems: "flex-end",
     marginBottom: 64,
+  },
+  nextRowWithKeyboard: {
+    marginTop: 24,
+    marginBottom: 24,
   },
   next: {
     flexDirection: "row",
