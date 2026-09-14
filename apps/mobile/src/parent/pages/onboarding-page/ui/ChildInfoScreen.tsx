@@ -5,6 +5,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   Pressable,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -27,7 +28,11 @@ export default function ChildInfoScreen() {
       behavior={Platform.OS === "ios" ? "padding" : undefined}
       keyboardVerticalOffset={Platform.OS === "ios" ? 8 : 0}
     >
-      <View style={s.wrap}>
+      <ScrollView
+        contentContainerStyle={s.wrap}
+        keyboardShouldPersistTaps="handled"
+        keyboardDismissMode={Platform.OS === "ios" ? "interactive" : "on-drag"}
+      >
       <ProgressBar current={2} total={4} />
       <Text style={s.title} allowFontScaling={false}>
         안녕하세요!{"\n"}성함을 알려주세요
@@ -73,7 +78,7 @@ export default function ChildInfoScreen() {
           </Text>
         </Pressable>
       </View>
-      </View>
+      </ScrollView>
     </KeyboardAvoidingView>
 
   );
@@ -93,7 +98,7 @@ const s = StyleSheet.create({
     flex: 1,
   },
   wrap: {
-    flex: 1,
+    flexGrow: 1,
     backgroundColor: COLORS.bg,
     paddingHorizontal: 24,
     paddingTop: 110,
