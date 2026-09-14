@@ -1,4 +1,5 @@
 import * as SecureStore from "expo-secure-store";
+import { Platform } from "react-native";
 
 interface BrowserStorage {
   getItem: (key: string) => string | null;
@@ -33,4 +34,4 @@ const nativeStorage: KeyValueStorage = {
 };
 
 export const getKeyValueStorage = (): KeyValueStorage =>
-  typeof window === "undefined" ? nativeStorage : webStorage;
+  Platform.OS === "web" ? webStorage : nativeStorage;
