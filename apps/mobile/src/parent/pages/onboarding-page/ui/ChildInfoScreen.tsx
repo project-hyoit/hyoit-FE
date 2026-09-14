@@ -17,20 +17,17 @@ import ProgressBar from "@/src/ui/ProgressBar";
 export default function ChildInfoScreen() {
   const { name, set } = useOnboardingStore();
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
-  const [keyboardHeight, setKeyboardHeight] = useState(0);
 
   useEffect(() => {
     set({ step: 2 });
   }, [set]);
 
   useEffect(() => {
-    const showSubscription = Keyboard.addListener("keyboardDidShow", (event) => {
+    const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
       setIsKeyboardVisible(true);
-      setKeyboardHeight(event.endCoordinates.height);
     });
     const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
       setIsKeyboardVisible(false);
-      setKeyboardHeight(0);
     });
 
     return () => {
@@ -38,6 +35,7 @@ export default function ChildInfoScreen() {
       hideSubscription.remove();
     };
   }, []);
+
   const canNext = Boolean(name.trim());
   const [isFocused, setIsFocused] = useState(false);
 
@@ -50,6 +48,7 @@ export default function ChildInfoScreen() {
     >
       <View style={s.screen}>
         <ScrollView
+          style={s.content}
           contentContainerStyle={s.wrap}
           keyboardShouldPersistTaps="handled"
           keyboardDismissMode={Platform.OS === "ios" ? "interactive" : "on-drag"}
@@ -84,12 +83,7 @@ export default function ChildInfoScreen() {
         </ScrollView>
 
       <View
-        style={[
-          s.nextRow,
-          isKeyboardVisible
-            ? { bottom: keyboardHeight + 16 }
-            : s.nextRowWithoutKeyboard,
-        ]}
+        style={[s.nextRow, isKeyboardVisible && s.nextRowWithKeyboard]}
       >
         <Pressable
           style={({ pressed }) => [
@@ -128,6 +122,10 @@ const s = StyleSheet.create({
     flex: 1,
   },
   screen: {
+    flex: 1,
+    backgroundColor: COLORS.bg,
+  },
+  content: {
     flex: 1,
   },
   wrap: {
@@ -176,13 +174,12 @@ inputFocused: {
 },
 
   nextRow: {
-    position: "absolute",
-    left: 24,
-    right: 24,
     alignItems: "flex-end",
+    marginHorizontal: 24,
+    marginBottom: 64,
   },
-  nextRowWithoutKeyboard: {
-    bottom: 64,
+  nextRowWithKeyboard: {
+    marginBottom: 32,
   },
   next: {
     flexDirection: "row",
