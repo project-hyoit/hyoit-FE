@@ -17,17 +17,20 @@ import ProgressBar from "@/src/ui/ProgressBar";
 export default function ChildInfoScreen() {
   const { name, set } = useOnboardingStore();
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
 
   useEffect(() => {
     set({ step: 2 });
   }, [set]);
 
   useEffect(() => {
-    const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
+    const showSubscription = Keyboard.addListener("keyboardDidShow", (event) => {
       setIsKeyboardVisible(true);
+      setKeyboardHeight(event.endCoordinates.height);
     });
     const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
       setIsKeyboardVisible(false);
+      setKeyboardHeight(0);
     });
 
     return () => {
@@ -45,11 +48,12 @@ export default function ChildInfoScreen() {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       keyboardVerticalOffset={Platform.OS === "ios" ? 8 : 0}
     >
-      <ScrollView
-        contentContainerStyle={s.wrap}
-        keyboardShouldPersistTaps="handled"
-        keyboardDismissMode={Platform.OS === "ios" ? "interactive" : "on-drag"}
-      >
+      <View style={s.screen}>
+        <ScrollView
+          contentContainerStyle={s.wrap}
+          keyboardShouldPersistTaps="handled"
+          keyboardDismissMode={Platform.OS === "ios" ? "interactive" : "on-drag"}
+        >
       <ProgressBar current={2} total={4} />
       <Text style={s.title} allowFontScaling={false}>
         안녕하세요!{"\n"}성함을 알려주세요
@@ -77,7 +81,16 @@ export default function ChildInfoScreen() {
         />
       </View>
 
-      <View style={[s.nextRow, isKeyboardVisible && s.nextRowWithKeyboard]}>
+        </ScrollView>
+
+      <View
+        style={[
+          s.nextRow,
+          isKeyboardVisible
+            ? { bottom: keyboardHeight + 16 }
+            : s.nextRowWithoutKeyboard,
+        ]}
+      >
         <Pressable
           style={({ pressed }) => [
             s.next,
@@ -95,7 +108,7 @@ export default function ChildInfoScreen() {
           </Text>
         </Pressable>
       </View>
-      </ScrollView>
+      </View>
     </KeyboardAvoidingView>
 
   );
@@ -112,6 +125,9 @@ const COLORS = {
 
 const s = StyleSheet.create({
   keyboardAvoidingView: {
+    flex: 1,
+  },
+  screen: {
     flex: 1,
   },
   wrap: {
@@ -160,13 +176,13 @@ inputFocused: {
 },
 
   nextRow: {
-    marginTop: "auto",
+    position: "absolute",
+    left: 24,
+    right: 24,
     alignItems: "flex-end",
-    marginBottom: 64,
   },
-  nextRowWithKeyboard: {
-    marginTop: 24,
-    marginBottom: 24,
+  nextRowWithoutKeyboard: {
+    bottom: 64,
   },
   next: {
     flexDirection: "row",
