@@ -1,4 +1,4 @@
-import mainProfileImg from "@/assets/profileimg/mainprofile.png";
+import mainProfileImg from "@/assets/images/profile-avatars/mainprofile.png";
 import { useOnboardingStore } from "@/src/shared/entities/onboarding/model/onboarding.store";
 import { useUserProfileStore } from "@/src/parent/entities/user";
 import { IconSymbol } from "@/src/shared/ui/IconSymbol";

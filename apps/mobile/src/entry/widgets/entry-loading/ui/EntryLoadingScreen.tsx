@@ -23,7 +23,7 @@ export default function EntryLoadingScreen() {
 
 	return (
 		<View style={s.wrap}>
-			<Image source={require("@/assets/login/login_logo.png")} style={s.logoSvg} />
+			<Image source={require("@/assets/images/login/login_logo.png")} style={s.logoSvg} />
 		</View>
 	);
 }

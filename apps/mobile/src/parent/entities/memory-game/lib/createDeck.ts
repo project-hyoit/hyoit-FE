@@ -1,4 +1,4 @@
-import type { FruitKey } from "@/src/parent/shared/assets/fruits";
+import type { FruitKey } from "@/src/parent/entities/memory-game/lib/fruits";
 import type { Deck } from "../model/types";
 
 export function createDeck(base: readonly FruitKey[], seed: number): Deck {

@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useWindowDimensions } from "react-native";
-import { MEMORY_GAME } from "./../../config/constants";
+import { MEMORY_GAME } from "../model/constants";
 export const useGridLayout = (cols: number) => {
   const { width } = useWindowDimensions();
 

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Animated, Easing } from "react-native";
-import { MEMORY_GAME } from "../../config/constants";
+import { MEMORY_GAME } from "../model/constants";
 
 export const useCardFlip = (
   itemCount: number,

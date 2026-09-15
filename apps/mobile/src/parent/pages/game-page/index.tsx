@@ -2,7 +2,7 @@ import { router } from "expo-router";
 import { ScrollView, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import Header from "../../shared/ui/section/header";
+import Header from "./ui/GameHeader";
 import { GameEntryCard } from "./memory/ui";
 export default function GamePage() {
   return (

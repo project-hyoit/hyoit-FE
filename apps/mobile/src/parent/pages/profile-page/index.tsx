@@ -9,7 +9,7 @@ import LogoutModal from "@/src/shared/ui/profile/LogoutModal";
 import { useCheckInStore } from "@/src/shared/entities/check-in";
 import { IconSymbol } from "@/src/shared/ui/IconSymbol";
 import { ChildList, mockChildUsers, ProfileSection, useUserProfileStore } from "../../entities/user";
-import ProfileSettings from "./ui/ProfileSettings";
+import ProfileSettings from "@/src/shared/ui/profile/ProfileSettings";
 
 export default function ProfilePage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

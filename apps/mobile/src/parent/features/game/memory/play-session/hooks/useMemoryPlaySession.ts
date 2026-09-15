@@ -4,8 +4,8 @@ import {
   levelLabel,
   levelMaxHp,
 } from "@/src/parent/entities/memory-game/lib/levelConfig";
-import { FRUITS, type FruitKey } from "@/src/parent/shared/assets/fruits";
-import { useCountdown } from "@/src/parent/shared/lib/hooks/useCountdown";
+import { FRUITS, type FruitKey } from "@/src/parent/entities/memory-game/lib/fruits";
+import { useCountdown } from "@/src/parent/entities/memory-game/lib/useCountdown";
 import { router } from "expo-router";
 import React, { useEffect, useMemo, useState } from "react";
 import type { PlaySessionReturn } from "../model/session";

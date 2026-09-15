@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import mainProfileImg from "@/assets/profileimg/mainprofile.png";
+import mainProfileImg from "@/assets/images/profile-avatars/mainprofile.png";
 import { useOnboardingStore } from "@/src/shared/entities/onboarding/model/onboarding.store";
 import ProfileMenu from "@/src/shared/ui/profile/ProfileMenu";
 import LogoutModal from "@/src/shared/ui/profile/LogoutModal";

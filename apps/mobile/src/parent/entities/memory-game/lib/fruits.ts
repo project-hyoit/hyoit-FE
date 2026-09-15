@@ -1,13 +1,13 @@
 import type { ImageSourcePropType } from "react-native";
 
-import appleImg from "@/assets/fruits/apple.jpg";
-import bananaImg from "@/assets/fruits/banana.jpg";
-import cherryImg from "@/assets/fruits/cherry.jpg";
-import grapeImg from "@/assets/fruits/grape.jpg";
-import lemonImg from "@/assets/fruits/lemon.jpg";
-import orangeImg from "@/assets/fruits/orange.jpg";
-import peachImg from "@/assets/fruits/peach.jpg";
-import persimmonImg from "@/assets/fruits/persimmon.jpg";
+import appleImg from "@/assets/images/fruits/apple.jpg";
+import bananaImg from "@/assets/images/fruits/banana.jpg";
+import cherryImg from "@/assets/images/fruits/cherry.jpg";
+import grapeImg from "@/assets/images/fruits/grape.jpg";
+import lemonImg from "@/assets/images/fruits/lemon.jpg";
+import orangeImg from "@/assets/images/fruits/orange.jpg";
+import peachImg from "@/assets/images/fruits/peach.jpg";
+import persimmonImg from "@/assets/images/fruits/persimmon.jpg";
 
 export const FRUITS = [
   "banana",
