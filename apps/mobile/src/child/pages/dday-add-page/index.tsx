@@ -14,7 +14,13 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import { useDdayStore } from "@/src/child/entities/dday";
+import {
+  createCalendarDays,
+  getDateKey,
+  toCalendarRows,
+  toDate,
+  useDdayStore,
+} from "@/src/child/entities/dday";
 import { IconSymbol } from "@/src/shared/ui/IconSymbol";
 
 const NAME_LIMIT = 20;
@@ -24,19 +30,6 @@ const MONTH_FORMATTER = new Intl.DateTimeFormat("ko-KR", {
   month: "long",
 });
 
-const getDateKey = (date: Date) => {
-  return [
-    date.getFullYear(),
-    String(date.getMonth() + 1).padStart(2, "0"),
-    String(date.getDate()).padStart(2, "0"),
-  ].join("-");
-};
-
-const toDate = (value: string) => {
-  const [year, month, day] = value.split("-").map(Number);
-  return new Date(year, month - 1, day);
-};
-
 const formatSelectedDate = (value: string) => {
   const date = toDate(value);
   const weekday = WEEKDAYS[date.getDay()];
@@ -45,31 +38,6 @@ const formatSelectedDate = (value: string) => {
     2,
     "0",
   )}. ${String(date.getDate()).padStart(2, "0")} (${weekday})`;
-};
-
-const createCalendarDays = (monthDate: Date) => {
-  const year = monthDate.getFullYear();
-  const month = monthDate.getMonth();
-  const firstDate = new Date(year, month, 1);
-  const firstDay = firstDate.getDay();
-  const start = new Date(year, month, 1 - firstDay);
-
-  return Array.from({ length: 42 }, (_, index) => {
-    const date = new Date(start);
-    date.setDate(start.getDate() + index);
-
-    return {
-      date,
-      key: getDateKey(date),
-      isCurrentMonth: date.getMonth() === month,
-    };
-  });
-};
-
-const toCalendarRows = <T,>(days: T[]) => {
-  return Array.from({ length: Math.ceil(days.length / 7) }, (_, index) =>
-    days.slice(index * 7, index * 7 + 7),
-  );
 };
 
 export default function ChildDdayAddPage() {

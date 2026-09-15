@@ -9,7 +9,8 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "lint": "expo lint",
-    "test:check-in": "node --experimental-strip-types --test src/shared/entities/check-in/lib/*.test.mjs src/parent/pages/home-page/*.test.mjs"
+    "test:check-in": "node --experimental-strip-types --test src/shared/entities/check-in/lib/*.test.mjs src/parent/pages/home-page/*.test.mjs",
+    "test:dday": "node --experimental-strip-types --test src/child/entities/dday/lib/*.test.mjs"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.2",

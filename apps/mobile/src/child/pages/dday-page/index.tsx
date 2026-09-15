@@ -11,7 +11,15 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import { useDdayStore, type DdayItem } from "@/src/child/entities/dday";
+import {
+  createCalendarDays,
+  getDateKey,
+  getDday,
+  toCalendarRows,
+  toDate,
+  useDdayStore,
+  type DdayItem,
+} from "@/src/child/entities/dday";
 import { IconSymbol } from "@/src/shared/ui/IconSymbol";
 
 const WEEKDAYS = ["일", "월", "화", "수", "목", "금", "토"];
@@ -23,70 +31,6 @@ const DATE_FORMATTER = new Intl.DateTimeFormat("ko-KR", {
   day: "numeric",
   weekday: "short",
 });
-
-const toDate = (value: string) => {
-  const [year, month, day] = value.split("-").map(Number);
-  return new Date(year, month - 1, day);
-};
-
-const getDday = (date: string) => {
-  const target = toDate(date);
-  const today = new Date();
-  const startOfTarget = new Date(
-    target.getFullYear(),
-    target.getMonth(),
-    target.getDate(),
-  );
-  const startOfToday = new Date(
-    today.getFullYear(),
-    today.getMonth(),
-    today.getDate(),
-  );
-  const diff = Math.ceil(
-    (startOfTarget.getTime() - startOfToday.getTime()) / 86400000,
-  );
-
-  if (diff === 0) return "D-Day";
-  if (diff > 0) return `D-${diff}`;
-  return `D+${Math.abs(diff)}`;
-};
-
-const createCalendarDays = (monthDate: Date) => {
-  const year = monthDate.getFullYear();
-  const month = monthDate.getMonth();
-  const firstDate = new Date(year, month, 1);
-  const firstDay = firstDate.getDay();
-  const start = new Date(year, month, 1 - firstDay);
-
-  return Array.from({ length: 42 }, (_, index) => {
-    const date = new Date(start);
-    date.setDate(start.getDate() + index);
-
-    return {
-      date,
-      key: [
-        date.getFullYear(),
-        String(date.getMonth() + 1).padStart(2, "0"),
-        String(date.getDate()).padStart(2, "0"),
-      ].join("-"),
-      isCurrentMonth: date.getMonth() === month,
-    };
-  });
-};
-
-const getDateKey = (date: Date) => {
-  return [
-    date.getFullYear(),
-    String(date.getMonth() + 1).padStart(2, "0"),
-    String(date.getDate()).padStart(2, "0"),
-  ].join("-");
-};
-
-const toCalendarRows = <T,>(days: T[]) => {
-  return Array.from({ length: Math.ceil(days.length / 7) }, (_, index) =>
-    days.slice(index * 7, index * 7 + 7),
-  );
-};
 
 export default function ChildDdayPage() {
   const items = useDdayStore((state) => state.items);
