@@ -1,5 +1,5 @@
 import mainProfileImg from "@/assets/profileimg/mainprofile.png";
-import { useOnboardingStore } from "@/src/parent/entities/auth/model/onboarding.store";
+import { useOnboardingStore } from "@/src/shared/entities/onboarding/model/onboarding.store";
 import { useUserProfileStore } from "@/src/parent/entities/user";
 import { IconSymbol } from "@/src/shared/ui/IconSymbol";
 import * as ImagePicker from "expo-image-picker";

@@ -12,10 +12,10 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import mainProfileImg from "@/assets/profileimg/mainprofile.png";
-import { useOnboardingStore } from "@/src/parent/entities/auth/model/onboarding.store";
-import ProfileMenu from "@/src/parent/features/edit-profile/ui/ProfileMenu";
-import LogoutModal from "@/src/parent/features/logout/ui/LogoutModal";
-import ProfileSettings from "@/src/parent/pages/profile-page/ui/ProfileSettings";
+import { useOnboardingStore } from "@/src/shared/entities/onboarding/model/onboarding.store";
+import ProfileMenu from "@/src/shared/ui/profile/ProfileMenu";
+import LogoutModal from "@/src/shared/ui/profile/LogoutModal";
+import ProfileSettings from "@/src/shared/ui/profile/ProfileSettings";
 import { useCheckInStore } from "@/src/shared/entities/check-in";
 import { IconSymbol } from "@/src/shared/ui/IconSymbol";
 

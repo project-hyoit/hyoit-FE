@@ -8,7 +8,7 @@ import {
   View,
   TextInput,
 } from "react-native";
-import ProgressBar from "../../../../ui/ProgressBar";
+import ProgressBar from "../../../../shared/ui/ProgressBar";
 import { IconSymbol } from "@/src/shared/ui";
 
 export default function VerifyCodeScreen() {

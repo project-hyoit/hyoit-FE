@@ -1,4 +1,4 @@
-import { useOnboardingStore } from "@/src/parent/entities/auth/model/onboarding.store";
+import { useOnboardingStore } from "@/src/shared/entities/onboarding/model/onboarding.store";
 import { router } from "expo-router";
 import { useState, useEffect } from "react";
 import {
@@ -12,7 +12,7 @@ import {
   TextInput,
   View,
 } from "react-native";
-import ProgressBar from "@/src/ui/ProgressBar";
+import ProgressBar from "@/src/shared/ui/ProgressBar";
 
 export default function ChildInfoScreen() {
   const { name, set } = useOnboardingStore();

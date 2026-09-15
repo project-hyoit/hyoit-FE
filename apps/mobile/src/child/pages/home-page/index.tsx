@@ -5,7 +5,7 @@ import { Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-nati
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { useDdayStore } from "@/src/child/entities/dday";
-import { useOnboardingStore } from "@/src/parent/entities/auth/model/onboarding.store";
+import { useOnboardingStore } from "@/src/shared/entities/onboarding/model/onboarding.store";
 import HyoitLogo from "@/src/shared/assets/hyoit_logo_home.png";
 import {
   formatCheckInTime,

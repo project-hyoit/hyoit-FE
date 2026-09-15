@@ -9,8 +9,8 @@ import youngWomanImg from "@/src/entry/assets/images/choose/youngwoman.png";
 
 import { BG, PRIMARY, TEXT } from "../../shared/config/theme";
 import { navigateToTarget } from "../../shared/lib/router";
-import ProgressBar from "../../../ui/ProgressBar";
-import { useOnboardingStore } from "@/src/parent/entities/auth/model/onboarding.store";
+import ProgressBar from "../../../shared/ui/ProgressBar";
+import { useOnboardingStore } from "@/src/shared/entities/onboarding/model/onboarding.store";
 
 type SelectedRole = "parent" | "child" | null;
 
