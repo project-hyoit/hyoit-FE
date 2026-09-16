@@ -1,4 +1,4 @@
-import { BG } from "@/src/parent/shared/config/theme";
+import { APP_BACKGROUND as BG } from "@/src/shared/theme/colors";
 import BottomTray from "@/src/parent/pages/game-page/memory/ui/BottomTray";
 import MemoryBoard from "@/src/parent/pages/game-page/memory/ui/MemoryBoard";
 import PlayHeader from "@/src/parent/pages/game-page/memory/ui/PlayHeader";

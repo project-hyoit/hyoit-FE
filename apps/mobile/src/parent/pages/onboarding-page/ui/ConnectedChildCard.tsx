@@ -1,4 +1,4 @@
-import mainProfileImg from "@/assets/profileimg/mainprofile.png";
+import mainProfileImg from "@/assets/images/profile-avatars/mainprofile.png";
 import { Image, StyleSheet, Text, View } from "react-native";
 
 interface Props {

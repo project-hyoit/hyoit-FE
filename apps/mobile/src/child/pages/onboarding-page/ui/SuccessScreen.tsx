@@ -1,15 +1,14 @@
 import { useAuthStore } from "@hyoit/auth";
 import { router } from "expo-router";
 import { Platform, Pressable, StyleSheet, Text, View } from "react-native";
-import ProgressBar from "../../../../ui/ProgressBar";
+import ProgressBar from "../../../../shared/ui/ProgressBar";
 import { useEffect } from "react";
-import { useOnboardingStore } from "@/src/parent/entities/auth/model/onboarding.store";
+import { useOnboardingStore } from "@/src/shared/entities/onboarding/model/onboarding.store";
 import { IconSymbol } from "@/src/shared/ui";
-import { mockUserProfile } from "@/src/parent/entities/user/model/mock";
 
 export default function SuccessScreen() {
   const { setChildOnboarded } = useAuthStore();
-  const parent = mockUserProfile;
+  const parentName = useOnboardingStore((s) => s.name);
   const setStore = useOnboardingStore((s) => s.set);
 
   useEffect(() => {
@@ -32,7 +31,7 @@ export default function SuccessScreen() {
       </View>
       <View style={s.infoContainer}>
         <Text style={s.infoTitle}>연결된 가족</Text>
-        <Text style={s.infoSubtitle}>{parent.name}님</Text>
+        <Text style={s.infoSubtitle}>{parentName}님</Text>
         <Text style={s.infoDescription}>가족이 정상적으로 등록되었어요.</Text>
       </View>
       <View style={s.warningContainer}>

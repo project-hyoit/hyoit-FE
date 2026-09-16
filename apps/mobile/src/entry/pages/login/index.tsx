@@ -4,7 +4,7 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import kakaoIcon from "@/src/entry/assets/images/kakao_icon.png";
+import kakaoIcon from "@/assets/images/kakao_icon.png";
 import { BG, SUBTEXT } from "../../shared/config/theme";
 import { navigateToTarget } from "../../shared/lib/router";
 

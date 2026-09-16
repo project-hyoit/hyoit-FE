@@ -1,4 +1,4 @@
-import { FruitKey } from "@/src/parent/shared/assets/fruits";
+import { FruitKey } from "@/src/parent/entities/memory-game/lib/fruits";
 
 export type Card = {
   id: string;

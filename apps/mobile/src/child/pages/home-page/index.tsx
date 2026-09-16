@@ -4,8 +4,8 @@ import { useMemo } from "react";
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import { useDdayStore } from "@/src/child/entities/dday";
-import { useOnboardingStore } from "@/src/parent/entities/auth/model/onboarding.store";
+import { getDday, toDate, useDdayStore } from "@/src/child/entities/dday";
+import { useOnboardingStore } from "@/src/shared/entities/onboarding/model/onboarding.store";
 import HyoitLogo from "@/src/shared/assets/hyoit_logo_home.png";
 import {
   formatCheckInTime,
@@ -23,33 +23,6 @@ const DATE_FORMATTER = new Intl.DateTimeFormat("ko-KR", {
   day: "numeric",
   weekday: "short",
 });
-
-const toDate = (value: string) => {
-  const [year, month, day] = value.split("-").map(Number);
-  return new Date(year, month - 1, day);
-};
-
-const getDday = (date: string) => {
-  const target = toDate(date);
-  const today = new Date();
-  const startOfTarget = new Date(
-    target.getFullYear(),
-    target.getMonth(),
-    target.getDate(),
-  );
-  const startOfToday = new Date(
-    today.getFullYear(),
-    today.getMonth(),
-    today.getDate(),
-  );
-  const diff = Math.ceil(
-    (startOfTarget.getTime() - startOfToday.getTime()) / 86400000,
-  );
-
-  if (diff === 0) return "D-Day";
-  if (diff > 0) return `D-${diff}`;
-  return `D+${Math.abs(diff)}`;
-};
 
 type ChildStatus = "waiting" | "confirmed" | "empty";
 

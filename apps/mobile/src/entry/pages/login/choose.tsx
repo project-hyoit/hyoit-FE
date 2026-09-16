@@ -2,15 +2,15 @@ import { useChooseRoleAction } from "@hyoit/auth";
 import { useState, useEffect } from "react";
 import { Image, Pressable, StyleSheet, Text, View} from "react-native";
 
-import oldManImg from "@/src/entry/assets/images/choose/oldman.png";
-import oldWomanImg from "@/src/entry/assets/images/choose/oldwoman.png";
-import youngManImg from "@/src/entry/assets/images/choose/youngman.png";
-import youngWomanImg from "@/src/entry/assets/images/choose/youngwoman.png";
+import oldManImg from "@/assets/images/role-selection/oldman.png";
+import oldWomanImg from "@/assets/images/role-selection/oldwoman.png";
+import youngManImg from "@/assets/images/role-selection/youngman.png";
+import youngWomanImg from "@/assets/images/role-selection/youngwoman.png";
 
 import { BG, PRIMARY, TEXT } from "../../shared/config/theme";
 import { navigateToTarget } from "../../shared/lib/router";
-import ProgressBar from "../../../ui/ProgressBar";
-import { useOnboardingStore } from "@/src/parent/entities/auth/model/onboarding.store";
+import ProgressBar from "../../../shared/ui/ProgressBar";
+import { useOnboardingStore } from "@/src/shared/entities/onboarding/model/onboarding.store";
 
 type SelectedRole = "parent" | "child" | null;
 

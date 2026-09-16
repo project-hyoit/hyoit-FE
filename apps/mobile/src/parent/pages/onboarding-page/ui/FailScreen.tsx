@@ -1,9 +1,9 @@
 import { useAuthStore } from "@hyoit/auth";
 import { router } from "expo-router";
 import { Platform, Pressable, StyleSheet, Text, View } from "react-native";
-import ProgressBar from "../../../../ui/ProgressBar";
+import ProgressBar from "../../../../shared/ui/ProgressBar";
 import { useEffect } from "react";
-import { useOnboardingStore } from "@/src/parent/entities/auth/model/onboarding.store";
+import { useOnboardingStore } from "@/src/shared/entities/onboarding/model/onboarding.store";
 import { IconSymbol } from "@/src/shared/ui";
 
 export default function FailScreen() {

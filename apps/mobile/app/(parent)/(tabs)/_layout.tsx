@@ -1,4 +1,4 @@
-import { BottomTabBar } from "@/src/parent/widgets/layout";
+import BottomTabBar from "@/src/shared/ui/BottomTabBar";
 import { IconSymbol } from "@/src/shared/ui/IconSymbol";
 import { Tabs } from "expo-router";
 

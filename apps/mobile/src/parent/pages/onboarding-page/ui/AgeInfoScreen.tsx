@@ -1,4 +1,4 @@
-import { useOnboardingStore } from "@/src/parent/entities/auth/model/onboarding.store";
+import { useOnboardingStore } from "@/src/shared/entities/onboarding/model/onboarding.store";
 import { router } from "expo-router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
@@ -9,7 +9,7 @@ import {
   Text,
   View,
 } from "react-native";
-import ProgressBar from "../../../../ui/ProgressBar";
+import ProgressBar from "../../../../shared/ui/ProgressBar";
 
 const MIN_AGE = 1;
 const MAX_AGE = 100;

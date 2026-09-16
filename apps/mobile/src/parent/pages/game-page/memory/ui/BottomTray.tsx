@@ -1,4 +1,4 @@
-import { fruitSrc, type FruitKey } from "@/src/parent/shared/assets/fruits";
+import { fruitSrc, type FruitKey } from "@/src/parent/entities/memory-game/lib/fruits";
 import { useEffect, useRef } from "react";
 import {
   Animated,

@@ -1,4 +1,5 @@
 import type { UserRole } from "@hyoit/types";
+import { getKeyValueStorage } from "@hyoit/storage";
 import { create } from "zustand";
 import { createJSONStorage, persist, type StateStorage } from "zustand/middleware";
 
@@ -17,18 +18,15 @@ interface AuthState {
   resetAuth: () => void;
 }
 
-const secureStoreStorage: StateStorage = {
+const authStorage: StateStorage = {
   async getItem(name) {
-    const SecureStore = await import("expo-secure-store");
-    return SecureStore.getItemAsync(name);
+    return getKeyValueStorage().getItem(name);
   },
   async setItem(name, value) {
-    const SecureStore = await import("expo-secure-store");
-    await SecureStore.setItemAsync(name, value);
+    await getKeyValueStorage().setItem(name, value);
   },
   async removeItem(name) {
-    const SecureStore = await import("expo-secure-store");
-    await SecureStore.deleteItemAsync(name);
+    await getKeyValueStorage().removeItem(name);
   },
 };
 
@@ -57,7 +55,7 @@ export const useAuthStore = create<AuthState>()(
     }),
     {
       name: "hyoit-auth-state",
-      storage: createJSONStorage(() => secureStoreStorage),
+      storage: createJSONStorage(() => authStorage),
       skipHydration: true,
       partialize: ({ role, hasParentOnboarded, hasChildOnboarded }) => ({
         role,

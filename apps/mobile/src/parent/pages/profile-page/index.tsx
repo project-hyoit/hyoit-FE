@@ -4,12 +4,12 @@ import { useState } from "react";
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import ProfileMenu from "@/src/parent/features/edit-profile/ui/ProfileMenu";
-import LogoutModal from "@/src/parent/features/logout/ui/LogoutModal";
+import ProfileMenu from "@/src/shared/ui/profile/ProfileMenu";
+import LogoutModal from "@/src/shared/ui/profile/LogoutModal";
 import { useCheckInStore } from "@/src/shared/entities/check-in";
 import { IconSymbol } from "@/src/shared/ui/IconSymbol";
 import { ChildList, mockChildUsers, ProfileSection, useUserProfileStore } from "../../entities/user";
-import ProfileSettings from "./ui/ProfileSettings";
+import ProfileSettings from "@/src/shared/ui/profile/ProfileSettings";
 
 export default function ProfilePage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

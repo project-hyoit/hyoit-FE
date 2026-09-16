@@ -1,4 +1,4 @@
-import mainProfileImg from "@/assets/profileimg/mainprofile.png";
+import mainProfileImg from "@/assets/images/profile-avatars/mainprofile.png";
 import { IconSymbol } from "@/src/shared/ui/IconSymbol";
 import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 

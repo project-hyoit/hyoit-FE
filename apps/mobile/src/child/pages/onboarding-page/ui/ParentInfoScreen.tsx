@@ -8,8 +8,8 @@ import {
   TextInput,
   View,
 } from "react-native";
-import ProgressBar from "../../../../ui/ProgressBar";
-import { useOnboardingStore } from "@/src/parent/entities/auth/model/onboarding.store";
+import ProgressBar from "../../../../shared/ui/ProgressBar";
+import { useOnboardingStore } from "@/src/shared/entities/onboarding/model/onboarding.store";
 
 export default function ParentInfoScreen() {
   const { name, set } = useOnboardingStore();
