@@ -1,0 +1,15 @@
+{
+  "name": "@hyoit/api",
+  "version": "0.0.0",
+  "private": true,
+  "main": "index.ts",
+  "types": "index.ts",
+  "scripts": {
+    "test": "node --experimental-strip-types --test http/*.test.mjs"
+  },
+  "dependencies": {
+    "@hyoit/storage": "workspace:*",
+    "@hyoit/types": "workspace:*",
+    "axios": "^1.11.0"
+  }
+}

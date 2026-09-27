@@ -9,6 +9,8 @@
     "paths": {
       "@hyoit/auth": ["packages/auth/index.ts"],
       "@hyoit/auth/*": ["packages/auth/*"],
+      "@hyoit/api": ["packages/api/index.ts"],
+      "@hyoit/api/*": ["packages/api/*"],
       "@hyoit/storage": ["packages/storage/index.ts"],
       "@hyoit/storage/*": ["packages/storage/*"],
       "@hyoit/types": ["packages/types/index.ts"],
