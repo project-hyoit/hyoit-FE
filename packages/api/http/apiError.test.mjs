@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { AxiosError } from "axios";
+import { AxiosError, CanceledError } from "axios";
 import { normalizeApiError } from "./apiError.ts";
 
 test("normalizes backend http errors", () => {
@@ -69,6 +69,15 @@ test("classifies response-less errors as network errors", () => {
 
   assert.equal(normalized.kind, "NETWORK");
   assert.equal(normalized.status, undefined);
+});
+
+test("classifies canceled requests separately from network errors", () => {
+  const canceled = new CanceledError("aborted");
+  const normalized = normalizeApiError(canceled);
+
+  assert.equal(normalized.kind, "CANCELED");
+  assert.equal(normalized.code, "ERR_CANCELED");
+  assert.equal(normalized.cause, canceled);
 });
 
 test("wraps unknown values as unknown errors", () => {

@@ -1,6 +1,12 @@
 import axios from "axios";
 
-export const API_ERROR_KINDS = ["HTTP", "TIMEOUT", "NETWORK", "UNKNOWN"] as const;
+export const API_ERROR_KINDS = [
+  "HTTP",
+  "TIMEOUT",
+  "NETWORK",
+  "CANCELED",
+  "UNKNOWN",
+] as const;
 
 export type ApiErrorKind = (typeof API_ERROR_KINDS)[number];
 
@@ -69,11 +75,13 @@ export function normalizeApiError(error: unknown): ApiError {
   const responseData = error.response?.data;
   const payload = isRecord(responseData) ? responseData : undefined;
   const hasResponse = Boolean(error.response);
-  const kind: ApiErrorKind = hasResponse
-    ? "HTTP"
-    : isTimeoutError(error)
-      ? "TIMEOUT"
-      : "NETWORK";
+  const kind: ApiErrorKind = axios.isCancel(error)
+    ? "CANCELED"
+    : hasResponse
+      ? "HTTP"
+      : isTimeoutError(error)
+        ? "TIMEOUT"
+        : "NETWORK";
 
   return new ApiError({
     kind,
