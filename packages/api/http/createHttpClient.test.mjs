@@ -39,6 +39,21 @@ test("injects a bearer token", async () => {
   assert.equal(getAuthorizationHeader(requestConfig.headers), "Bearer access-token");
 });
 
+test("does not inject a bearer token into an external absolute URL", async () => {
+  let requestConfig;
+  const client = createHttpClient({
+    baseURL: "https://api.example.com",
+    getAccessToken: async () => "access-token",
+  });
+  client.defaults.adapter = createSuccessAdapter((config) => {
+    requestConfig = config;
+  });
+
+  await client.get("https://external.example.com/file");
+
+  assert.equal(getAuthorizationHeader(requestConfig.headers), undefined);
+});
+
 test("does not replace an explicit authorization header", async () => {
   let requestConfig;
   const client = createHttpClient({
