@@ -1,8 +1,8 @@
 import { APP_BACKGROUND as BG } from "@/src/shared/theme/colors";
-import BottomTray from "@/src/parent/pages/game-page/memory/ui/BottomTray";
-import MemoryBoard from "@/src/parent/pages/game-page/memory/ui/MemoryBoard";
-import PlayHeader from "@/src/parent/pages/game-page/memory/ui/PlayHeader";
-import ResultOverlay from "@/src/parent/pages/game-page/memory/ui/ResultOverlay";
+import BottomTray from "./BottomTray";
+import MemoryBoard from "./MemoryBoard";
+import PlayHeader from "./PlayHeader";
+import ResultOverlay from "./ResultOverlay";
 import { useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
