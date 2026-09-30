@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readdirSync, readFileSync, statSync, existsSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { test } from "node:test";
@@ -41,6 +41,18 @@ function hasPublicEntry(targetPath) {
   );
 }
 
+function resolveImportTarget(filePath, source) {
+  if (source.startsWith("@/src/")) {
+    return join(mobileSourceRoot, source.slice("@/src/".length));
+  }
+
+  if (source.startsWith(".")) {
+    return resolve(dirname(filePath), source);
+  }
+
+  return null;
+}
+
 test("routes use page public entries", () => {
   const routeRoot = join(mobileRoot, "app");
   const violations = [];
@@ -74,7 +86,15 @@ test("features do not import pages", () => {
     if (!filePath.split(/[\\/]/).includes("features")) continue;
 
     for (const source of importSources(filePath)) {
-      if (source.includes("/pages/")) {
+      const targetPath = resolveImportTarget(filePath, source);
+      const targetRelativePath = targetPath
+        ? relative(mobileSourceRoot, targetPath)
+        : "";
+
+      if (
+        source.includes("/pages/") ||
+        targetRelativePath.split(/[\\/]/).includes("pages")
+      ) {
         violations.push({ filePath, source });
       }
     }
