@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { fruitSrc } from "@/src/parent/entities/memory-game/lib/fruits";
+import { fruitSrc } from "@/src/parent/entities/memory-game";
 import DifficultyCard from "./DifficultyCard";
 
 const PRIMARY = "#1E90FF";

@@ -1,10 +1,12 @@
-import { useMemoryCardAnimation } from "@/src/parent/entities/memory-game/lib/useMemoryCardAnimation";
-import { Card } from "@/src/parent/entities/memory-game/model/types";
-import { useMemoryGameState } from "@/src/parent/entities/memory-game/useMemoryGameState";
-import type { FruitKey } from "@/src/parent/entities/memory-game/lib/fruits";
-import { fruitSrc } from "@/src/parent/entities/memory-game/lib/fruits";
-import { MEMORY_GAME } from "@/src/parent/entities/memory-game/model/constants";
-import { useGridLayout } from "@/src/parent/entities/memory-game/lib/useGridLayout";
+import {
+  fruitSrc,
+  MEMORY_GAME,
+  useGridLayout,
+  useMemoryCardAnimation,
+  useMemoryGameState,
+  type Card,
+  type FruitKey,
+} from "@/src/parent/entities/memory-game";
 import { Animated, Pressable, StyleSheet, View } from "react-native";
 
 import MemoryTile from "./MemoryTitle";

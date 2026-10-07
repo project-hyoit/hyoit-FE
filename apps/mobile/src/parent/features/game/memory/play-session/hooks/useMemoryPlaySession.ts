@@ -1,11 +1,12 @@
-import { createDeck } from "@/src/parent/entities/memory-game/lib/createDeck";
 import {
+  createDeck,
+  FRUITS,
   levelCardCount,
   levelLabel,
   levelMaxHp,
-} from "@/src/parent/entities/memory-game/lib/levelConfig";
-import { FRUITS, type FruitKey } from "@/src/parent/entities/memory-game/lib/fruits";
-import { useCountdown } from "@/src/parent/entities/memory-game/lib/useCountdown";
+  useCountdown,
+  type FruitKey,
+} from "@/src/parent/entities/memory-game";
 import { router } from "expo-router";
 import React, { useEffect, useMemo, useState } from "react";
 import type { PlaySessionReturn } from "../model/session";

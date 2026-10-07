@@ -1,4 +1,4 @@
-import PlayContainer from "@/src/parent/features/game/memory/play-session/ui/PlayContainer";
+import { PlayContainer } from "@/src/parent/features/game/memory/play-session";
 import { useLocalSearchParams } from "expo-router";
 
 export default function PlayScreen() {

@@ -6,6 +6,8 @@
     "paths": {
       "@/*": ["./*"],
 
+      "@hyoit/api": ["../../packages/api/index.ts"],
+      "@hyoit/api/*": ["../../packages/api/*"],
       "@hyoit/auth": ["../../packages/auth/index.ts"],
       "@hyoit/auth/*": ["../../packages/auth/*"],
       "@hyoit/storage": ["../../packages/storage/index.ts"],

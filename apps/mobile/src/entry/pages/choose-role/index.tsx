@@ -1,16 +1,15 @@
 import { useChooseRoleAction } from "@hyoit/auth";
-import { useState, useEffect } from "react";
-import { Image, Pressable, StyleSheet, Text, View} from "react-native";
+import { useEffect, useState } from "react";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 
 import oldManImg from "@/assets/images/role-selection/oldman.png";
 import oldWomanImg from "@/assets/images/role-selection/oldwoman.png";
 import youngManImg from "@/assets/images/role-selection/youngman.png";
 import youngWomanImg from "@/assets/images/role-selection/youngwoman.png";
-
-import { BG, PRIMARY, TEXT } from "../../shared/config/theme";
-import { navigateToTarget } from "../../shared/lib/router";
-import ProgressBar from "../../../shared/ui/ProgressBar";
+import { BG, PRIMARY, TEXT } from "@/src/entry/shared/config/theme";
+import { navigateToTarget } from "@/src/entry/shared/lib/router";
 import { useOnboardingStore } from "@/src/shared/entities/onboarding/model/onboarding.store";
+import ProgressBar from "@/src/shared/ui/ProgressBar";
 
 type SelectedRole = "parent" | "child" | null;
 
@@ -42,51 +41,51 @@ export default function ChoosePage() {
     <View style={styles.container}>
       <ProgressBar current={1} total={4} />
       <Text style={styles.title}>어떤 분이 효잇을 사용하시나요?</Text>
-        <View style={styles.index}>
-          <Pressable
+      <View style={styles.index}>
+        <Pressable
+          style={[
+            styles.roleButton,
+            selectedRole === "parent" && styles.selectedButton,
+          ]}
+          onPress={() => setSelectedRole("parent")}
+        >
+          <Text
             style={[
-              styles.roleButton,
-              selectedRole === "parent" && styles.selectedButton,
+              styles.roleText,
+              selectedRole === "parent" && styles.selectedRoleText,
             ]}
-            onPress={() => setSelectedRole("parent")}
           >
-            <Text
-              style={[
-                styles.roleText,
-                selectedRole === "parent" && styles.selectedRoleText,
-              ]}
-            >
-              부모님
-            </Text>
-            <Text style={styles.subtitle}>큰 글씨와 간단한 버튼!</Text>
-            <View style={styles.imagearray}>
-              <Image style={styles.img} source={oldWomanImg} />
-              <Image style={styles.img} source={oldManImg} />
-            </View>
-          </Pressable>
+            부모님
+          </Text>
+          <Text style={styles.subtitle}>큰 글씨와 간단한 버튼!</Text>
+          <View style={styles.imagearray}>
+            <Image style={styles.img} source={oldWomanImg} />
+            <Image style={styles.img} source={oldManImg} />
+          </View>
+        </Pressable>
 
-          <Pressable
+        <Pressable
+          style={[
+            styles.roleButton,
+            selectedRole === "child" && styles.selectedButton,
+          ]}
+          onPress={() => setSelectedRole("child")}
+        >
+          <Text
             style={[
-              styles.roleButton,
-              selectedRole === "child" && styles.selectedButton,
+              styles.roleText,
+              selectedRole === "child" && styles.selectedRoleText,
             ]}
-            onPress={() => setSelectedRole("child")}
           >
-            <Text
-              style={[
-                styles.roleText,
-                selectedRole === "child" && styles.selectedRoleText,
-              ]}
-            >
-              자녀
-            </Text>
-            <Text style={styles.subtitle}>큰 글씨와 간단한 버튼!</Text>
-            <View style={styles.imagearray}>
-              <Image style={styles.img} source={youngWomanImg} />
-              <Image style={styles.img} source={youngManImg} />
-            </View>
-          </Pressable>
-        </View>
+            자녀
+          </Text>
+          <Text style={styles.subtitle}>큰 글씨와 간단한 버튼!</Text>
+          <View style={styles.imagearray}>
+            <Image style={styles.img} source={youngWomanImg} />
+            <Image style={styles.img} source={youngManImg} />
+          </View>
+        </Pressable>
+      </View>
       <Pressable
         style={[
           styles.confirmButton,
@@ -116,18 +115,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   title: {
-    marginTop:41,
+    marginTop: 41,
     marginBottom: 59,
     fontSize: 24,
     fontWeight: "700",
   },
-  index:{
-    gap:14,
+  index: {
+    gap: 14,
     width: "100%",
   },
   roleButton: {
     padding: 8,
-    paddingVertical: 20, 
+    paddingVertical: 20,
     borderRadius: 10,
     flexDirection: "column",
     alignItems: "center",
