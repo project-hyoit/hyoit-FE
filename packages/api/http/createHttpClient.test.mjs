@@ -96,7 +96,12 @@ test("normalizes rejected axios responses", async () => {
     statusText: "Unauthorized",
     headers: {},
     config: { headers: {} },
-    data: { code: 4010, message: "인증이 필요합니다.", data: null },
+    data: {
+      success: false,
+      code: "UNAUTHORIZED",
+      message: "인증이 필요합니다.",
+      data: null,
+    },
   };
   const axiosError = new AxiosError(
     "Request failed",
@@ -114,7 +119,7 @@ test("normalizes rejected axios responses", async () => {
       assert.ok(error instanceof ApiError);
       assert.equal(error.kind, "HTTP");
       assert.equal(error.status, 401);
-      assert.equal(error.code, 4010);
+      assert.equal(error.code, "UNAUTHORIZED");
       assert.equal(error.message, "인증이 필요합니다.");
       return true;
     },
