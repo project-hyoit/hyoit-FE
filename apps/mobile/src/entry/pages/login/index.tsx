@@ -1,4 +1,8 @@
-import { useLoginWithKakao } from "@hyoit/auth";
+import {
+  backendRoleToUserRole,
+  resolveEntryTarget,
+  useLoginWithKakao,
+} from "@hyoit/auth";
 import { KakaoLoginButton } from "@hyoit/ui";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
@@ -7,13 +11,21 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import kakaoIcon from "@/assets/images/kakao_icon.png";
 import { BG, SUBTEXT } from "../../shared/config/theme";
 import { navigateToTarget } from "../../shared/lib/router";
+import { getKakaoAccessToken } from "../../shared/lib/kakaoAuth";
 
 export default function LoginPage() {
   const { bottom } = useSafeAreaInsets();
 
   const { login, error } = useLoginWithKakao({
-    onSuccess: () => {
-      navigateToTarget("choose");
+    getKakaoAccessToken,
+    onSuccess: (result) => {
+      navigateToTarget(
+        resolveEntryTarget({
+          authenticated: true,
+          firstLogin: result.firstLogin,
+          role: backendRoleToUserRole(result.role),
+        }),
+      );
     },
   });
 
