@@ -1,4 +1,4 @@
-import { getKeyValueStorage } from "../storage";
+import { getKeyValueStorage } from "../storage.ts";
 
 const ACCESS_TOKEN_KEY = "accessToken";
 const REFRESH_TOKEN_KEY = "refreshToken";

@@ -44,6 +44,13 @@ test("logs in with a Kakao access token and unwraps the backend result", async (
   ]);
 });
 
+test("rejects login without a Kakao access token", async () => {
+  await assert.rejects(
+    () => loginWithKakao(undefined, createClient({ success: true })),
+    /카카오 access token provider가 설정되지 않았습니다\./,
+  );
+});
+
 test("reads whether additional signup information is required", async () => {
   const client = createClient({ success: true, data: true });
 

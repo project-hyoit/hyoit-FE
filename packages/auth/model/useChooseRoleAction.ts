@@ -1,6 +1,5 @@
 import type { ChooseRoleResult, UserRole } from "@hyoit/types";
 import { useState } from "react";
-import { chooseRole } from "../api/chooseRole";
 import { useAuthStore } from "./authStore";
 interface UseChooseRoleActionOptions {
   onSuccess?: (result: ChooseRoleResult) => void;
@@ -18,7 +17,7 @@ export function useChooseRoleAction(options?: UseChooseRoleActionOptions) {
       setIsPending(true);
       setError(null);
 
-      const result = await chooseRole(role);
+      const result: ChooseRoleResult = { role };
 
       setRole(result.role);
       options?.onSuccess?.(result);
