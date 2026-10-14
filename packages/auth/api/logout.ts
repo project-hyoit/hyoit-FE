@@ -1,7 +1,14 @@
-import { clearToken } from "@hyoit/storage";
+import { apiClient, unwrapApiResponse } from "@hyoit/api";
+import type { ApiResponse } from "@hyoit/types";
 
-export async function logout(): Promise<void> {
-  // TODO: 실제 로그아웃 API로 교체
-  await new Promise<void>((resolve) => setTimeout(resolve, 150));
-  await clearToken();
+type ClearToken = () => Promise<void>;
+
+export async function logout(
+  client = apiClient,
+  clear: ClearToken = async () =>
+    (await import("@hyoit/storage")).clearToken(),
+): Promise<void> {
+  const response = await client.post<ApiResponse<null>>("/api/auth/logout");
+  unwrapApiResponse(response.data);
+  await clear();
 }
