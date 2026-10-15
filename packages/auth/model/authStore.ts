@@ -5,12 +5,14 @@ import { createJSONStorage, persist, type StateStorage } from "zustand/middlewar
 
 interface AuthState {
   isSignedIn: boolean;
+  firstLogin: boolean;
   role: UserRole | null;
   hasParentOnboarded: boolean;
   hasChildOnboarded: boolean;
   hasHydrated: boolean;
 
   setSignedIn: (value: boolean) => void;
+  setFirstLogin: (value: boolean) => void;
   setRole: (role: UserRole | null) => void;
   setParentOnboarded: (value: boolean) => void;
   setChildOnboarded: (value: boolean) => void;
@@ -34,12 +36,14 @@ export const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({
       isSignedIn: false,
+      firstLogin: false,
       role: null,
       hasParentOnboarded: false,
       hasChildOnboarded: false,
       hasHydrated: false,
 
       setSignedIn: (value) => set({ isSignedIn: value }),
+      setFirstLogin: (value) => set({ firstLogin: value }),
       setRole: (role) => set({ role }),
       setParentOnboarded: (value) => set({ hasParentOnboarded: value }),
       setChildOnboarded: (value) => set({ hasChildOnboarded: value }),
@@ -48,6 +52,7 @@ export const useAuthStore = create<AuthState>()(
       resetAuth: () =>
         set({
           isSignedIn: false,
+          firstLogin: false,
           role: null,
           hasParentOnboarded: false,
           hasChildOnboarded: false,
@@ -57,7 +62,8 @@ export const useAuthStore = create<AuthState>()(
       name: "hyoit-auth-state",
       storage: createJSONStorage(() => authStorage),
       skipHydration: true,
-      partialize: ({ role, hasParentOnboarded, hasChildOnboarded }) => ({
+      partialize: ({ firstLogin, role, hasParentOnboarded, hasChildOnboarded }) => ({
+        firstLogin,
         role,
         hasParentOnboarded,
         hasChildOnboarded,

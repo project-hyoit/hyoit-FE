@@ -1,5 +1,3 @@
-import * as SecureStore from "expo-secure-store";
-import { Platform } from "react-native";
 
 interface BrowserStorage {
   getItem: (key: string) => string | null;
@@ -28,10 +26,18 @@ const webStorage: KeyValueStorage = {
 };
 
 const nativeStorage: KeyValueStorage = {
-  getItem: SecureStore.getItemAsync,
-  setItem: SecureStore.setItemAsync,
-  removeItem: SecureStore.deleteItemAsync,
+  async getItem(key) {
+    return (await import("expo-secure-store")).getItemAsync(key);
+  },
+  async setItem(key, value) {
+    await (await import("expo-secure-store")).setItemAsync(key, value);
+  },
+  async removeItem(key) {
+    await (await import("expo-secure-store")).deleteItemAsync(key);
+  },
 };
 
 export const getKeyValueStorage = (): KeyValueStorage =>
-  Platform.OS === "web" ? webStorage : nativeStorage;
+  typeof window !== "undefined" && window.localStorage
+    ? webStorage
+    : nativeStorage;

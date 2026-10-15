@@ -6,11 +6,12 @@ import { Redirect } from "expo-router";
 const SPLASH_DURATION = 2000;
 
 export default function Index() {
-  const { isSignedIn, role, hasHydrated } = useAuthStore();
+  const { isSignedIn, firstLogin, role, hasHydrated } = useAuthStore();
   const [isReady, setIsReady] = useState(false);
 
   const target = resolveEntryTarget({
     authenticated: isSignedIn,
+    firstLogin,
     role,
   });
 

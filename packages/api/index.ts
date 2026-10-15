@@ -11,3 +11,4 @@ export {
   type ApiErrorKind,
   type ApiErrorOptions,
 } from "./http/apiError.ts";
+export { unwrapApiResponse } from "./http/apiResponse.ts";

@@ -15,8 +15,8 @@ test("normalizes backend http errors", () => {
       headers: {},
       config: { headers: {} },
       data: {
-        status: "ERROR",
-        code: 1001,
+        success: false,
+        code: "VALIDATION_FAILED",
         message: "잘못된 요청입니다.",
         data: { field: "name" },
       },
@@ -27,7 +27,7 @@ test("normalizes backend http errors", () => {
 
   assert.equal(normalized.kind, "HTTP");
   assert.equal(normalized.status, 422);
-  assert.equal(normalized.code, 1001);
+  assert.equal(normalized.code, "VALIDATION_FAILED");
   assert.equal(normalized.message, "잘못된 요청입니다.");
   assert.deepEqual(normalized.data, { field: "name" });
   assert.equal(normalized.cause, error);

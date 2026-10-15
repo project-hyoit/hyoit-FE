@@ -1,6 +1,6 @@
 export interface ApiResponse<T> {
-  status: string;
-  code: number;
-  message: string;
-  data: T;
+  success: boolean;
+  code?: string;
+  message?: string;
+  data?: T;
 }

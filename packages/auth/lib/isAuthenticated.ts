@@ -1,7 +1,7 @@
-import { getToken } from "@hyoit/storage";
+import { getToken, hasAccessToken } from "@hyoit/storage";
 
 export async function isAuthenticated() {
-  const { accessToken, refreshToken } = await getToken();
+  const { accessToken } = await getToken();
 
-  return Boolean(accessToken && refreshToken);
+  return hasAccessToken(accessToken);
 }

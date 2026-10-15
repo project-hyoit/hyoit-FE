@@ -1,7 +1,12 @@
-import type { UserRole } from "../auth";
+import type { BackendRole } from "../auth";
 
 export interface Me {
   id: number;
-  name: string;
-  role: UserRole | null;
+  nickname: string;
+  profileImageUrl?: string | null;
+  phoneNumber?: string | null;
+  age?: number | null;
+  role: BackendRole | null;
+  firstLogin: boolean;
+  invitationCode?: string | null;
 }
