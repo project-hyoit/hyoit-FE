@@ -8,7 +8,8 @@ import {
   getLatestSentCheckIn,
   useCheckInStore,
 } from "@/src/shared/entities/check-in";
-import { useUserProfileStore } from "@/src/parent/entities/user";
+import { toMainViewModel, useMainQuery } from "@/src/shared/entities/main";
+import { toWeatherCard, useWeatherQuery } from "@/src/shared/entities/weather";
 import { resolveHomeStatus } from "./resolveHomeStatus";
 import {
   HomeCardGrid,
@@ -18,7 +19,14 @@ import {
 } from "./ui";
 
 export default function HomePage() {
-  const profileName = useUserProfileStore((state) => state.profile.name);
+  const { data: mainData } = useMainQuery();
+  const main = mainData ? toMainViewModel(mainData) : undefined;
+  const { data: weatherData } = useWeatherQuery({
+    lat: 37.5665,
+    lon: 126.978,
+  });
+  const weather = weatherData ? toWeatherCard(weatherData) : undefined;
+  const profileName = main?.name ?? "효잇";
   const rawItems = useCheckInStore((state) => state.items);
   const hasHydrated = useCheckInStore((state) => state.hasHydrated);
   const overview = useMemo(
@@ -26,7 +34,8 @@ export default function HomePage() {
     [rawItems],
   );
   const latestSentItem = getLatestSentCheckIn(overview.items);
-  const pendingReceivedCount = overview.pendingCount;
+  const pendingReceivedCount =
+    main?.uncheckedAnbuCount ?? overview.pendingCount;
 
   const homeStatus = resolveHomeStatus({
     pendingReceivedCount,
@@ -70,6 +79,8 @@ export default function HomePage() {
           onPressRecentGreeting={moveToCheckIn}
           onPressGame={() => router.push("/(parent)/(tabs)/game")}
           onPressHelp={() => {}}
+          weather={weather}
+          recentGreetingCount={pendingReceivedCount}
         />
       </ScrollView>
     </SafeAreaView>

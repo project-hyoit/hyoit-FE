@@ -6,6 +6,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import { getDday, toDate, useDdayStore } from "@/src/child/entities/dday";
 import { useOnboardingStore } from "@/src/shared/entities/onboarding/model/onboarding.store";
+import { toMainViewModel, useMainQuery } from "@/src/shared/entities/main";
+import { toWeatherCard, useWeatherQuery } from "@/src/shared/entities/weather";
 import HyoitLogo from "@/src/shared/assets/hyoit_logo_home.png";
 import {
   formatCheckInTime,
@@ -27,7 +29,15 @@ const DATE_FORMATTER = new Intl.DateTimeFormat("ko-KR", {
 type ChildStatus = "waiting" | "confirmed" | "empty";
 
 export default function ChildHomePage() {
-  const childName = useOnboardingStore((state) => state.name.trim() || "효잇");
+  const onboardingName = useOnboardingStore((state) => state.name.trim());
+  const { data: mainData } = useMainQuery();
+  const main = mainData ? toMainViewModel(mainData) : undefined;
+  const { data: weatherData } = useWeatherQuery({
+    lat: 37.5665,
+    lon: 126.978,
+  });
+  const weather = weatherData ? toWeatherCard(weatherData) : undefined;
+  const childName = (main?.name ?? onboardingName) || "효잇";
   const ddayItems = useDdayStore((state) => state.items);
   const rawCheckIns = useCheckInStore((state) => state.items);
   const hasHydrated = useCheckInStore((state) => state.hasHydrated);
@@ -41,7 +51,8 @@ export default function ChildHomePage() {
     [rawCheckIns],
   );
   const latestSentCheckIn = getLatestSentCheckIn(checkInOverview.items);
-  const newReceivedCheckInCount = checkInOverview.pendingCount;
+  const newReceivedCheckInCount =
+    main?.uncheckedAnbuCount ?? checkInOverview.pendingCount;
   const recordCountLabel =
     newReceivedCheckInCount > 0
       ? `새 기록 ${newReceivedCheckInCount}개`
@@ -233,10 +244,18 @@ export default function ChildHomePage() {
               <HomeCard onPress={() => {}}>
                 <Text style={styles.cardEyebrow}>오늘의 날씨</Text>
                 <View style={styles.weatherRow}>
-                  <Text style={styles.weatherTemp}>22°</Text>
-                  <Text style={styles.weatherLabel}>흐림</Text>
+                  <Text style={styles.weatherTemp}>
+                    {weather?.temperature ?? "날씨"}
+                  </Text>
+                  <Text style={styles.weatherLabel}>
+                    {weather?.sky ?? "불러오는 중"}
+                  </Text>
                 </View>
-                <Text style={styles.cardDescription}>최고 24° / 최저 19°</Text>
+                <Text style={styles.cardDescription}>
+                  {weather
+                    ? `최고 ${weather.maxTemperature} / 최저 ${weather.minTemperature}`
+                    : "잠시만 기다려주세요."}
+                </Text>
                 <View style={styles.cardVisualCircle}>
                   <Text style={styles.cardVisualText}>☁️</Text>
                 </View>
