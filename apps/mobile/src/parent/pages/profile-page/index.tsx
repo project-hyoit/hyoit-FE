@@ -4,19 +4,33 @@ import { useState } from "react";
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import ProfileMenu from "@/src/shared/ui/profile/ProfileMenu";
 import LogoutModal from "@/src/shared/ui/profile/LogoutModal";
 import { useCheckInStore } from "@/src/shared/entities/check-in";
 import { IconSymbol } from "@/src/shared/ui/IconSymbol";
-import { ChildList, mockChildUsers, ProfileSection, useUserProfileStore } from "../../entities/user";
+import {
+  toProfileViewModel,
+  useProfileQuery,
+} from "@/src/shared/entities/user";
+import { ChildList, ProfileSection } from "../../entities/user";
+import { useFamilyMembersQuery } from "@/src/shared/entities/family";
 import ProfileSettings from "@/src/shared/ui/profile/ProfileSettings";
 
 export default function ProfilePage() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const resetAuth = useAuthStore((state) => state.resetAuth);
   const clearCheckIns = useCheckInStore((state) => state.clearCheckIns);
-  const profile = useUserProfileStore((state) => state.profile);
+  const { data: profileData, isLoading: isProfileLoading } = useProfileQuery();
+  const { data: familyMembers = [] } = useFamilyMembersQuery();
+
+  const profile = profileData ? toProfileViewModel(profileData) : null;
+  const children = familyMembers
+    .filter((member) => member.role === "USER")
+    .map((member) => ({
+      id: String(member.id),
+      name: member.nickname,
+      phone: member.phoneNumber ?? "",
+      isOnline: member.online,
+    }));
 
   const handleLogout = async () => {
     try {
@@ -47,26 +61,27 @@ export default function ProfilePage() {
         contentContainerStyle={styles.container}
         showsVerticalScrollIndicator={false}
       >
-        <ProfileSection
-          user={profile}
-          onPressEdit={() => undefined}
-          onPressModify={() => router.push("/(parent)/(tabs)/profile/edit")}
-        />
+        {profile ? (
+          <ProfileSection
+            user={profile}
+            onPressEdit={() => router.push("/(parent)/(tabs)/profile/edit")}
+            onPressModify={() => router.push("/(parent)/(tabs)/profile/edit")}
+          />
+        ) : (
+          <Text style={styles.statusText}>
+            {isProfileLoading ? "프로필을 불러오는 중이에요." : "프로필을 불러오지 못했어요."}
+          </Text>
+        )}
 
-        <ChildList items={mockChildUsers} />
+        <ChildList items={children} />
 
         <ProfileSettings
-          onPressNotification={() => undefined}
-          onPressChangePhoto={() => setIsMenuOpen(true)}
+          onPressNotification={() =>
+            router.push("/(parent)/(tabs)/profile/notification" as never)
+          }
+          onPressChangePhoto={() => router.push("/(parent)/(tabs)/profile/edit")}
           onPressHelp={() => undefined}
           onPressLogout={() => setIsLogoutModalOpen(true)}
-        />
-
-        <ProfileMenu
-          visible={isMenuOpen}
-          onClose={() => setIsMenuOpen(false)}
-          onSelectAlbum={() => setIsMenuOpen(false)}
-          onDefault={() => setIsMenuOpen(false)}
         />
 
         <LogoutModal
@@ -118,5 +133,12 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     justifyContent: "center",
     alignItems: "center",
+  },
+  statusText: {
+    paddingVertical: 72,
+    textAlign: "center",
+    color: "#6B7280",
+    fontSize: 16,
+    fontWeight: "600",
   },
 });

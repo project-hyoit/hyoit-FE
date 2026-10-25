@@ -1,9 +1,16 @@
 import mainProfileImg from "@/assets/images/profile-avatars/mainprofile.png";
-import { useOnboardingStore } from "@/src/shared/entities/onboarding/model/onboarding.store";
+import { useAuthStore } from "@hyoit/auth";
+import {
+  toProfileViewModel,
+  useDeleteAccountMutation,
+  useProfileQuery,
+  useUpdateProfileMutation,
+  useUploadProfileImageMutation,
+} from "@/src/shared/entities/user";
 import { IconSymbol } from "@/src/shared/ui/IconSymbol";
 import * as ImagePicker from "expo-image-picker";
 import { router } from "expo-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Alert,
   Image,
@@ -16,13 +23,22 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const FALLBACK_NAME = "김봄";
-
 export default function ChildProfileEditPage() {
-  const onboardingName = useOnboardingStore((state) => state.name);
-  const setOnboarding = useOnboardingStore((state) => state.set);
-  const [name, setName] = useState(onboardingName.trim() || FALLBACK_NAME);
+  const { data: profileData } = useProfileQuery();
+  const profile = profileData ? toProfileViewModel(profileData) : undefined;
+  const updateProfile = useUpdateProfileMutation();
+  const uploadProfileImage = useUploadProfileImageMutation();
+  const deleteAccount = useDeleteAccountMutation();
+  const resetAuth = useAuthStore((state) => state.resetAuth);
+  const [name, setName] = useState("");
   const [avatarUri, setAvatarUri] = useState<string | undefined>();
+
+  useEffect(() => {
+    if (!profileData) return;
+    const nextProfile = toProfileViewModel(profileData);
+    setName(nextProfile.name);
+    setAvatarUri(nextProfile.avatarUri);
+  }, [profileData]);
 
   const handlePickImage = async () => {
     try {
@@ -44,7 +60,15 @@ export default function ChildProfileEditPage() {
       });
 
       if (!result.canceled) {
-        setAvatarUri(result.assets[0]?.uri);
+        const asset = result.assets[0];
+        if (!asset?.uri) return;
+
+        setAvatarUri(asset.uri);
+        await uploadProfileImage.mutateAsync({
+          uri: asset.uri,
+          name: asset.fileName ?? "profile-image.jpg",
+          type: asset.mimeType ?? "image/jpeg",
+        });
       }
     } catch {
       Alert.alert(
@@ -54,9 +78,34 @@ export default function ChildProfileEditPage() {
     }
   };
 
-  const handleSave = () => {
-    setOnboarding({ name: name.trim() || FALLBACK_NAME });
-    router.back();
+  const handleSave = async () => {
+    if (!profile || updateProfile.isPending) return;
+
+    try {
+      await updateProfile.mutateAsync({
+        nickname: name.trim() || profile.name,
+      });
+      router.back();
+    } catch {
+      Alert.alert("프로필 수정 실패", "잠시 후 다시 시도해주세요.");
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    try {
+      await deleteAccount.mutateAsync();
+      resetAuth();
+      router.replace("/(entry)/login");
+    } catch {
+      Alert.alert("회원 탈퇴 실패", "잠시 후 다시 시도해주세요.");
+    }
+  };
+
+  const confirmDeleteAccount = () => {
+    Alert.alert("회원 탈퇴", "탈퇴하면 계정과 가족 연결 정보가 삭제돼요.", [
+      { text: "취소", style: "cancel" },
+      { text: "탈퇴", style: "destructive", onPress: handleDeleteAccount },
+    ]);
   };
 
   return (
@@ -78,7 +127,9 @@ export default function ChildProfileEditPage() {
             onPress={handleSave}
             activeOpacity={0.8}
           >
-            <Text style={styles.saveButtonText}>저장</Text>
+            <Text style={styles.saveButtonText}>
+              {updateProfile.isPending ? "저장 중" : "저장"}
+            </Text>
           </TouchableOpacity>
         </View>
 
@@ -131,7 +182,12 @@ export default function ChildProfileEditPage() {
             </View>
           </View>
 
-          <TouchableOpacity style={styles.withdrawButton} activeOpacity={0.8}>
+          <TouchableOpacity
+            style={styles.withdrawButton}
+            activeOpacity={0.8}
+            onPress={confirmDeleteAccount}
+            disabled={deleteAccount.isPending}
+          >
             <Text style={styles.withdrawButtonText}>회원 탈퇴</Text>
           </TouchableOpacity>
         </ScrollView>

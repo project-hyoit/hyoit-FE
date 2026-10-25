@@ -8,3 +8,11 @@ export {
   uploadProfileImage,
   type ProfileImageFile,
 } from "./api/uploadProfileImage";
+export { toProfileViewModel, type ProfileViewModel } from "./lib/profileViewModel";
+export {
+  profileQueryKey,
+  useDeleteAccountMutation,
+  useProfileQuery,
+  useUpdateProfileMutation,
+  useUploadProfileImageMutation,
+} from "./model/useProfileQuery";

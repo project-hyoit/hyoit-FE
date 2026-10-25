@@ -12,30 +12,30 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import mainProfileImg from "@/assets/images/profile-avatars/mainprofile.png";
-import { useOnboardingStore } from "@/src/shared/entities/onboarding/model/onboarding.store";
+import { useFamilyMembersQuery } from "@/src/shared/entities/family";
+import {
+  toProfileViewModel,
+  useProfileQuery,
+} from "@/src/shared/entities/user";
 import ProfileMenu from "@/src/shared/ui/profile/ProfileMenu";
 import LogoutModal from "@/src/shared/ui/profile/LogoutModal";
 import ProfileSettings from "@/src/shared/ui/profile/ProfileSettings";
 import { useCheckInStore } from "@/src/shared/entities/check-in";
 import { IconSymbol } from "@/src/shared/ui/IconSymbol";
 
-const childProfile = {
-  name: "김봄",
-  phone: "010-4610-3404",
-};
-
-const connectedParent = {
-  name: "김유찬",
-  isOnline: true,
-};
-
 export default function ChildProfilePage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const resetAuth = useAuthStore((state) => state.resetAuth);
   const clearCheckIns = useCheckInStore((state) => state.clearCheckIns);
-  const onboardingName = useOnboardingStore((state) => state.name);
-  const displayName = onboardingName.trim() || childProfile.name;
+  const { data: profileData } = useProfileQuery();
+  const { data: familyMembers = [] } = useFamilyMembersQuery();
+  const profile = profileData ? toProfileViewModel(profileData) : undefined;
+  const displayName = profile?.name || "프로필";
+  const profileImageSource = profile?.avatarUri
+    ? { uri: profile.avatarUri }
+    : mainProfileImg;
+  const connectedParent = familyMembers.find((member) => member.role === "ADMIN");
 
   const handleLogout = async () => {
     try {
@@ -69,7 +69,7 @@ export default function ChildProfilePage() {
         <View style={styles.profileCard}>
           <View style={styles.avatarWrap}>
             <View style={styles.avatarBackground} />
-            <Image source={mainProfileImg} style={styles.avatar} />
+            <Image source={profileImageSource} style={styles.avatar} />
             <TouchableOpacity
               style={styles.editAvatarButton}
               onPress={() => router.push("/(child)/(tabs)/profile/edit")}
@@ -100,24 +100,37 @@ export default function ChildProfilePage() {
         <View style={styles.familySection}>
           <Text style={styles.sectionTitle}>연결된 가족</Text>
 
-          <View style={styles.parentCard}>
-            <View style={styles.parentLeft}>
-              <Image source={mainProfileImg} style={styles.parentAvatar} />
-              <View style={styles.parentTextArea}>
-                <View style={styles.parentNameRow}>
-                  <Text style={styles.parentName}>{connectedParent.name}</Text>
-                  <Text style={styles.relation}>부모님</Text>
+          {connectedParent ? (
+            <View style={styles.parentCard}>
+              <View style={styles.parentLeft}>
+                <Image
+                  source={
+                    connectedParent.profileImageUrl
+                      ? { uri: connectedParent.profileImageUrl }
+                      : mainProfileImg
+                  }
+                  style={styles.parentAvatar}
+                />
+                <View style={styles.parentTextArea}>
+                  <View style={styles.parentNameRow}>
+                    <Text style={styles.parentName}>{connectedParent.nickname}</Text>
+                    <Text style={styles.relation}>부모님</Text>
+                  </View>
+                  <Text style={styles.parentDescription}>
+                    서로의 안부를 주고받고 있어요.
+                  </Text>
                 </View>
-                <Text style={styles.parentDescription}>
-                  서로의 안부를 주고받고 있어요.
+              </View>
+
+              <View style={styles.activeBadge}>
+                <Text style={styles.activeBadgeText}>
+                  {connectedParent.online ? "활성" : "오프라인"}
                 </Text>
               </View>
             </View>
-
-            <View style={styles.activeBadge}>
-              <Text style={styles.activeBadgeText}>활성</Text>
-            </View>
-          </View>
+          ) : (
+            <Text style={styles.emptyFamilyText}>연결된 가족이 없어요.</Text>
+          )}
         </View>
 
         <ProfileSettings
@@ -343,5 +356,11 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: "700",
     color: "#2B8A3E",
+  },
+  emptyFamilyText: {
+    paddingVertical: 20,
+    color: "#6B7280",
+    fontSize: 14,
+    fontWeight: "600",
   },
 });
