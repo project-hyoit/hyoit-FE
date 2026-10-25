@@ -7,11 +7,12 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import {
   filterCheckInHistory,
   groupCheckInHistoryByDate,
-  getCheckInsForViewer,
-  useCheckInStore,
+  toCheckInItems,
   type CheckInHistoryFilter,
   type CheckInItem,
 } from "@/src/shared/entities/check-in";
+import { useFamilyMembersQuery } from "@/src/shared/entities/family";
+import { useAnbuHistoryQuery } from "@/src/shared/entities/notification";
 
 import ParentCheckInHistoryRecordCard from "./ui/ParentCheckInHistoryRecordCard";
 
@@ -40,18 +41,12 @@ export default function ParentCheckInHistoryPage() {
   const router = useRouter();
   const [filter, setFilter] = useState<CheckInHistoryFilter>("ALL");
 
-  const rawItems = useCheckInStore((state) => state.items);
-  const hasHydrated = useCheckInStore((state) => state.hasHydrated);
-  const items = useMemo(
-    () => getCheckInsForViewer(rawItems, "parent"),
-    [rawItems],
-  );
+  const { data: familyMembers = [] } = useFamilyMembersQuery();
+  const partnerId = familyMembers.find((member) => member.role === "USER")?.id;
+  const { data: notifications = [] } = useAnbuHistoryQuery(partnerId);
+  const items = useMemo(() => toCheckInItems(notifications), [notifications]);
   const filteredItems = useMemo(() => filterCheckInHistory(items, filter), [items, filter]);
   const grouped = useMemo(() => groupCheckInHistoryByDate(filteredItems), [filteredItems]);
-
-  if (!hasHydrated) {
-    return <SafeAreaView style={s.safeArea} edges={["top"]} />;
-  }
 
   return (
     <SafeAreaView style={s.safeArea} edges={["top"]}>

@@ -22,11 +22,6 @@ export {
 } from "./lib/checkInHistory";
 export type { CheckInHistoryFilter } from "./lib/checkInHistory";
 export {
-  createCheckIn,
-  sendCheckIn,
-  confirmCheckIn,
-} from "./lib/checkInState";
-export {
   mapCheckInToViewItem,
   getCheckInsForViewer,
   getLatestSentCheckIn,
@@ -37,4 +32,3 @@ export type { CheckInOverview } from "./lib/checkInSelectors";
 export { resolveCheckInBannerState } from "./lib/checkInBannerState";
 export type { CheckInBannerState } from "./lib/checkInBannerState";
 export { toCheckInItem, toCheckInItems } from "./lib/notificationViewModel";
-export { useCheckInStore } from "./model/checkInStore";

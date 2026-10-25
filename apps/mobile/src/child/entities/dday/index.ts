@@ -1,5 +1,3 @@
-export { useDdayStore } from "./model/ddayStore";
-export type { DdayItem } from "./model/types";
 export {
   createCalendarDays,
   getDateKey,

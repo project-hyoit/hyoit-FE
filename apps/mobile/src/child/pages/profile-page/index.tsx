@@ -20,14 +20,12 @@ import {
 import ProfileMenu from "@/src/shared/ui/profile/ProfileMenu";
 import LogoutModal from "@/src/shared/ui/profile/LogoutModal";
 import ProfileSettings from "@/src/shared/ui/profile/ProfileSettings";
-import { useCheckInStore } from "@/src/shared/entities/check-in";
 import { IconSymbol } from "@/src/shared/ui/IconSymbol";
 
 export default function ChildProfilePage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const resetAuth = useAuthStore((state) => state.resetAuth);
-  const clearCheckIns = useCheckInStore((state) => state.clearCheckIns);
   const { data: profileData } = useProfileQuery();
   const { data: familyMembers = [] } = useFamilyMembersQuery();
   const profile = profileData ? toProfileViewModel(profileData) : undefined;
@@ -41,7 +39,6 @@ export default function ChildProfilePage() {
     try {
       await logout();
     } finally {
-      await clearCheckIns();
       resetAuth();
       setIsLogoutModalOpen(false);
       router.replace("/(entry)/login");

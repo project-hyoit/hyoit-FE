@@ -5,7 +5,6 @@ import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-nati
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import LogoutModal from "@/src/shared/ui/profile/LogoutModal";
-import { useCheckInStore } from "@/src/shared/entities/check-in";
 import { IconSymbol } from "@/src/shared/ui/IconSymbol";
 import {
   toProfileViewModel,
@@ -18,7 +17,6 @@ import ProfileSettings from "@/src/shared/ui/profile/ProfileSettings";
 export default function ProfilePage() {
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const resetAuth = useAuthStore((state) => state.resetAuth);
-  const clearCheckIns = useCheckInStore((state) => state.clearCheckIns);
   const { data: profileData, isLoading: isProfileLoading } = useProfileQuery();
   const { data: familyMembers = [] } = useFamilyMembersQuery();
 
@@ -36,7 +34,6 @@ export default function ProfilePage() {
     try {
       await logout();
     } finally {
-      await clearCheckIns();
       resetAuth();
       setIsLogoutModalOpen(false);
       router.replace("/(entry)/login");
