@@ -2,11 +2,20 @@ import { StyleSheet, View } from "react-native";
 
 import HomeFeatureCard from "./HomeFeatureCard";
 
+type WeatherCardData = {
+  temperature: string;
+  sky: string;
+  maxTemperature: string;
+  minTemperature: string;
+};
+
 type HomeCardGridProps = {
   onPressWeather: () => void;
   onPressRecentGreeting: () => void;
   onPressGame: () => void;
   onPressHelp: () => void;
+  weather?: WeatherCardData;
+  recentGreetingCount?: number;
 };
 
 export default function HomeCardGrid({
@@ -14,6 +23,8 @@ export default function HomeCardGrid({
   onPressRecentGreeting,
   onPressGame,
   onPressHelp,
+  weather,
+  recentGreetingCount = 0,
 }: HomeCardGridProps) {
   return (
     <View style={s.container}>
@@ -21,8 +32,12 @@ export default function HomeCardGrid({
         <View style={s.col}>
           <HomeFeatureCard
             eyebrow="오늘의 날씨"
-            title="22°C"
-            description={"맑음\n외출 전 날씨를\n확인해요."}
+            title={weather?.temperature ?? "날씨"}
+            description={
+              weather
+                ? `${weather.sky}\n최고 ${weather.maxTemperature} / 최저 ${weather.minTemperature}`
+                : "날씨를 불러오는 중이에요."
+            }
             ctaLabel="확인하기"
             backgroundColor="#FFF7DC"
             ctaColor="#7A5A00"
@@ -35,12 +50,16 @@ export default function HomeCardGrid({
           <HomeFeatureCard
             eyebrow="최근 안부"
             title="받은 안부"
-            description={"최근에 받은 안부를\n확인해요."}
+            description={
+              recentGreetingCount > 0
+                ? `새 안부 ${recentGreetingCount}개를\n확인해요.`
+                : "최근에 받은 안부를\n확인해요."
+            }
             ctaLabel="확인하기"
             backgroundColor="#F3EEFF"
             ctaColor="#6D45C7"
             visual="💌"
-            badgeCount={2}
+            badgeCount={recentGreetingCount}
             onPress={onPressRecentGreeting}
           />
         </View>

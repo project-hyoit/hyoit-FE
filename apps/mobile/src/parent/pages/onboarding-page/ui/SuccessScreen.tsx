@@ -10,21 +10,16 @@ import {
 import ProgressBar from "../../../../shared/ui/ProgressBar";
 import { useEffect } from "react";
 import { useOnboardingStore } from "@/src/shared/entities/onboarding/model/onboarding.store";
-import { useUserProfileStore } from "@/src/parent/entities/user";
 import { IconSymbol } from "@/src/shared/ui";
 
 export default function SuccessScreen() {
-  const setParentOnboarded = useAuthStore((s) => s.setParentOnboarded);
-  const name = useOnboardingStore((s) => s.name);
-  const age = useOnboardingStore((s) => s.age);
+  const { setFirstLogin, setParentOnboarded, setRole } = useAuthStore();
+  const connectedName = useOnboardingStore((s) => s.connectedName);
   const setStore = useOnboardingStore((s) => s.set);
-  const updateProfile = useUserProfileStore((s) => s.updateProfile);
 
   useEffect(() => {
     setStore({ step: 4 });
   }, [setStore]);
-
-  const parent = { name: "김봄", phone: "010-4610-3404" };
 
   return (
     <View style={s.wrap}>
@@ -42,7 +37,7 @@ export default function SuccessScreen() {
       </View>
       <View style={s.infoContainer}>
         <Text style={s.infoTitle}>연결된 가족</Text>
-        <Text style={s.infoSubtitle}>{parent.name}님</Text>
+        <Text style={s.infoSubtitle}>{connectedName || "자녀"}님</Text>
         <Text style={s.infoDescription}>가족이 정상적으로 등록되었어요.</Text>
       </View>
       <View style={s.warningContainer}>
@@ -53,7 +48,8 @@ export default function SuccessScreen() {
       </View>
       <Pressable
         onPress={() => {
-          updateProfile({ name: name.trim(), age });
+          setRole("parent");
+          setFirstLogin(false);
           setParentOnboarded(true);
           router.replace("/(parent)");
         }}

@@ -4,15 +4,19 @@ import { useMemo } from "react";
 import { Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import { getDday, toDate, useDdayStore } from "@/src/child/entities/dday";
+import { getDday, toDate } from "@/src/child/entities/dday";
+import { toDdayItems, useDdayListQuery } from "@/src/shared/entities/dday";
 import { useOnboardingStore } from "@/src/shared/entities/onboarding/model/onboarding.store";
+import { toMainViewModel, useMainQuery } from "@/src/shared/entities/main";
+import { toWeatherCard, useWeatherQuery } from "@/src/shared/entities/weather";
+import { useFamilyMembersQuery } from "@/src/shared/entities/family";
 import HyoitLogo from "@/src/shared/assets/hyoit_logo_home.png";
 import {
   formatCheckInTime,
-  getCheckInOverview,
   getLatestSentCheckIn,
-  useCheckInStore,
+  toCheckInItems,
 } from "@/src/shared/entities/check-in";
+import { useAnbuHistoryQuery } from "@/src/shared/entities/notification";
 import { IconSymbol } from "@/src/shared/ui/IconSymbol";
 import avatar01 from "@/src/shared/assets/profile-avatars/profile-avatar-01.png";
 import avatar02 from "@/src/shared/assets/profile-avatars/profile-avatar-02.png";
@@ -27,21 +31,32 @@ const DATE_FORMATTER = new Intl.DateTimeFormat("ko-KR", {
 type ChildStatus = "waiting" | "confirmed" | "empty";
 
 export default function ChildHomePage() {
-  const childName = useOnboardingStore((state) => state.name.trim() || "효잇");
-  const ddayItems = useDdayStore((state) => state.items);
-  const rawCheckIns = useCheckInStore((state) => state.items);
-  const hasHydrated = useCheckInStore((state) => state.hasHydrated);
+  const onboardingName = useOnboardingStore((state) => state.name.trim());
+  const { data: mainData } = useMainQuery();
+  const main = mainData ? toMainViewModel(mainData) : undefined;
+  const { data: weatherData } = useWeatherQuery({
+    lat: 37.5665,
+    lon: 126.978,
+  });
+  const weather = weatherData ? toWeatherCard(weatherData) : undefined;
+  const childName = (main?.name ?? onboardingName) || "효잇";
+  const { data: ddayData = [] } = useDdayListQuery();
+  const ddayItems = useMemo(() => toDdayItems(ddayData), [ddayData]);
+  const { data: familyMembers = [] } = useFamilyMembersQuery();
+  const partnerId = familyMembers.find((member) => member.role === "ADMIN")?.id;
+  const { data: notifications = [] } = useAnbuHistoryQuery(partnerId);
+  const anbuItems = useMemo(() => toCheckInItems(notifications), [notifications]);
 
   const nextDday = useMemo(() => {
     return [...ddayItems].sort((a, b) => a.date.localeCompare(b.date))[0];
   }, [ddayItems]);
 
-  const checkInOverview = useMemo(
-    () => getCheckInOverview(rawCheckIns, "child"),
-    [rawCheckIns],
-  );
-  const latestSentCheckIn = getLatestSentCheckIn(checkInOverview.items);
-  const newReceivedCheckInCount = checkInOverview.pendingCount;
+  const latestSentCheckIn = getLatestSentCheckIn(anbuItems);
+  const localPendingCount = anbuItems.filter(
+    (item) => item.direction === "RECEIVED" && item.status === "NEW",
+  ).length;
+  const newReceivedCheckInCount =
+    main?.uncheckedAnbuCount ?? localPendingCount;
   const recordCountLabel =
     newReceivedCheckInCount > 0
       ? `새 기록 ${newReceivedCheckInCount}개`
@@ -77,10 +92,6 @@ export default function ChildHomePage() {
     confirmed: avatar03,
     empty: avatar01,
   }[visibleStatus];
-
-  if (!hasHydrated) {
-    return <SafeAreaView style={styles.safeArea} edges={["top"]} />;
-  }
 
   const moveToCheckIn = () => {
     router.push("/(child)/(tabs)/check-in");
@@ -233,10 +244,18 @@ export default function ChildHomePage() {
               <HomeCard onPress={() => {}}>
                 <Text style={styles.cardEyebrow}>오늘의 날씨</Text>
                 <View style={styles.weatherRow}>
-                  <Text style={styles.weatherTemp}>22°</Text>
-                  <Text style={styles.weatherLabel}>흐림</Text>
+                  <Text style={styles.weatherTemp}>
+                    {weather?.temperature ?? "날씨"}
+                  </Text>
+                  <Text style={styles.weatherLabel}>
+                    {weather?.sky ?? "불러오는 중"}
+                  </Text>
                 </View>
-                <Text style={styles.cardDescription}>최고 24° / 최저 19°</Text>
+                <Text style={styles.cardDescription}>
+                  {weather
+                    ? `최고 ${weather.maxTemperature} / 최저 ${weather.minTemperature}`
+                    : "잠시만 기다려주세요."}
+                </Text>
                 <View style={styles.cardVisualCircle}>
                   <Text style={styles.cardVisualText}>☁️</Text>
                 </View>

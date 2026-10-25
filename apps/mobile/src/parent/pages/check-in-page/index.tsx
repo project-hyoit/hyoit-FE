@@ -1,13 +1,18 @@
 import { useRouter } from "expo-router";
 import { useMemo, useState } from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { Alert, ScrollView, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import {
-  getCheckInOverview,
-  useCheckInStore,
+  toCheckInItems,
   type CheckInItem,
 } from "@/src/shared/entities/check-in";
+import { useFamilyMembersQuery } from "@/src/shared/entities/family";
+import {
+  useAnbuHistoryQuery,
+  useCheckAnbuMutation,
+  useSendAnbuMutation,
+} from "@/src/shared/entities/notification";
 
 import {
   ParentCheckInHeader,
@@ -19,51 +24,72 @@ import {
 
 export default function ParentCheckInPage() {
   const router = useRouter();
-  const rawItems = useCheckInStore((state) => state.items);
-  const hasHydrated = useCheckInStore((state) => state.hasHydrated);
-  const sendCheckIn = useCheckInStore((state) => state.sendCheckIn);
-  const confirmCheckIn = useCheckInStore((state) => state.confirmCheckIn);
+  const { data: familyMembers = [] } = useFamilyMembersQuery();
+  const partnerId = familyMembers.find((member) => member.role === "USER")?.id;
+  const { data: notifications = [] } = useAnbuHistoryQuery(partnerId);
+  const sendAnbuMutation = useSendAnbuMutation();
+  const checkAnbuMutation = useCheckAnbuMutation();
   const [isSendSuccessModalVisible, setIsSendSuccessModalVisible] =
     useState(false);
   const [lastSentMessage, setLastSentMessage] = useState<string | null>(null);
-  const overview = useMemo(
-    () => getCheckInOverview(rawItems, "parent"),
-    [rawItems],
-  );
+  const overview = useMemo(() => {
+    const items = toCheckInItems(notifications);
+    const pendingItems = items.filter(
+      (item) => item.direction === "RECEIVED" && item.status === "NEW",
+    );
+    return {
+      items,
+      pendingCount: pendingItems.length,
+      displayItem: pendingItems[0] ?? items[0] ?? null,
+    };
+  }, [notifications]);
 
-  const handleSendCheckIn = (message: string) => {
-    const sentItem = sendCheckIn("parent", message);
-    if (!sentItem) return;
+  const handleSendCheckIn = async (message: string) => {
+    if (!partnerId) {
+      Alert.alert("가족 연결 필요", "안부를 보낼 가족이 아직 연결되지 않았어요.");
+      return;
+    }
 
-    setLastSentMessage(sentItem.message);
-    setIsSendSuccessModalVisible(true);
+    try {
+      const sentItem = await sendAnbuMutation.mutateAsync({
+        partnerId,
+        content: message,
+      });
+      setLastSentMessage(sentItem.content);
+      setIsSendSuccessModalVisible(true);
+    } catch {
+      Alert.alert("안부 전송 실패", "잠시 후 다시 시도해주세요.");
+    }
   };
 
   const handleConfirmCheckIn = (item: CheckInItem) => {
     if (item.direction !== "RECEIVED") return;
-    confirmCheckIn(item.id, "parent");
+    checkAnbuMutation.mutate(Number(item.id));
   };
 
   const handleCloseSendSuccessModal = () => {
     setIsSendSuccessModalVisible(false);
   };
 
-  const handleResendCheckIn = () => {
+  const handleResendCheckIn = async () => {
     if (!lastSentMessage) {
       setIsSendSuccessModalVisible(false);
       return;
     }
 
-    const resentItem = sendCheckIn("parent", lastSentMessage);
-    if (!resentItem) return;
+    if (!partnerId) return;
 
-    setLastSentMessage(resentItem.message);
-    setIsSendSuccessModalVisible(false);
+    try {
+      const resentItem = await sendAnbuMutation.mutateAsync({
+        partnerId,
+        content: lastSentMessage,
+      });
+      setLastSentMessage(resentItem.content);
+      setIsSendSuccessModalVisible(false);
+    } catch {
+      Alert.alert("안부 재전송 실패", "잠시 후 다시 시도해주세요.");
+    }
   };
-
-  if (!hasHydrated) {
-    return <SafeAreaView style={s.safeArea} edges={["top"]} />;
-  }
 
   return (
     <SafeAreaView style={s.safeArea} edges={["top"]}>

@@ -19,8 +19,8 @@ import {
   getDateKey,
   toCalendarRows,
   toDate,
-  useDdayStore,
 } from "@/src/child/entities/dday";
+import { useCreateDdayMutation } from "@/src/shared/entities/dday";
 import { IconSymbol } from "@/src/shared/ui/IconSymbol";
 
 const NAME_LIMIT = 20;
@@ -41,7 +41,7 @@ const formatSelectedDate = (value: string) => {
 };
 
 export default function ChildDdayAddPage() {
-  const addItem = useDdayStore((state) => state.addItem);
+  const createDday = useCreateDdayMutation();
   const scrollRef = useRef<ScrollView>(null);
   const [title, setTitle] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
@@ -54,7 +54,7 @@ export default function ChildDdayAddPage() {
   const [memo, setMemo] = useState("");
   const todayKey = getDateKey(new Date());
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!title.trim()) {
       Alert.alert("일정 이름 필요", "디데이 이름을 입력해주세요.");
       return;
@@ -65,12 +65,16 @@ export default function ChildDdayAddPage() {
       return;
     }
 
-    addItem({
-      title: title.trim(),
-      date: selectedDate,
-      memo: memo.trim() || undefined,
-    });
-    router.back();
+    try {
+      await createDday.mutateAsync({
+        title: title.trim(),
+        targetDate: selectedDate,
+        memo: memo.trim() || undefined,
+      });
+      router.back();
+    } catch {
+      Alert.alert("디데이 저장 실패", "잠시 후 다시 시도해주세요.");
+    }
   };
 
   const moveMonth = (amount: number) => {
@@ -183,9 +187,12 @@ export default function ChildDdayAddPage() {
           <TouchableOpacity
             style={styles.saveButton}
             onPress={handleSave}
+            disabled={createDday.isPending}
             activeOpacity={0.85}
           >
-            <Text style={styles.saveButtonText}>저장하기</Text>
+            <Text style={styles.saveButtonText}>
+              {createDday.isPending ? "저장 중" : "저장하기"}
+            </Text>
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>

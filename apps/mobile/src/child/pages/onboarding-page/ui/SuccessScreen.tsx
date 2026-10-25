@@ -7,8 +7,8 @@ import { useOnboardingStore } from "@/src/shared/entities/onboarding/model/onboa
 import { IconSymbol } from "@/src/shared/ui";
 
 export default function SuccessScreen() {
-  const { setChildOnboarded } = useAuthStore();
-  const parentName = useOnboardingStore((s) => s.name);
+  const { setChildOnboarded, setFirstLogin, setRole } = useAuthStore();
+  const invitationCode = useOnboardingStore((s) => s.invitationCode);
   const setStore = useOnboardingStore((s) => s.set);
 
   useEffect(() => {
@@ -19,29 +19,31 @@ export default function SuccessScreen() {
     <View style={s.wrap}>
       <ProgressBar current={4} total={4} />
       <Text style={s.title} allowFontScaling={false}>
-        연결이 완료되었어요!
+        연결번호가 발급됐어요!
       </Text>
 
       <Text style={s.description} allowFontScaling={false}>
-        이제 부모님과 가볍게 안부를 주고받을 수 있어요.
+        부모님께 아래 번호를 알려주면 가족 연결이 완료돼요.
       </Text>
 
       <View style={s.iconWrap}>
         <IconSymbol name="checkmark" size={68} color="#FFFFFF" style={s.icon} />
       </View>
       <View style={s.infoContainer}>
-        <Text style={s.infoTitle}>연결된 가족</Text>
-        <Text style={s.infoSubtitle}>{parentName}님</Text>
-        <Text style={s.infoDescription}>가족이 정상적으로 등록되었어요.</Text>
+        <Text style={s.infoTitle}>내 연결번호</Text>
+        <Text style={s.infoSubtitle}>{invitationCode || "-"}</Text>
+        <Text style={s.infoDescription}>부모님 앱에서 이 번호를 입력해주세요.</Text>
       </View>
       <View style={s.warningContainer}>
         <View style={s.warningIconSuccess}>
           <IconSymbol name="checkmark" size={20} color="#FFFFFF" />
         </View>
-        <Text style={s.warningText}>언제든지 가족과 안부를 주고 받을 수 있어요.</Text>
+        <Text style={s.warningText}>부모님이 연결을 완료하면 안부를 주고받을 수 있어요.</Text>
       </View>
       <Pressable
         onPress={() => {
+          setRole("child");
+          setFirstLogin(false);
           setChildOnboarded(true);
           router.replace("/(child)/(tabs)");
         }}

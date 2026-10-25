@@ -4,11 +4,13 @@ import { ScrollView, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import {
-  getCheckInOverview,
   getLatestSentCheckIn,
-  useCheckInStore,
+  toCheckInItems,
 } from "@/src/shared/entities/check-in";
-import { useUserProfileStore } from "@/src/parent/entities/user";
+import { useFamilyMembersQuery } from "@/src/shared/entities/family";
+import { toMainViewModel, useMainQuery } from "@/src/shared/entities/main";
+import { useAnbuHistoryQuery } from "@/src/shared/entities/notification";
+import { toWeatherCard, useWeatherQuery } from "@/src/shared/entities/weather";
 import { resolveHomeStatus } from "./resolveHomeStatus";
 import {
   HomeCardGrid,
@@ -18,24 +20,29 @@ import {
 } from "./ui";
 
 export default function HomePage() {
-  const profileName = useUserProfileStore((state) => state.profile.name);
-  const rawItems = useCheckInStore((state) => state.items);
-  const hasHydrated = useCheckInStore((state) => state.hasHydrated);
-  const overview = useMemo(
-    () => getCheckInOverview(rawItems, "parent"),
-    [rawItems],
-  );
-  const latestSentItem = getLatestSentCheckIn(overview.items);
-  const pendingReceivedCount = overview.pendingCount;
+  const { data: mainData } = useMainQuery();
+  const main = mainData ? toMainViewModel(mainData) : undefined;
+  const { data: weatherData } = useWeatherQuery({
+    lat: 37.5665,
+    lon: 126.978,
+  });
+  const weather = weatherData ? toWeatherCard(weatherData) : undefined;
+  const profileName = main?.name ?? "효잇";
+  const { data: familyMembers = [] } = useFamilyMembersQuery();
+  const partnerId = familyMembers.find((member) => member.role === "USER")?.id;
+  const { data: notifications = [] } = useAnbuHistoryQuery(partnerId);
+  const anbuItems = useMemo(() => toCheckInItems(notifications), [notifications]);
+  const latestSentItem = getLatestSentCheckIn(anbuItems);
+  const localPendingCount = anbuItems.filter(
+    (item) => item.direction === "RECEIVED" && item.status === "NEW",
+  ).length;
+  const pendingReceivedCount =
+    main?.uncheckedAnbuCount ?? localPendingCount;
 
   const homeStatus = resolveHomeStatus({
     pendingReceivedCount,
     latestSentItem,
   });
-
-  if (!hasHydrated) {
-    return <SafeAreaView style={s.safeArea} edges={["top"]} />;
-  }
 
   const moveToCheckIn = () => {
     router.push("/(parent)/(tabs)/check-in");
@@ -70,6 +77,8 @@ export default function HomePage() {
           onPressRecentGreeting={moveToCheckIn}
           onPressGame={() => router.push("/(parent)/(tabs)/game")}
           onPressHelp={() => {}}
+          weather={weather}
+          recentGreetingCount={pendingReceivedCount}
         />
       </ScrollView>
     </SafeAreaView>
