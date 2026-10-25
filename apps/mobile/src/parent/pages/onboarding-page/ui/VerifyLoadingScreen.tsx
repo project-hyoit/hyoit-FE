@@ -1,8 +1,14 @@
+import { completeSignup } from "@hyoit/auth";
+import {
+  connectFamily,
+  previewFamilyConnection,
+} from "@/src/shared/entities/family";
+import { buildSignupRequest } from "@/src/shared/entities/onboarding/lib/signupRequest";
+import { useOnboardingStore } from "@/src/shared/entities/onboarding/model/onboarding.store";
 import { router } from "expo-router";
 import { useEffect, useRef } from "react";
 import { Animated, Easing, StyleSheet, Text, View } from "react-native";
 import ProgressBar from "../../../../shared/ui/ProgressBar";
-import { useOnboardingStore } from "@/src/shared/entities/onboarding/model/onboarding.store";
 import { IconSymbol } from "@/src/shared/ui";
 
 interface VerifyLoadingScreenProps {
@@ -10,33 +16,63 @@ interface VerifyLoadingScreenProps {
 }
 
 export default function VerifyLoadingScreen({ codeInput }: VerifyLoadingScreenProps) {
-  const setStore = useOnboardingStore((s) => s.set);
-  useEffect(() => {
-    setStore({ step: 3 });
-  }, [setStore]);
-  useEffect(() => {
-    // 부모 측 로딩 (시뮬레이션)
-    const timer = setTimeout(() => {
-      router.replace("/(parent)/onboarding/success");
-    }, 1500);
-    return () => clearTimeout(timer);
-  }, [codeInput]);
-
+  const { age, name, phone, set } = useOnboardingStore();
+  const hasStarted = useRef(false);
   const rotate = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    Animated.loop(
+    set({ step: 3 });
+  }, [set]);
+
+  useEffect(() => {
+    const animation = Animated.loop(
       Animated.timing(rotate, {
         toValue: 1,
         duration: 1400,
         easing: Easing.linear,
         useNativeDriver: true,
-      })
-    ).start();
+      }),
+    );
+    animation.start();
 
+    return () => animation.stop();
   }, [rotate]);
 
-  const spin = rotate.interpolate({ inputRange: [0, 1], outputRange: ["0deg", "360deg"] });
+  useEffect(() => {
+    if (!codeInput || hasStarted.current) return;
+    hasStarted.current = true;
+
+    let cancelled = false;
+
+    const connect = async () => {
+      try {
+        await completeSignup(
+          buildSignupRequest({ name, age, phone, role: "parent" }),
+        );
+        const preview = await previewFamilyConnection(codeInput);
+        await connectFamily(codeInput);
+
+        if (cancelled) return;
+        set({ connectedName: preview.nickname, step: 4 });
+        router.replace("/(parent)/onboarding/success");
+      } catch {
+        if (!cancelled) {
+          router.replace("/(parent)/onboarding/fail");
+        }
+      }
+    };
+
+    void connect();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [age, codeInput, name, phone, set]);
+
+  const spin = rotate.interpolate({
+    inputRange: [0, 1],
+    outputRange: ["0deg", "360deg"],
+  });
 
   return (
     <View style={s.wrap}>
@@ -57,7 +93,7 @@ export default function VerifyLoadingScreen({ codeInput }: VerifyLoadingScreenPr
           <IconSymbol name="checkmark" size={18} color="#1E90FF" />
         </View>
         <Text style={s.message} allowFontScaling={false}>
-          입력한 연결번호를 확인 중이에요.
+          연결번호를 확인하고 가족 연결을 진행 중이에요.
         </Text>
       </View>
     </View>
@@ -101,7 +137,6 @@ const s = StyleSheet.create({
     borderTopColor: "#1E90FF",
     marginBottom: 12,
   },
-
   messageBox: {
     backgroundColor: "#F0F6FF",
     borderRadius: 12,

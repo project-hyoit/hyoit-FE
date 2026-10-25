@@ -7,6 +7,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  TextInput,
   View,
 } from "react-native";
 import ProgressBar from "../../../../shared/ui/ProgressBar";
@@ -18,12 +19,13 @@ const VISIBLE_COUNT = 3;
 const DEFAULT_AGE = 21;
 
 export default function AgeInfoScreen() {
-  const { age, set } = useOnboardingStore();
+  const { age, phone, set } = useOnboardingStore();
   const initialAge = useMemo(
     () => (age && Number(age) >= MIN_AGE && Number(age) <= MAX_AGE ? Number(age) : DEFAULT_AGE),
     [age]
   );
   const [selectedAge, setSelectedAge] = useState(initialAge);
+  const [isPhoneFocused, setIsPhoneFocused] = useState(false);
   const initialAgeRef = useRef(initialAge);
   const scrollRef = useRef<ScrollView>(null);
   const ages = useMemo(
@@ -62,6 +64,8 @@ export default function AgeInfoScreen() {
     const nextAge = Math.min(Math.max(MIN_AGE + index, MIN_AGE), MAX_AGE);
     setSelectedAge(nextAge);
   };
+
+  const canNext = Boolean(phone.trim());
 
   return (
     <View style={s.wrap}>
@@ -105,12 +109,31 @@ export default function AgeInfoScreen() {
         </ScrollView>
       </View>
 
+      <View style={s.field}>
+        <Text style={s.fieldLabel} allowFontScaling={false}>
+          전화번호
+        </Text>
+        <TextInput
+          placeholder="예 : 010-1234-5678"
+          placeholderTextColor="#B6B6B6"
+          value={phone}
+          onChangeText={(value) => set({ phone: value })}
+          keyboardType="phone-pad"
+          style={[s.input, isPhoneFocused && s.inputFocused]}
+          onFocus={() => setIsPhoneFocused(true)}
+          onBlur={() => setIsPhoneFocused(false)}
+          returnKeyType="done"
+        />
+      </View>
+
       <View style={s.nextRow}>
         <Pressable
           style={({ pressed }) => [
             s.next,
+            !canNext && s.nextDisabled,
             pressed && { opacity: 0.9 },
           ]}
+          disabled={!canNext}
           onPress={() => router.push("/(parent)/onboarding/verify-code")}
           hitSlop={8}
           accessibilityRole="button"
@@ -160,6 +183,29 @@ const s = StyleSheet.create({
     marginTop: 40,
     height: ITEM_HEIGHT * VISIBLE_COUNT,
     justifyContent: "center",
+  },
+  field: {
+    marginTop: 24,
+  },
+  fieldLabel: {
+    fontSize: 18,
+    lineHeight: 25,
+    marginBottom: 9,
+    fontWeight: "800",
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: "#B6B6B6",
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    paddingVertical: Platform.select({ ios: 14, android: 12 }),
+    fontSize: 20,
+    fontWeight: "500",
+    color: COLORS.text,
+  },
+  inputFocused: {
+    borderColor: "#66B3FF",
+    borderWidth: 2,
   },
   pickerContent: {
     top: 0,
@@ -217,6 +263,9 @@ const s = StyleSheet.create({
       },
       android: { elevation: 2 },
     }),
+  },
+  nextDisabled: {
+    backgroundColor: "#D9D9D9",
   },
   nextText: {
     color: "#fff",

@@ -1,136 +1,163 @@
+import { completeSignup } from "@hyoit/auth";
+import { getInvitationCode } from "@/src/shared/entities/family";
+import { buildSignupRequest } from "@/src/shared/entities/onboarding/lib/signupRequest";
+import { useOnboardingStore } from "@/src/shared/entities/onboarding/model/onboarding.store";
 import { router } from "expo-router";
-import { useCallback, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import {
+  ActivityIndicator,
   Platform,
   Pressable,
   StyleSheet,
   Text,
   View,
-  TextInput,
 } from "react-native";
 import ProgressBar from "../../../../shared/ui/ProgressBar";
 import { IconSymbol } from "@/src/shared/ui";
 
+type RequestState = "loading" | "ready" | "error";
+
 export default function VerifyCodeScreen() {
-  // 6자리 인증코드 입력 상태
-  const [codeInputs, setCodeInputs] = useState(["", "", "", "", "", ""]);
-  const inputRefs = useRef<(TextInput | null)[]>([null, null, null, null, null, null]);
+  const { age, invitationCode, name, phone, set } = useOnboardingStore();
+  const [requestState, setRequestState] = useState<RequestState>(
+    invitationCode ? "ready" : "loading",
+  );
+  const [requestVersion, setRequestVersion] = useState(0);
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const handleCodeInput = useCallback((text: string, index: number) => {
-    // 숫자만 허용하고 1자리만 입력
-    const digit = text.replace(/[^0-9]/g, "").slice(0, 1);
-    const newInputs = [...codeInputs];
-    newInputs[index] = digit;
-    setCodeInputs(newInputs);
+  useEffect(() => {
+    set({ step: 3 });
+  }, [set]);
 
-    // 숫자 입력 시 다음 필드로 자동 이동
-    if (digit && index < 5) {
-      inputRefs.current[index + 1]?.focus();
-    }
-  }, [codeInputs]);
-
-  const handleVerifyCode = useCallback(() => {
-    const fullCode = codeInputs.join("");
-    if (fullCode.length !== 6) {
-      router.replace("/(child)/onboarding/fail");
+  useEffect(() => {
+    if (invitationCode) {
+      setRequestState("ready");
       return;
     }
-    // 로딩 페이지로 이동하여 코드 검증
-    router.push({
-      pathname: "/(child)/onboarding/verify-loading",
-      params: { codeInput: fullCode },
-    });
-  }, [codeInputs]);
 
-  const handleCodeBackspace = useCallback((index: number) => {
-    const newInputs = [...codeInputs];
-    if (!newInputs[index] && index > 0) {
-      inputRefs.current[index - 1]?.focus();
-    }
-    newInputs[index] = "";
-    setCodeInputs(newInputs);
-  }, [codeInputs]);
+    let cancelled = false;
+
+    const issueInvitationCode = async () => {
+      try {
+        setRequestState("loading");
+        setErrorMessage("");
+
+        const signup = await completeSignup(
+          buildSignupRequest({ name, age, phone, role: "child" }),
+        );
+        const code = signup.invitationCode ?? (await getInvitationCode());
+
+        if (!code) {
+          throw new Error("초대번호를 발급받지 못했어요.");
+        }
+
+        if (cancelled) return;
+        set({ invitationCode: code, step: 3 });
+        setRequestState("ready");
+      } catch {
+        if (cancelled) return;
+        setErrorMessage("회원가입 또는 연결번호 발급에 실패했어요.");
+        setRequestState("error");
+      }
+    };
+
+    void issueInvitationCode();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [age, invitationCode, name, phone, requestVersion, set]);
+
+  const handleRetry = () => {
+    setRequestState("loading");
+    setRequestVersion((version) => version + 1);
+  };
+
+  const handleStart = () => {
+    if (!invitationCode) return;
+    router.replace("/(child)/onboarding/success");
+  };
 
   return (
     <View style={s.wrap}>
       <ProgressBar current={3} total={4} />
       <Text style={s.title} allowFontScaling={false}>
-        연결번호를 입력해주세요.
+        부모님께 전달할{"\n"}연결번호가 발급됐어요
       </Text>
       <Text style={s.subtitle} allowFontScaling={false}>
-        아래에 연결번호를 입력하면{"\n"}가족 연결이 시작돼요.
+        아래 번호를 부모님 앱에 입력해달라고 알려주세요.
       </Text>
 
-      <View style={s.indexCard}>
-        <View style={s.myCodeCard}>
-          <View style={s.codeInputRow}>
-            {codeInputs.map((val, idx) => (
-              <TextInput
-                key={idx}
-                ref={(ref) => {
-                  inputRefs.current[idx] = ref;
-                }}
-                style={s.codeInput}
-                value={val}
-                onChangeText={(text) => handleCodeInput(text, idx)}
-                onKeyPress={({ nativeEvent }) => {
-                  if (nativeEvent.key === "Backspace") {
-                    handleCodeBackspace(idx);
-                  }
-                }}
-                keyboardType="number-pad"
-                maxLength={1}
-                selectionColor="#1E90FF"
-                allowFontScaling={false}
-                caretHidden={true}
-              />
+      {requestState === "loading" ? (
+        <View style={s.stateContainer}>
+          <ActivityIndicator size="large" color="#1E90FF" />
+          <Text style={s.stateText}>연결번호를 발급하고 있어요...</Text>
+        </View>
+      ) : null}
+
+      {requestState === "ready" && invitationCode ? (
+        <View style={s.indexCard}>
+          <View style={s.codeRow}>
+            {invitationCode.split("").map((digit, index) => (
+              <View key={`${digit}-${index}`} style={s.codeBox}>
+                <Text style={s.codeText} allowFontScaling={false}>
+                  {digit}
+                </Text>
+              </View>
             ))}
           </View>
-        </View>
 
-        <View style={s.successHint}>
-          <View style={s.successIconWrap}>
-            <IconSymbol name="checkmark" size={16} color="#FFFFFF" />
+          <View style={s.successHint}>
+            <View style={s.successIconWrap}>
+              <IconSymbol name="checkmark" size={16} color="#FFFFFF" />
+            </View>
+            <Text style={s.successHintText} allowFontScaling={false}>
+              부모님이 이 번호를 입력하면 가족 연결이 완료돼요.
+            </Text>
           </View>
-          <Text style={s.successHintText} allowFontScaling={false}>
-            인증번호를 입력해주세요.
-          </Text>
         </View>
-      </View>
+      ) : null}
+
+      {requestState === "error" ? (
+        <View style={s.errorContainer}>
+          <Text style={s.errorText}>{errorMessage}</Text>
+          <Pressable onPress={handleRetry} style={s.retryButton}>
+            <Text style={s.retryText}>다시 시도</Text>
+          </Pressable>
+        </View>
+      ) : null}
 
       <View style={s.nextRow}>
         <Pressable
-          style={({ pressed }) => [s.next, pressed && { opacity: 0.9 }]}
-          onPress={handleVerifyCode}
+          style={({ pressed }) => [
+            s.next,
+            requestState !== "ready" && s.nextDisabled,
+            pressed && requestState === "ready" && { opacity: 0.9 },
+          ]}
+          onPress={handleStart}
+          disabled={requestState !== "ready"}
           hitSlop={8}
+          accessibilityRole="button"
+          accessibilityLabel="시작하기"
         >
-          <Text style={s.nextText}>확인</Text>
+          <Text style={s.nextText}>시작하기</Text>
         </Pressable>
       </View>
     </View>
   );
 }
 
-const COLORS = {
-  bg: "#FFFFFF",
-  text: "#000000",
-  label: "#454545",
-  border: "#B6B6B6",
-  card: "#F5F5F5",
-  primary: "#1E90FF",
-};
-
 const s = StyleSheet.create({
   wrap: {
     flex: 1,
-    backgroundColor: COLORS.bg,
+    backgroundColor: "#FFFFFF",
     paddingHorizontal: 24,
     paddingTop: 120,
   },
   title: {
     fontSize: 24,
     lineHeight: 36,
-    color: COLORS.text,
+    color: "#000000",
     fontWeight: "600",
     marginBottom: 12,
   },
@@ -141,36 +168,46 @@ const s = StyleSheet.create({
     lineHeight: 25,
     marginBottom: 20,
   },
-  myCodeCard: {
+  stateContainer: {
+    flex: 1,
     alignItems: "center",
-    marginBottom: 20,
-    gap: 20,
+    justifyContent: "center",
+    gap: 16,
   },
-  codeInputRow: {
+  stateText: {
+    color: "#434343",
+    fontSize: 16,
+    fontWeight: "500",
+  },
+  indexCard: {
+    marginTop: 20,
+    borderColor: "rgba(0,0,0,0.2)",
+    borderRadius: 12,
+    borderWidth: 1,
+    padding: 24,
+  },
+  codeRow: {
     flexDirection: "row",
+    justifyContent: "center",
     gap: 8,
-    marginTop: 5,
   },
-  codeInput: {
-    width: 48,
-    height: 52,
+  codeBox: {
+    width: 40,
+    height: 48,
     backgroundColor: "#E9E9E9",
     borderRadius: 12,
     justifyContent: "center",
     alignItems: "center",
-    textAlign: "center",
-    textAlignVertical: "center",
+  },
+  codeText: {
     fontSize: 32,
     fontWeight: "700",
-    color: COLORS.text,
-    padding: 0,
   },
   successHint: {
     flexDirection: "row",
     alignItems: "center",
     gap: 10,
     marginTop: 20,
-    marginBottom: 8,
     backgroundColor: "#F0F6FF",
     paddingVertical: 14,
     paddingHorizontal: 16,
@@ -180,127 +217,36 @@ const s = StyleSheet.create({
     width: 24,
     height: 24,
     borderRadius: 12,
-    backgroundColor: COLORS.primary,
+    backgroundColor: "#1E90FF",
     alignItems: "center",
     justifyContent: "center",
   },
   successHintText: {
+    flex: 1,
     fontSize: 14,
-    color: COLORS.text,
+    color: "#000000",
     fontWeight: "500",
   },
-  modalButton: {
-    backgroundColor: "#000",
-    paddingVertical: 10,
-    paddingHorizontal: 16,
-    borderRadius: 10,
-  },
-  modalButtonText: {
-    color: "#fff",
-    fontWeight: "600",
-  },
-  recertification: {
-    backgroundColor:"#1E8FFF",
-    marginTop: "auto",
-    marginBottom: 58,
-    padding: 10,
+  errorContainer: {
+    flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    borderRadius:14,
+    gap: 16,
   },
-  recertificationText: {
-    fontSize: 20,
-    fontWeight: "600",
-    color: "#FFFFFF",
-  },
-  overlay: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: "rgba(0,0,0,0.3)",
-    justifyContent: "center",
-    alignItems: "center", 
-  },
-  bottomSheet: {
-    width: 364,
-    backgroundColor: "#fff",
-    padding: 24,
-    borderRadius: 12,
-  },
-  sheetTitle: {
+  errorText: {
+    color: "#D93025",
+    fontSize: 15,
     textAlign: "center",
-    fontSize: 20,
-    fontWeight: "500",
-    marginBottom: 16,
   },
-  userCard: {
-    backgroundColor:"#F5F5F5",
-    borderRadius: 12,
-    paddingVertical: 10,
-    paddingHorizontal: 16,
-    marginBottom: 36,
-    justifyContent: "space-between",
-    flexDirection: "row", 
-    alignItems: "center",
+  retryButton: {
+    borderRadius: 10,
+    backgroundColor: "#F0F6FF",
+    paddingHorizontal: 20,
+    paddingVertical: 12,
   },
-  surnameCircle:{
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: "#BCE1FF",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  surnameText:{
-    fontSize:20,
-    fontWeight:"600",
-  },
-  name: {
-    fontSize: 24,
-    fontWeight: "600",
-    marginLeft: -24,
-  },
-  phone: {
+  retryText: {
+    color: "#1E90FF",
     fontSize: 16,
-    fontWeight: "500",
-    color: "#434343",
-  },
-  row: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  ok: {
-    color: "#FFFFFF",
-    fontSize: 20,
-    fontWeight: "500",
-  },
-  okButton: {
-    paddingVertical:10,
-    paddingHorizontal:48,
-    backgroundColor: "#1E90FF",
-    borderRadius: 12,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  timerRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginTop: 12,
-  },
-  indexCard: {
-    marginTop: 20,
-    borderRadius: 12,
-  },
-  timerText: {
-    fontSize: 14,
-    color: "rgba(0,0,0,0.6)",
-  },
-  resendSmall: {
-    fontSize: 14,
-    color: COLORS.primary,
     fontWeight: "600",
   },
   nextRow: {
@@ -312,7 +258,7 @@ const s = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: COLORS.primary,
+    backgroundColor: "#1E90FF",
     borderRadius: 12,
     paddingVertical: 15,
     width: "100%",
@@ -326,8 +272,11 @@ const s = StyleSheet.create({
       android: { elevation: 2 },
     }),
   },
+  nextDisabled: {
+    backgroundColor: "#D9D9D9",
+  },
   nextText: {
-    color: "#fff",
+    color: "#FFFFFF",
     fontSize: 22,
     fontWeight: "500",
   },
