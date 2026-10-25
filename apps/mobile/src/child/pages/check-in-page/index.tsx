@@ -1,12 +1,14 @@
 import { useMemo } from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { Alert, ScrollView, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import { toCheckInItems, type CheckInItem } from "@/src/shared/entities/check-in";
+import { useFamilyMembersQuery } from "@/src/shared/entities/family";
 import {
-  getCheckInOverview,
-  useCheckInStore,
-  type CheckInItem,
-} from "@/src/shared/entities/check-in";
+  useAnbuHistoryQuery,
+  useCheckAnbuMutation,
+  useSendAnbuMutation,
+} from "@/src/shared/entities/notification";
 
 import ChildCheckInHeader from "./ui/ChildCheckInHeader";
 import ChildCheckInHistorySection from "./ui/ChildCheckInHistorySection";
@@ -14,28 +16,41 @@ import ChildCheckInQuickActionSection from "./ui/ChildCheckInQuickActionSection"
 import ChildCheckInStatusBanner from "./ui/ChildCheckInStatusBanner";
 
 export default function ChildCheckInPage() {
-  const rawItems = useCheckInStore((state) => state.items);
-  const hasHydrated = useCheckInStore((state) => state.hasHydrated);
-  const sendCheckIn = useCheckInStore((state) => state.sendCheckIn);
-  const confirmCheckIn = useCheckInStore((state) => state.confirmCheckIn);
+  const { data: familyMembers = [] } = useFamilyMembersQuery();
+  const partnerId = familyMembers.find((member) => member.role === "ADMIN")?.id;
+  const { data: notifications = [] } = useAnbuHistoryQuery(partnerId);
+  const sendAnbuMutation = useSendAnbuMutation();
+  const checkAnbuMutation = useCheckAnbuMutation();
 
-  const overview = useMemo(
-    () => getCheckInOverview(rawItems, "child"),
-    [rawItems],
-  );
+  const overview = useMemo(() => {
+    const items = toCheckInItems(notifications);
+    const pendingItems = items.filter(
+      (item) => item.direction === "RECEIVED" && item.status === "NEW",
+    );
+    return {
+      items,
+      pendingCount: pendingItems.length,
+      displayItem: pendingItems[0] ?? items[0] ?? null,
+    };
+  }, [notifications]);
 
-  const handleSendCheckIn = (message: string) => {
-    sendCheckIn("child", message);
+  const handleSendCheckIn = async (message: string) => {
+    if (!partnerId) {
+      Alert.alert("가족 연결 필요", "안부를 보낼 부모님이 아직 연결되지 않았어요.");
+      return;
+    }
+
+    try {
+      await sendAnbuMutation.mutateAsync({ partnerId, content: message });
+    } catch {
+      Alert.alert("안부 전송 실패", "잠시 후 다시 시도해주세요.");
+    }
   };
 
   const handleConfirmCheckIn = (item: CheckInItem) => {
     if (item.direction !== "RECEIVED") return;
-    confirmCheckIn(item.id, "child");
+    checkAnbuMutation.mutate(Number(item.id));
   };
-
-  if (!hasHydrated) {
-    return <SafeAreaView style={s.safeArea} edges={["top"]} />;
-  }
 
   return (
     <SafeAreaView style={s.safeArea} edges={["top"]}>

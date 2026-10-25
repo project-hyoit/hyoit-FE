@@ -7,8 +7,9 @@ import {
   useCountdown,
   type FruitKey,
 } from "@/src/parent/entities/memory-game";
+import { useSaveGameRecordMutation } from "@/src/shared/entities/game";
 import { router } from "expo-router";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import type { PlaySessionReturn } from "../model/session";
 
 export function useMemoryPlaySession(level?: string): PlaySessionReturn {
@@ -38,6 +39,22 @@ export function useMemoryPlaySession(level?: string): PlaySessionReturn {
   }, [maxHp, cardCount]); // 난이도/덱 변경 시 리셋
 
   const [doneType, setDoneType] = useState<null | "success" | "fail">(null);
+  const { mutateAsync: saveRecord } = useSaveGameRecordMutation();
+  const hasSavedRecord = useRef(false);
+
+  useEffect(() => {
+    if (!doneType || hasSavedRecord.current) return;
+    hasSavedRecord.current = true;
+
+    void saveRecord({
+      result: doneType === "success",
+      level: level ?? "normal",
+      live: hearts,
+    }).catch(() => {
+      hasSavedRecord.current = false;
+    });
+  }, [doneType, hearts, level, saveRecord]);
+
   useEffect(() => {
     if (phase === "playing" && hearts <= 0) {
       setPhase("done");
@@ -81,6 +98,7 @@ export function useMemoryPlaySession(level?: string): PlaySessionReturn {
     pairLeftRef.current = cardCount;
     setSeed((s) => s + 1);
     setPhase("countdown");
+    hasSavedRecord.current = false;
     resetCountdown();
   };
 

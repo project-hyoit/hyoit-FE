@@ -1,6 +1,7 @@
 import { router } from "expo-router";
 import { useMemo, useState } from "react";
 import {
+  Alert,
   Modal,
   Pressable,
   ScrollView,
@@ -17,9 +18,13 @@ import {
   getDday,
   toCalendarRows,
   toDate,
-  useDdayStore,
-  type DdayItem,
 } from "@/src/child/entities/dday";
+import {
+  toDdayItems,
+  useDdayListQuery,
+  useDeleteDdayMutation,
+  type DdayViewItem,
+} from "@/src/shared/entities/dday";
 import { IconSymbol } from "@/src/shared/ui/IconSymbol";
 
 const WEEKDAYS = ["일", "월", "화", "수", "목", "금", "토"];
@@ -33,13 +38,14 @@ const DATE_FORMATTER = new Intl.DateTimeFormat("ko-KR", {
 });
 
 export default function ChildDdayPage() {
-  const items = useDdayStore((state) => state.items);
-  const deleteItem = useDdayStore((state) => state.deleteItem);
+  const { data: ddayData = [] } = useDdayListQuery();
+  const deleteDday = useDeleteDdayMutation();
+  const items = useMemo(() => toDdayItems(ddayData), [ddayData]);
   const [monthDate, setMonthDate] = useState(() => {
     const today = new Date();
     return new Date(today.getFullYear(), today.getMonth(), 1);
   });
-  const [selectedItem, setSelectedItem] = useState<DdayItem | null>(null);
+  const [selectedItem, setSelectedItem] = useState<DdayViewItem | null>(null);
   const todayKey = useMemo(() => getDateKey(new Date()), []);
 
   const sortedItems = useMemo(
@@ -67,10 +73,15 @@ export default function ChildDdayPage() {
     );
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (!selectedItem) return;
-    deleteItem(selectedItem.id);
-    setSelectedItem(null);
+
+    try {
+      await deleteDday.mutateAsync(Number(selectedItem.id));
+      setSelectedItem(null);
+    } catch {
+      Alert.alert("디데이 삭제 실패", "잠시 후 다시 시도해주세요.");
+    }
   };
 
   return (

@@ -36,4 +36,5 @@ export {
 export type { CheckInOverview } from "./lib/checkInSelectors";
 export { resolveCheckInBannerState } from "./lib/checkInBannerState";
 export type { CheckInBannerState } from "./lib/checkInBannerState";
+export { toCheckInItem, toCheckInItems } from "./lib/notificationViewModel";
 export { useCheckInStore } from "./model/checkInStore";
